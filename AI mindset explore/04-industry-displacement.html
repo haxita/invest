@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 · 行业替代地图 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 04 · 行业替代地图">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chapter-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  font-size: 13px;
+}
+.nav-brand {
+  font-family: var(--serif); font-weight: 700; font-size: 14px;
+  color: var(--accent); margin-right: 16px; padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+.nav-item {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--text-soft); border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--code-bg); color: var(--text); border-bottom: none; }
+.nav-item.current { background: var(--accent); color: #fff; }
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num { font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--text-faded); letter-spacing: 0.04em; }
+.nav-title { font-weight: 500; }
+
+.content { max-width: 760px; margin: 64px auto 60px; padding: 0 32px; }
+
+.content > h1:first-child {
+  font-family: var(--serif); font-size: 40px; line-height: 1.25; font-weight: 700;
+  color: var(--heading); margin: 0 0 12px 0; padding: 0; border: none;
+  letter-spacing: -0.015em;
+}
+.content > h1:first-child + blockquote {
+  margin-top: 16px; border-left-width: 3px; background: transparent;
+  font-style: normal; color: var(--text-soft); padding: 6px 18px;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--heading); letter-spacing: -0.005em; }
+h1 { font-size: 30px; margin: 72px 0 22px; padding-top: 16px; border-top: 2px solid var(--border); }
+h2 { font-size: 25px; margin: 56px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 20px; margin: 38px 0 12px; }
+h4 { font-size: 17px; margin: 26px 0 10px; font-family: var(--sans); font-weight: 600; color: var(--text); }
+p { margin: 16px 0; word-break: break-word; overflow-wrap: anywhere; }
+
+a { color: var(--link); text-decoration: none; border-bottom: 1px dashed var(--accent-soft); transition: color 0.15s ease, border-bottom-style 0.15s ease; }
+a:hover { color: var(--link-hover); border-bottom-style: solid; }
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol { margin: 16px 0 16px 26px; padding: 0; }
+li { margin: 8px 0; line-height: 1.85; }
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0; padding: 14px 22px; background: var(--bg-card);
+  border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0;
+  color: var(--text-soft); font-family: var(--serif); font-size: 16px; font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--code-bg); padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--code-border); color: #6b3a2e;
+}
+pre {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 20px; margin: 22px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; color: var(--text);
+}
+pre code { background: transparent; padding: 0; border: none; font-size: inherit; color: inherit; }
+.codehilite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 22px 0; overflow-x: auto; }
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 14.5px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: table;
+}
+thead { background: var(--code-bg); }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; line-height: 1.6; }
+th { font-weight: 600; color: var(--heading); font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em; }
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+.table-wrap { overflow-x: auto; margin: 26px 0; border-radius: 6px; }
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0; padding: 24px 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr { border: none; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 48px 0; }
+
+.site-footer {
+  text-align: center; padding: 36px 24px 60px; border-top: 1px solid var(--border);
+  margin-top: 60px; color: var(--text-faded); font-size: 13px;
+  font-family: var(--serif); letter-spacing: 0.02em;
+}
+.site-footer a { color: var(--text-soft); border-bottom: none; }
+.site-footer a:hover { color: var(--accent); }
+
+.format-banner {
+  margin: 24px 0 0; padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  font-size: 13px; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap;
+  align-items: center;
+}
+.format-banner .label { font-family: var(--serif); font-weight: 600; color: var(--heading); }
+.format-banner a { font-family: var(--mono); font-size: 12px; }
+
+.chapter-bottom-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 56px 0 16px; padding: 24px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1; padding: 12px 16px; border-radius: 6px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover { border-color: var(--accent); color: var(--accent); border-bottom: 1px solid var(--accent); }
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav, .format-banner { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item current"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<div class="format-banner"><span class="label">本章其他版本</span><a href="pdf/04-industry-displacement.pdf">PDF（离线打印）</a><a href="markdown/04-industry-displacement.md">Markdown 源</a></div>
+<h1 id="04">04 · 行业替代地图</h1>
+<blockquote>
+<p>一张可索引的"行业 × 任务 × 替代度"地图：哪些已经被吃掉，哪些只是被增强，哪些会在 2026-2028 被端到端地重塑。</p>
+</blockquote>
+<h2 id="_1">一句话总览</h2>
+<p><strong>AI 替代不按"行业"颗粒度发生，而按"任务"颗粒度发生</strong>。同一行业里，"高频、低风险、有明确正确答案、单 turn 输出"的任务先被吃掉（搜索、客服 L1、翻译、SEO 内容、代码补全、初阶法律研究、初阶分析报告）；"长上下文、关系性、需要责任承担、需要 embodiment"的任务暂时安全（关系销售、复杂判断、医生最终决策、CEO 战略、家政护理）。但 2024 年 BCG/MIT 数据同时揭穿了一个反向真相——<strong>75% 的企业 AI 项目目前没有创造可衡量价值</strong>，所以"替代发生"和"替代成功创造企业级 ROI"是两件不同的事。下一波 2026-2028 的真正分水岭，不是"哪个行业被替代"，而是"哪家公司能让多 agent 端到端跑完一个工作流"。</p>
+<h2 id="10">关键句提纲（10 条）</h2>
+<ol>
+<li>替代发生在 task 层，不在 industry 层。一个法律 5 人小组里，4 个人的工作可以被吃掉，但案件最终责任人不能。</li>
+<li>已发生（高确定性）的完全/接近完全替代：Google 搜索的"信息查询"任务、L1 客服、初阶笔译、SEO 长尾内容工厂、代码片段补全、PowerPoint 模板生成、初阶尽调摘要、教培答疑。</li>
+<li>部分替代（人+AI 协作显著加速但仍需人）：会计审计（Big Four 已自动化 60-70% 标准分析）、医疗影像、咨询 deck 生成、新闻初稿、初阶设计稿。</li>
+<li>真正未被替代：复杂判断责任承担、关系性销售、监管/合规签字、需要 embodiment 的物理工作、艺术性"为什么"。</li>
+<li>反例最强：MIT NANDA 报告 95% 企业 GenAI pilot 没有可衡量 P&amp;L 影响；BCG 2025 只有 25% 企业从 AI 中获得显著价值，5% 真正规模化获益；Klarna 2025 年承认 AI 客服替代过头要重新招人。</li>
+<li>软件壁垒分层：System of record（Salesforce、Workday、Box）依然安全，但 Workflow tool（Notion、Asana、低代码、传统 BI、ServiceNow 部分模块）正被 AI agent 直接吃。</li>
+<li>下一波（2026-2028）最危险位置：Tier 2 法律研究/Paralegal、初级税务/审计员、招聘助理、入门级数据分析师、初阶财务分析师、L1 IT helpdesk、初级广告投放优化师、入门级会计、初级翻译。</li>
+<li>AI 替代≠失业总量下降。Goldman Sachs 估全球 3 亿岗位"暴露"于 AI，但 Acemoglu 估 10 年总 TFP 仅 +0.53-0.66%——意思是"再分配"压力远大于"总产出"压力。</li>
+<li>SaaS 被吃边界的一句话判断：<strong>有专属数据 + 有合规责任 + 有跨部门关系网</strong>的 SaaS 安全；<strong>只是个输入框 + 输出框的工具</strong>会被 ChatGPT/Claude/Cursor 类通用 agent 吃掉。</li>
+<li>真正的 alpha：在 BPO（India/PH 800 万岗位）、保险理赔、债务催收、freight/logistics、政府服务这些"非性感"的高劳动密集服务业中，垂直 agent 才刚开始；这是 2026-2028 真正的赌注。</li>
+</ol>
+<h2 id="_2">替代分类框架</h2>
+<p>把每一个"行业 × 任务"放到下面四个格子里：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>定义</th>
+<th>代表案例</th>
+<th>时序判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>完全替代</strong></td>
+<td>90%+ 任务可由 AI 独立完成且企业不再雇人</td>
+<td>搜索、L1 客服、初阶翻译、SEO 内容工厂、PPT 模板、stock photo</td>
+<td>已发生（2023-2025）</td>
+</tr>
+<tr>
+<td><strong>部分替代</strong></td>
+<td>人+AI 协作，AI 完成 50-80% 工作，人做最后一公里</td>
+<td>法律 review、医疗影像、code review、设计、咨询 deck、新闻初稿、初阶审计</td>
+<td>进行中（2024-2026）</td>
+</tr>
+<tr>
+<td><strong>被增强</strong></td>
+<td>AI 让一个人能做以前 5 个人的事，但人数不直接砍掉，而是产能扩张</td>
+<td>高级研发、产品经理、senior engineer、CFO、研究科学家、企业销售</td>
+<td>持续中</td>
+</tr>
+<tr>
+<td><strong>新生行业</strong></td>
+<td>AI 才有的全新 SKU</td>
+<td>生成式视频（Synthesia、Sora）、AI voice clone（ElevenLabs）、AI 陪伴（Character.ai、Replika）、Vibe coding（Cursor、Lovable）、Agent platform（LangChain、Crew、Manus）</td>
+<td>2024+ 持续诞生</td>
+</tr>
+</tbody>
+</table></div>
+<p>判断口诀：<br />
+- 任务可以<strong>单 turn</strong> 完成 → 完全替代<br />
+- 任务需要<strong>多次反馈、多人协作、跨系统操作</strong> → 部分替代<br />
+- 任务<strong>结果不能错</strong>，且错的代价高（医疗、合规、法务签字、CEO 决策）→ 被增强而非替代<br />
+- 任务在过去<strong>根本不存在</strong>（个人 24h 视频化身、5min 出 SaaS）→ 新生</p>
+<h2 id="_3">行业逐项分析</h2>
+<h3 id="1">1. 搜索 / 信息检索（替代程度：高）</h3>
+<ul>
+<li><strong>现状数据</strong>：Perplexity 2025 年 5 月单月 7.8 亿次查询，2025 年总查询超 50 亿次（约为 Google 同期的 9% 左右）；Perplexity 2025 年收入约 $200M，2026 年目标 $650M；ChatGPT DAU/MAU 比已逼近 Reddit 级。</li>
+<li><strong>谁被替代</strong>：Google 的"信息查询型"流量（不是导航/交易型）正在被 AI 答案吃掉；SEO 内容农场的下游变现路径首先崩塌（CTR 跌 30-40%）。</li>
+<li><strong>未替代环节</strong>：本地、地图、视频、电商搜索 Google 仍稳；Google Discover/AI Overviews 是反吃。</li>
+<li><strong>时序判断</strong>：信息查询型任务 5 年内 50%+ 转移到 AI 端；Google 不会死，但其"广告税"基础在缩水。</li>
+</ul>
+<h3 id="2">2. 客户服务 / 呼叫中心（替代程度：极高，但反弹明显）</h3>
+<ul>
+<li><strong>Klarna 案例（最被引用）</strong>：2024 年 2 月宣称 AI 助手处理 230 万对话/月，相当于 700 名 agent，节约 $40M/年，问题解决时间下降 82%；35 种语言 24x7。但 2025 年 5 月 CEO Sebastian Siemiatkowski 公开承认"AI 替代客服过头了"，重新招回部分员工，转向"AI handles simple, humans handle nuance"的混合模式。</li>
+<li><strong>BPO 整体</strong>：印度+菲律宾约 800 万 BPO 岗位"高度暴露"；2025 年印度 IT 大厂净招聘接近零；菲律宾官方承认 2.5M 2028 目标作废。LimeChat 类 agent 已能处理 95% query。</li>
+<li><strong>Gartner 预测</strong>：2029 年 80% 常见客服 issue 由 AI 解决。</li>
+<li><strong>未替代</strong>：高情绪、Tier 3 复杂纠纷、合规相关 escalation。</li>
+<li><strong>时序判断</strong>：L1 80% 替代是 2025-2027 的事；L2 是 2027-2030。</li>
+</ul>
+<h3 id="3">3. 翻译 / 本地化（替代程度：极高）</h3>
+<ul>
+<li><strong>数据</strong>：DeepL 2025 年裁员 25%（约 250 人）；微软 2025 年 7 月研究把"翻译"列为最暴露职业第一名；魁北克受访译者收入 2024 年下降 60%，2025 年预计跌 80%。</li>
+<li><strong>结构变化</strong>：行业从"按字数收费"转向"按 post-edit 小时收费"，单价下降 30-50%。</li>
+<li><strong>未替代</strong>：文学翻译、法律合同最终签字版本、医疗/制药高合规翻译。</li>
+<li><strong>时序判断</strong>：通用翻译 95% 被吃已是定局，剩下的 5% 高端市场会出现"AI + 顶级译者"双签产品。</li>
+</ul>
+<h3 id="4">4. 软件开发 / 代码（替代程度：部分替代但加速极快）</h3>
+<ul>
+<li><strong>Cursor / Anysphere</strong>：从 0 到 $2B ARR 用了 3 年（B2B 软件史上最快）；2025 年 1 月 $100M、6 月 $500M、11 月 $1B、2026 年 2 月 $2B；Fortune 1000 中 70% 是其客户；Enterprise 占比从 25%→60%。</li>
+<li><strong>Devin / Cognition</strong>：ARR 从 $1M（2024.9）→$73M（2025.6）；估值 $4B→$10.2B；Devin 2.0 的 PR merge 率 67%（前代 34%）；Goldman Sachs 12,000 工程师试点，CIO 称"hybrid workforce"产能提升 20%。</li>
+<li><strong>影响</strong>：初级前端、模板代码、单元测试、bug fix 这些"junior dev"工作直接被吃；Big Tech 2024-2025 集中削减初级岗位，硅谷"new grad SWE"招聘崩盘。</li>
+<li><strong>未替代</strong>：架构设计、系统调试、跨团队协调、面向客户的需求挖掘、高风险代码 review。</li>
+<li><strong>时序判断</strong>：到 2027 年"junior 后台开发"作为入门岗将基本消失，但"AI native PM/工程师"会成为新职级。</li>
+</ul>
+<h3 id="5-ui">5. 设计 / 创意（视觉/UI/品牌）（替代程度：部分替代）</h3>
+<ul>
+<li><strong>Adobe Firefly</strong>：2025 年 4 月生成 220 亿资产；占 AI 设计工具市场 29%（Midjourney 19%、Canva 16%、DALL-E 14%）；Creative Cloud 内 32.5M 用户有访问权，45% 活跃使用。</li>
+<li><strong>Midjourney</strong>：2025 估收入 $500M+；订阅制不接 VC，仍盈利。</li>
+<li><strong>替代场景</strong>：Stock photo、初稿草图、moodboard、营销 banner、低端 UI 模板、社交内容素材——已大量替代。</li>
+<li><strong>未替代</strong>：品牌系统设计、复杂动态界面、产品级交互逻辑、艺术性"为什么这样而不是那样"。</li>
+<li><strong>时序判断</strong>：初阶视觉设计岗到 2027 年裁 30-50%，剩余的会向"prompt + 审美 + 品牌战略"演化。</li>
+</ul>
+<h3 id="6-seo">6. 内容写作 / 营销 / SEO（替代程度：高）</h3>
+<ul>
+<li><strong>Upwork 数据 2025</strong>：AI 相关自由职业技能需求 YoY +109%；同时传统"通用文案"需求骤降。</li>
+<li><strong>真实案例</strong>：多名英文 copywriter 报告"被同事用 ChatGPT 取代"。</li>
+<li><strong>结构变化</strong>：写作不死，但单价崩，需求转向"strategist + ghost writer + 品牌口吻 + SEO 思维"组合体；纯产文岗位消失。</li>
+<li><strong>新生</strong>：Newsletter ghostwriter、AI 提示词专家、"内容策略师"。</li>
+<li><strong>未替代</strong>：高品牌资产的 longform 调研报道、付费深度长文（Stratechery 类）。</li>
+</ul>
+<h3 id="7">7. 法律（替代程度：部分替代但加速）</h3>
+<ul>
+<li><strong>Harvey AI</strong>：2025 年 8 月 $100M ARR，2026 年 1 月 $190M ARR；估值 $11B（2026 年 3 月）；客户 1,000+，含 Am Law 100 的 50%；A&amp;O Shearman、Paul Weiss、Mayer Brown、Orrick 在列。</li>
+<li><strong>EvenUp</strong>（personal injury demand letter 自动化）等垂直类已规模化。</li>
+<li><strong>被吃任务</strong>：合同 review、判例研究、初稿起草、e-discovery、合规摘要——80% 已可自动化。</li>
+<li><strong>未替代</strong>：庭审策略、客户关系、合伙人级判断、签字责任。</li>
+<li><strong>时序判断</strong>：Paralegal 和 Tier 2 associate 数量到 2028 年会大幅压缩；这是律所合伙制的根本经济学被改写。</li>
+</ul>
+<h3 id="8">8. 医疗 / 诊断（替代程度：被增强为主）</h3>
+<ul>
+<li><strong>FDA 数据</strong>：截至 2025 年底批准 1,451 个 AI 医疗器械，其中 1,104 个为放射学（76%）；2025 年单年 295 项新批准。</li>
+<li><strong>Hippocratic AI</strong>：与 UHS、Cincinnati Children's、Cleveland Clinic、OhioHealth 合作；患者满意度 9.0/10；1.8 亿次患者交互、99.9% 临床建议正确率、0.00% severe harm 事件（自报数据）；专门给护士的 Nurse Co-Pilot 声称每班节省 1-4 小时。</li>
+<li><strong>就业不降反增</strong>：BLS 预测 2024-2034 放射科医生岗位 +5%（高于平均 3%）；Indeed 数据放射学职位多于 5 年前。</li>
+<li><strong>被替代环节</strong>：基础影像 triage、转录、出院随访电话、患者教育。</li>
+<li><strong>未替代</strong>：最终诊断签字、复杂 multi-modal 决策、医患关系、紧急救治。</li>
+<li><strong>时序判断</strong>：医疗是"被增强但岗位不减"的最强例证，因为人口老龄化把医疗需求放大得比 AI 快。</li>
+</ul>
+<h3 id="9-bi">9. 金融 / 分析师 / BI（替代程度：高）</h3>
+<ul>
+<li><strong>被吃任务</strong>：研究报告摘要、估值模型搭建、数据 cleaning、quarterly call 转录与 highlight、初阶 BI dashboard 解读。</li>
+<li><strong>影响</strong>：高盛 2024-2025 内部把"junior analyst"工作量压缩 50% 以上；Bloomberg GPT、JPMorgan IndexGPT 等内化工具替代外部供应商。</li>
+<li><strong>未替代</strong>：客户关系、deal sourcing、IPO/M&amp;A 谈判、风险定性判断。</li>
+<li><strong>时序判断</strong>：Bulge bracket 投行 IBD junior 班裁员是 2025-2027 必然事件；中后台风控、合规初阶岗也会大量消失。</li>
+</ul>
+<h3 id="10_1">10. 咨询 / 战略（替代程度：部分替代+被增强双轨）</h3>
+<ul>
+<li><strong>McKinsey Lilli</strong>：2023 上线，月查询 50 万+；员工人数 45,000（2022）→40,000（2025 中）→进一步 10% 削减（2025.12）。</li>
+<li><strong>BCG Gene 平台</strong>（2025 末）：自动化 60-70% 标准分析流程；HBS 实验：BCG 顾问用 AI 任务量 +12.2%、速度 +25.1%、质量 +40%。</li>
+<li><strong>客户偏好转变</strong>：IBM 2025 研究 86% 咨询采购方主动要 AI-enabled service；66% 表示会换掉不会用 AI 的咨询商。</li>
+<li><strong>被吃任务</strong>：Slide deck、模板分析、benchmark 研究、quick survey、SWOT。</li>
+<li><strong>未替代</strong>：高管人脉、行业 know-how、变革管理实施、责任承担。</li>
+<li><strong>时序判断</strong>：Big 3 的 BA/Associate 班 25-35% 会在 2026-2028 内被 AI 取代；合伙人比反而上升。</li>
+</ul>
+<h3 id="11">11. 教育 / 培训（替代程度：高，且新生市场更大）</h3>
+<ul>
+<li><strong>教培答疑、作业批改、个性化辅导</strong>：被 ChatGPT/Khanmigo/Class Companion 等大量替代。</li>
+<li><strong>新生市场</strong>：AI 老师（Synthesis Tutor、Khan Academy Khanmigo）、AI 语言陪练（Speak、ELSA）、AI 编程导师（Codecademy AI、Replit Agent）。</li>
+<li><strong>未替代</strong>：动机激发、社交学习、纪律管理、考试公正性、儿童早教情感陪伴。</li>
+<li><strong>时序判断</strong>：2026-2028 全球 K12 教辅产业洗牌，新东方/学而思等已被迫重做产品；高校"essay 作业"被迫转向口头答辩。</li>
+</ul>
+<h3 id="12">12. 会计 / 审计（替代程度：高，但合规护城河仍在）</h3>
+<ul>
+<li><strong>Big Four 平台</strong>：Deloitte Zora（NVIDIA 合作 agentic）、KPMG Workbench / Clara（已部署 95,000 名审计师）、PwC、EY 都已有多 agent 平台。</li>
+<li><strong>PwC US</strong>：2025 年内部资料显示未来 3 年 graduate 招聘削减 1/3，"AI 影响"被明确列为原因。</li>
+<li><strong>预测</strong>：前 PwC 高管 Alan Paton 称"3-5 年内审计/税务/咨询 50% 角色可被自动化，AI 已能完成 90% 审计流程"。</li>
+<li><strong>未替代</strong>：签字责任、监管沟通、复杂 forensic、客户关系。</li>
+</ul>
+<h3 id="13-crm">13. 销售 / CRM（替代程度：被增强为主）</h3>
+<ul>
+<li><strong>被吃任务</strong>：lead enrichment、cold email 起草、CRM 数据维护、call note 转录与 next-step、初阶 outbound BDR。</li>
+<li><strong>未替代</strong>：关系性 enterprise sales、合同谈判、客户成功的高阶 advisory。</li>
+<li><strong>时序判断</strong>：BDR/SDR 这一层 2025-2027 大幅压缩；Account Executive 和 Customer Success Manager 反而被 AI 增强。</li>
+</ul>
+<h3 id="14-hr">14. HR / 招聘（替代程度：部分替代）</h3>
+<ul>
+<li><strong>被吃任务</strong>：JD 写作、简历筛选、初轮电话、offer letter 起草、员工 FAQ。</li>
+<li><strong>风险</strong>：HireVue 类 AI 面试争议；NYC AEDT 等监管反弹。</li>
+<li><strong>未替代</strong>：employer branding、复杂员工纠纷、文化建设、senior hire close。</li>
+</ul>
+<h3 id="15-rpa">15. RPA / 业务流程（替代程度：被吞并）</h3>
+<ul>
+<li><strong>结构性变化</strong>：传统 RPA（UiPath、Automation Anywhere）正被 LLM-based agent 重构；UiPath 股价 2024-2025 大幅承压。</li>
+<li><strong>未来</strong>：传统"规则驱动 RPA"会被并入"自主 agent + tool use"的统一栈。</li>
+</ul>
+<h3 id="16-rd">16. 科学研究 / R&amp;D（替代程度：被增强）</h3>
+<ul>
+<li><strong>AlphaFold 系列、Isomorphic、Recursion、Insilico</strong>：药物发现明显加速。</li>
+<li><strong>影响</strong>：博士生级别"读 paper + 跑实验"工作大幅压缩，PI 级判断能力依然稀缺。</li>
+<li><strong>新生</strong>：AI for science 本身成为一个新的产业类目。</li>
+</ul>
+<h2 id="_4">反例 &amp; 替代失败案例</h2>
+<p>理解"哪些没被替代"和"哪些替代失败"，比理解"哪些被替代"更重要。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>反例</th>
+<th>数据/出处</th>
+<th>启示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MIT NANDA 报告 2025</strong></td>
+<td>95% 企业 GenAI pilot 无可衡量 P&amp;L 影响</td>
+<td>替代发生≠企业能拿到收益</td>
+</tr>
+<tr>
+<td><strong>BCG 2025 AI Value Gap</strong></td>
+<td>仅 25% 企业从 AI 获显著价值，5% 规模化获益</td>
+<td>价值集中在头部少数公司</td>
+</tr>
+<tr>
+<td><strong>Gartner 预测</strong></td>
+<td>30% 企业 GenAI 项目 2025 年底前会被弃用</td>
+<td>POC 到生产之间的死亡谷依然致命</td>
+</tr>
+<tr>
+<td><strong>Klarna 反弹</strong></td>
+<td>2025 年承认裁员过头，CSAT 跌后重新招人</td>
+<td>客服替代有"恢复反弹"区间</td>
+</tr>
+<tr>
+<td><strong>Acemoglu (MIT)</strong></td>
+<td>估 10 年 AI 对 TFP 增益仅 0.5-0.66%，GDP +1.1-1.6%</td>
+<td>宏观替代效应远小于科技 narrative</td>
+</tr>
+<tr>
+<td><strong>Air Canada chatbot 案</strong></td>
+<td>加拿大法庭 2024 判决，AI 给错信息公司须赔偿</td>
+<td>法律责任不会自动转移到 AI</td>
+</tr>
+<tr>
+<td><strong>DPD chatbot 骂街</strong></td>
+<td>2024 年初公开事故</td>
+<td>部署者承担品牌风险</td>
+</tr>
+<tr>
+<td><strong>Cursor "stop coding"事件</strong></td>
+<td>2025 年 Cursor 自身告诉用户"你应该自己写"——内部数据矛盾</td>
+<td>即便最强 AI native 公司也面临"AI 学错"的回滚</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="saas">SaaS 软件的"被吃"边界</h2>
+<p>把 SaaS 二分会失败，应该三分：</p>
+<h3 id="a-system-of-record">A 类：System of Record——被吃概率低</h3>
+<ul>
+<li>例子：Salesforce、Workday、SAP、ServiceNow（核心 ITSM）、Veeva、Toast、Box、Snowflake、Datadog 核心。</li>
+<li>壁垒：合规、跨部门数据图谱、auditable 操作日志、多年 customizations、客户停机成本极高。</li>
+<li>Aaron Levie 论点：在"100x more software"的 agent 时代，system of record <strong>更重要</strong>而非更不重要——因为 agent 需要可审计的"权限和真相源"。</li>
+</ul>
+<h3 id="b-workflow-tool">B 类：Workflow Tool——被吃概率中</h3>
+<ul>
+<li>例子：Notion、Asana、Monday、Mailchimp、SurveyMonkey、低代码（多数）、传统 BI dashboard、传统 RPA、CRM 旁挂工具、HR ATS 二线产品。</li>
+<li>壁垒：UX、网络效应、模板。</li>
+<li>风险：通用 ChatGPT/Claude/Cursor + connector 直接吃掉 30-50% 用例；初创可被一个 AI 助理替代。</li>
+</ul>
+<h3 id="c-gui-wrapper">C 类：纯 GUI Wrapper / 单点工具——被吃概率高</h3>
+<ul>
+<li>例子：单功能内容生成器、传统在线 grammar 检查、模板 PPT 工具、单点翻译软件、stock photo、传统 SEO 工具的部分模块。</li>
+<li>Bessemer 数据：纯 "AI Wrapper"估值倍数已开始崩。</li>
+</ul>
+<p>判断口诀（来自 Sequoia Sonya Huang 2025 AI Ascent 演讲精神）：<strong>"应用层是价值最终汇聚的地方"，但只汇聚在那些拥有专属数据、闭环工作流、和分发渠道的应用上</strong>。</p>
+<h2 id="2026-2028">下一波（2026-2028）最可能被重塑的</h2>
+<p>按"高概率 × 大体量"排序：</p>
+<ol>
+<li><strong>保险（理赔、定损、精算）</strong>：流程标准化高、规则密度高、文档密集——下一波最大蛋糕。</li>
+<li><strong>政府/政务服务</strong>：UK/Singapore 已有项目；中国地方试点 12345 类。</li>
+<li><strong>物流/Freight</strong>（Salient、HappyRobot、Pallet、Augment）：调度、报价、call center 全部 voice agent 化。</li>
+<li><strong>债务催收（Salient 等）</strong>：voice agent 经济学最佳。</li>
+<li><strong>保险经纪/代理</strong>：B-end 销售工作流。</li>
+<li><strong>医院后台、医疗保险结算</strong>：billing、prior auth 自动化空间巨大。</li>
+<li><strong>金融机构合规/反洗钱/KYC</strong>：文本密集、规则化、监管确定。</li>
+<li><strong>公司内部 IT helpdesk</strong>（Glean、Moveworks、Cresta 类）：Glean 2025 ARR 突破 $250M，YoY +150%。</li>
+<li><strong>商业地产估值/法律 due diligence</strong>。</li>
+<li><strong>税务 prep（Intuit TurboTax 自身被新一代替代风险）</strong>。</li>
+</ol>
+<h2 id="4_1">不同立场和争议（至少 4 条）</h2>
+<ol>
+<li><strong>a16z / Sarah Wang 派</strong>：每个 SaaS 都将被 AI-native 重写，原 vendor 大量被 disrupt；CIO 数据显示 75% 年增、77% 来自 IT 主预算（不是 innovation budget）——意味着这是结构性转移而非实验。</li>
+<li><strong>Aaron Levie / Box 派</strong>："不是 AI agent 取代 SaaS，而是 SaaS + agent 混合"。Levie 的反向论点是：agent 越多越自主，"system of record"反而更关键，因为需要可审计的真相源。</li>
+<li><strong>Ben Thompson Stratechery 派</strong>：reasoning 模型让 marginal cost 重新出现，aggregation theory 不再无摩擦运行；OpenAI 若想成为新 aggregator 必须造广告模型；现存巨头并不会自动失败。</li>
+<li><strong>Cal Newport / Daron Acemoglu 派</strong>：宏观生产力提升 10 年只有 0.5-0.66% TFP；AI 替代叙事过度膨胀，真实结构性变化是缓慢的；MIT 95% pilot 无 ROI 数据印证了这点。</li>
+<li><strong>Sequoia Sonya Huang 派</strong>：模型层会汇聚到少数巨头，但应用层会百花齐放，<strong>留存率（retention）是 2025 年开始最关键指标</strong>——这一层 PMF 才有真公司。</li>
+<li><strong>Aaron Levie vs Marc Benioff 隔空互怼</strong>：Benioff 早期表态 "no software"（agent 取代 SaaS），但 Salesforce 自己的 Agentforce 战略悄悄演化成"agent on top of system of record"——和 Levie 趋同。</li>
+</ol>
+<h2 id="5">前瞻假设（5 条可验证）</h2>
+<ol>
+<li><strong>2027 年初前</strong>，Cursor / Replit / Devin / Claude Code 类公司 ARR 加总会超过 $20B，而传统 IDE（IntelliJ、VS Code 收入侧）和初阶 SWE 招聘双双继续萎缩。<strong>验证指标</strong>：BLS 数据 + Stack Overflow Survey + Cognition/Anysphere ARR 公开披露。</li>
+<li><strong>2026 年内</strong>，至少一家 AmLaw 100 律所宣布"取消传统 first-year associate 招聘班"，转向 AI-native attorney apprenticeship 模式。<strong>验证指标</strong>：律所招聘公开声明 + Above the Law 报道。</li>
+<li><strong>2027 年</strong>，BPO 龙头（TCS、Infosys、Wipro、Concentrix、Teleperformance）会出现一家 ARR 同比下降 10%+，并被迫公开承认"AI 是结构性威胁"。<strong>验证指标</strong>：四大 BPO 财报 + 印度 NASSCOM 年度数据。</li>
+<li><strong>2026-2027</strong>，"vertical AI agent"垂直独角兽数量会从 2024 年底的 ~10 家暴涨至 50+ 家，且至少 3 家进入 $5B 估值（Harvey、Glean、Abridge 类节奏）。<strong>验证指标</strong>：CB Insights、Sacra、PitchBook 数据。</li>
+<li><strong>2028 年前</strong>，至少一个国家级监管机构（EU、英国、新加坡）会强制企业披露"AI 替代了多少岗位"——这将让"AI 替代"从公司级 KPI 转为合规级 KPI。<strong>验证指标</strong>：欧盟 AI Act 配套法规 + UK Ofgem 类机构发布。</li>
+</ol>
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((行业替代地图 2024-2028))
+    完全替代
+      搜索信息查询
+      L1客服 Klarna案
+      初阶翻译 DeepL裁员
+      SEO内容工厂
+      代码补全 Cursor
+      Stock photo
+      PPT模板
+    部分替代
+      法律 Harvey
+      医疗影像 FDA1100+
+      会计审计 Big4
+      咨询deck Lilli/Gene
+      新闻初稿
+      初阶设计 Firefly
+      初阶分析 投行junior
+    被增强
+      高级工程师
+      关系销售
+      医生最终诊断
+      合伙人judgment
+      产品经理
+      研究科学家
+    新生行业
+      AI视频 Synthesia
+      AI voice ElevenLabs
+      AI陪伴 Character
+      Vibe coding Cursor
+      Agent platform Manus
+    未真正替代
+      embodiment物理工作
+      合规签字
+      复杂判断责任
+      关系性企业销售
+      艺术性创作
+    SaaS边界
+      SystemOfRecord安全
+      WorkflowTool高危
+      纯GUI被淘汰
+    反例
+      MIT 95pilot无ROI
+      BCG 仅25获益
+      Klarna反弹招人
+      Acemoglu宏观0.5
+      Gartner 30项目弃用
+    下一波2026_2028
+      保险理赔
+      政府服务
+      Freight物流
+      债务催收
+      KYC合规
+      税务prep
+      医疗billing</pre></div>
+<h2 id="_5">来源库</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标题</th>
+<th>作者/机构</th>
+<th>日期</th>
+<th>链接</th>
+<th>关键数据/洞察</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研报</td>
+<td>The State of AI 2025: Agents, innovation, and transformation</td>
+<td>McKinsey QuantumBlack</td>
+<td>2025.11</td>
+<td>https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai</td>
+<td>88% 企业用 AI；仅 39% 报告 EBIT 影响；高绩效组织 2.8x 更可能重构工作流</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>Are You Generating Value from AI? The Widening Gap</td>
+<td>BCG</td>
+<td>2025.9</td>
+<td>https://www.bcg.com/publications/2025/are-you-generating-value-from-ai-the-widening-gap</td>
+<td>75% 视 AI 为战略优先；仅 25% 拿到显著价值；5% 规模化获益</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>The GenAI Divide: State of AI in Business 2025</td>
+<td>MIT NANDA</td>
+<td>2025.8</td>
+<td>https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/</td>
+<td>95% pilot 无 P&amp;L 影响；buy 比 build 成功率 67% vs 33%</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>How 100 Enterprise CIOs Are Building and Buying Gen AI in 2025</td>
+<td>a16z (Sarah Wang 等)</td>
+<td>2025</td>
+<td>https://a16z.com/ai-enterprise-2025/</td>
+<td>企业 AI 支出 YoY +75%；innovation budget 占比 25%→7%；77% 来自 IT 预算</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>The Top 100 Gen AI Consumer Apps – 6th Edition</td>
+<td>a16z (Olivia Moore 等)</td>
+<td>2025</td>
+<td>https://a16z.com/100-gen-ai-apps-6/</td>
+<td>Manus、Genspark 类端到端 agent 上榜；agentic 主导新版本</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>The State of AI 2025</td>
+<td>Bessemer Venture Partners</td>
+<td>2025</td>
+<td>https://www.bvp.com/atlas/the-state-of-ai-2025</td>
+<td>垂直 AI 估值 9-12x ARR；普通 SaaS 5-7x；AI Wrapper 倍数崩塌</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>AI Ascent 2025（视频与文章）</td>
+<td>Sequoia Capital (Sonya Huang, Pat Grady)</td>
+<td>2025.5</td>
+<td>https://sequoiacap.com/article/ai-ascent-2025/</td>
+<td>"应用层是价值最终汇聚处"；coding "screaming PMF"；ChatGPT DAU/MAU 接近 Reddit</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>2026: This is AGI</td>
+<td>Sequoia Capital</td>
+<td>2025-2026</td>
+<td>https://sequoiacap.com/article/2026-this-is-agi/</td>
+<td>Sequoia 公开宣称 2026 年是 AGI 元年</td>
+</tr>
+<tr>
+<td>研报</td>
+<td>Gartner Predicts 30% of GenAI Projects Will Be Abandoned After PoC by End of 2025</td>
+<td>Gartner</td>
+<td>2024.7</td>
+<td>https://www.gartner.com/en/newsroom/press-releases/2024-07-29-gartner-predicts-30-percent-of-generative-ai-projects-will-be-abandoned-after-proof-of-concept-by-end-of-2025</td>
+<td>30% 弃用率；定制 LLM $5-20M 成本</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Checking In on AI and the Big Five</td>
+<td>Stratechery (Ben Thompson)</td>
+<td>2025</td>
+<td>https://stratechery.com/2025/checking-in-on-ai-and-the-big-five/</td>
+<td>aggregation theory 在 AI 时代演化；OpenAI 需广告模型</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>AI's Uneven Arrival</td>
+<td>Stratechery (Ben Thompson)</td>
+<td>2025</td>
+<td>https://stratechery.com/2025/ais-uneven-arrival/</td>
+<td>替代不均衡；行业渗透节奏不一</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Box CEO Aaron Levie on AI's 'era of context'</td>
+<td>TechCrunch</td>
+<td>2025.9</td>
+<td>https://techcrunch.com/2025/09/11/box-ceo-aaron-levie-on-ais-era-of-context/</td>
+<td>"100x more software"中 system of record 更关键</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Box CEO Aaron Levie on how AI is changing enterprise SaaS</td>
+<td>TechCrunch</td>
+<td>2025.10</td>
+<td>https://techcrunch.com/2025/10/29/box-ceo-aaron-levie-on-how-ai-is-changing-the-enterprise-saas-landscape/</td>
+<td>SaaS+agent 混合 vs 替代论</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>The Simple Macroeconomics of AI</td>
+<td>Daron Acemoglu (NBER)</td>
+<td>2024.4</td>
+<td>https://www.nber.org/papers/w32487</td>
+<td>10 年 TFP 增益 ≤0.66%</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>A Nobel laureate on the economics of artificial intelligence</td>
+<td>MIT Tech Review</td>
+<td>2025.2</td>
+<td>https://www.technologyreview.com/2025/02/25/1111207/a-nobel-laureate-on-the-economics-of-artificial-intelligence/</td>
+<td>Acemoglu 完整批评 AI 替代叙事</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Don't Believe the AI Hype</td>
+<td>Daron Acemoglu (Project Syndicate)</td>
+<td>2024.5</td>
+<td>https://www.project-syndicate.org/commentary/ai-productivity-boom-forecasts-countered-by-theory-and-data-by-daron-acemoglu-2024-05</td>
+<td>经济理论与数据均不支持 AI 大爆发预测</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Klarna's AI Replaces 700 Agents, Saves $40M/Year</td>
+<td>AI Business</td>
+<td>2024</td>
+<td>https://aibusiness.vc/b2b/klarna-ai-replaces-700-agents</td>
+<td>Klarna 完整数据：230 万对话、35 语言、解决时间 -82%</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Klarna CEO admits aggressive AI job cuts went too far</td>
+<td>mlq.ai</td>
+<td>2025</td>
+<td>https://mlq.ai/news/klarna-ceo-admits-aggressive-ai-job-cuts-went-too-far-starts-hiring-again-after-us-ipo/</td>
+<td>2025 反弹叙事的源头</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Cursor's Anysphere nabs $9.9B valuation, soars past $500M ARR</td>
+<td>TechCrunch</td>
+<td>2025.6</td>
+<td>https://techcrunch.com/2025/06/05/cursors-anysphere-nabs-9-9b-valuation-soars-past-500m-arr/</td>
+<td>$100M→$500M ARR 6 个月</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Cursor in talks to raise $2B at $50B valuation</td>
+<td>TheNextWeb</td>
+<td>2026</td>
+<td>https://thenextweb.com/news/cursor-anysphere-2-billion-funding-50-billion-valuation-ai-coding</td>
+<td>$2B ARR 三年达成</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Devin's 2025 Performance Review</td>
+<td>Cognition</td>
+<td>2025</td>
+<td>https://cognition.ai/blog/devin-annual-performance-review-2025</td>
+<td>Goldman Sachs 12k 工程师、PR merge 67%、4x 速度</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Harvey: $11B valuation legal AI</td>
+<td>CNBC</td>
+<td>2026.3</td>
+<td>https://www.cnbc.com/2026/03/25/legal-ai-startup-harvey-raises-200-million-at-11-billion-valuation.html</td>
+<td>$190M ARR、Am Law 100 50%</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Glean Surpasses $200M in ARR</td>
+<td>Glean Press</td>
+<td>2025</td>
+<td>https://www.glean.com/press/glean-surpasses-200m-in-arr-for-enterprise-ai-doubling-revenue-in-nine-months</td>
+<td>9 个月 ARR 翻倍</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Hippocratic AI Launches AI Front Door and Nurse Co-Pilot</td>
+<td>PR Newswire</td>
+<td>2026.4</td>
+<td>https://www.prnewswire.com/news-releases/hippocratic-ai-launches-two-industry-firsts-ai-front-door-and-nurse-co-pilot-to-expand-clinical-care-and-access-302745186.html</td>
+<td>UHS、Cleveland Clinic 合作；99.9% 临床建议正确</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Adobe Firefly Hits 22B Assets by April 2025</td>
+<td>Complete AI Training</td>
+<td>2025</td>
+<td>https://completeaitraining.com/news/adobe-firefly-hits-22b-assets-by-april-2025-captures-29/</td>
+<td>29% 设计 AI 市场份额</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Synthesia $146M ARR</td>
+<td>Sacra</td>
+<td>2025.9</td>
+<td>https://sacra.com/c/synthesia/</td>
+<td>视频生成商业化代表</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>ElevenLabs hits $500M ARR</td>
+<td>Sacra</td>
+<td>2026.4</td>
+<td>https://sacra.com/c/elevenlabs/</td>
+<td>Fortune 500 41% 客户渗透</td>
+</tr>
+<tr>
+<td>案例</td>
+<td>Perplexity 780M monthly queries</td>
+<td>Just Think AI</td>
+<td>2025</td>
+<td>https://www.justthink.ai/blog/perplexitys-780m-monthly-queries-signaling-the-ai-search-revolution</td>
+<td>5月 7.8 亿次；Google ~9% 量级</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>AI threatens millions of BPO jobs in India and Philippines</td>
+<td>Outsource Accelerator</td>
+<td>2025</td>
+<td>https://news.outsourceaccelerator.com/ai-threatens-bpo-india-philippines/</td>
+<td>2-3M 暴露；菲律宾 2.5M 2028 目标作废</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>Translators losing jobs to AI / DeepL 25% layoffs</td>
+<td>BoingBoing/LatestLY</td>
+<td>2026.1</td>
+<td>https://boingboing.net/2026/01/25/translators-are-losing-jobs-to-ai-that-produces-consistently-mediocre-results/</td>
+<td>收入跌 60-80%</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>4 in 10 translators are losing work to AI</td>
+<td>TheNextWeb</td>
+<td>2024</td>
+<td>https://thenextweb.com/news/translators-losing-work-ai-machine-translation</td>
+<td>行业整体压缩</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>FDA AI Approvals Surge Past 1k for Radiology</td>
+<td>The Imaging Wire</td>
+<td>2025.12</td>
+<td>https://theimagingwire.com/2025/12/10/ai-enabled-medical-devices-granted-fda-marketing-authorization/</td>
+<td>1,104 放射学 AI 设备获批</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>Worried about AI replacing your job? Radiology case study</td>
+<td>CNN</td>
+<td>2026.2</td>
+<td>https://www.cnn.com/2026/02/09/tech/ai-replacing-jobs-concerns-radiology</td>
+<td>放射科岗位反而 +5%</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>Big 4 AI Agents 2025（KPMG Workbench、Deloitte Zora 等）</td>
+<td>Unity Connect</td>
+<td>2025</td>
+<td>https://unity-connect.com/our-resources/blog/big-4-ai-agents/</td>
+<td>PwC 招聘 -1/3；Clara 95k 审计师</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>How AI is creating a rift at McKinsey, Bain, BCG</td>
+<td>The Ken</td>
+<td>2025-2026</td>
+<td>https://the-ken.com/story/bcg-and-mckinsey-sell-speed-as-ai-shakes-up-consulting-so-why-arent-consultants-buying-it/</td>
+<td>McKinsey 45k→40k→再裁 10%</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Vertical AI Agents: The Next $300 Billion Disruption</td>
+<td>Medium (Julio Pessan)</td>
+<td>2025</td>
+<td>https://medium.com/@julio.pessan.pessan/vertical-ai-agents-the-next-300-billion-disruption-in-tech-a18702c76efd</td>
+<td>Bessemer 估垂直 AI 市值 10x 传统 SaaS</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>The AI agent market map: March 2025 edition</td>
+<td>CB Insights</td>
+<td>2025.3</td>
+<td>https://www.cbinsights.com/research/ai-agent-market-map/</td>
+<td>11 家 finserv 垂直；freight、催收等"非性感"赛道</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Ethan Mollick: AI moving from chatbot to co-worker</td>
+<td>Seeking Alpha</td>
+<td>2025</td>
+<td>https://seekingalpha.com/news/4563600-researcher-ethan-mollick-says-ai-is-moving-from-chatbot-to-co-worker-with-disruption-close</td>
+<td>task-level disruption 框架</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>Upwork In-Demand Skills 2026</td>
+<td>Upwork</td>
+<td>2025-2026</td>
+<td>https://investors.upwork.com/news-releases/news-release-details/upworks-demand-skills-2026-demand-top-ai-skills-more-doubles-ai</td>
+<td>AI 技能需求 YoY +109%</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><strong>作者注</strong>：此文为 04 篇章，与 03（能力跃迁）、05（壁垒与护城河）互为镜像。"被替代"的另一面是"新生赛道"——这两个面在 2026-2028 同时加速。</p>
+<nav class="chapter-bottom-nav"><a href="03-engineering-patterns.html" class="prev"><span class="nav-arrow">← 上一章 / 03</span><span class="nav-label">工程实践与架构</span></a><a href="05-investment-business-models.html" class="next"><span class="nav-arrow">下一章 / 05 →</span><span class="nav-label">投资与商业模式</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 · 投资与商业模式 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 05 · 投资与商业模式">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chapter-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  font-size: 13px;
+}
+.nav-brand {
+  font-family: var(--serif); font-weight: 700; font-size: 14px;
+  color: var(--accent); margin-right: 16px; padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+.nav-item {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--text-soft); border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--code-bg); color: var(--text); border-bottom: none; }
+.nav-item.current { background: var(--accent); color: #fff; }
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num { font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--text-faded); letter-spacing: 0.04em; }
+.nav-title { font-weight: 500; }
+
+.content { max-width: 760px; margin: 64px auto 60px; padding: 0 32px; }
+
+.content > h1:first-child {
+  font-family: var(--serif); font-size: 40px; line-height: 1.25; font-weight: 700;
+  color: var(--heading); margin: 0 0 12px 0; padding: 0; border: none;
+  letter-spacing: -0.015em;
+}
+.content > h1:first-child + blockquote {
+  margin-top: 16px; border-left-width: 3px; background: transparent;
+  font-style: normal; color: var(--text-soft); padding: 6px 18px;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--heading); letter-spacing: -0.005em; }
+h1 { font-size: 30px; margin: 72px 0 22px; padding-top: 16px; border-top: 2px solid var(--border); }
+h2 { font-size: 25px; margin: 56px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 20px; margin: 38px 0 12px; }
+h4 { font-size: 17px; margin: 26px 0 10px; font-family: var(--sans); font-weight: 600; color: var(--text); }
+p { margin: 16px 0; word-break: break-word; overflow-wrap: anywhere; }
+
+a { color: var(--link); text-decoration: none; border-bottom: 1px dashed var(--accent-soft); transition: color 0.15s ease, border-bottom-style 0.15s ease; }
+a:hover { color: var(--link-hover); border-bottom-style: solid; }
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol { margin: 16px 0 16px 26px; padding: 0; }
+li { margin: 8px 0; line-height: 1.85; }
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0; padding: 14px 22px; background: var(--bg-card);
+  border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0;
+  color: var(--text-soft); font-family: var(--serif); font-size: 16px; font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--code-bg); padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--code-border); color: #6b3a2e;
+}
+pre {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 20px; margin: 22px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; color: var(--text);
+}
+pre code { background: transparent; padding: 0; border: none; font-size: inherit; color: inherit; }
+.codehilite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 22px 0; overflow-x: auto; }
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 14.5px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: table;
+}
+thead { background: var(--code-bg); }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; line-height: 1.6; }
+th { font-weight: 600; color: var(--heading); font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em; }
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+.table-wrap { overflow-x: auto; margin: 26px 0; border-radius: 6px; }
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0; padding: 24px 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr { border: none; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 48px 0; }
+
+.site-footer {
+  text-align: center; padding: 36px 24px 60px; border-top: 1px solid var(--border);
+  margin-top: 60px; color: var(--text-faded); font-size: 13px;
+  font-family: var(--serif); letter-spacing: 0.02em;
+}
+.site-footer a { color: var(--text-soft); border-bottom: none; }
+.site-footer a:hover { color: var(--accent); }
+
+.format-banner {
+  margin: 24px 0 0; padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  font-size: 13px; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap;
+  align-items: center;
+}
+.format-banner .label { font-family: var(--serif); font-weight: 600; color: var(--heading); }
+.format-banner a { font-family: var(--mono); font-size: 12px; }
+
+.chapter-bottom-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 56px 0 16px; padding: 24px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1; padding: 12px 16px; border-radius: 6px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover { border-color: var(--accent); color: var(--accent); border-bottom: 1px solid var(--accent); }
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav, .format-banner { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item current"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<div class="format-banner"><span class="label">本章其他版本</span><a href="pdf/05-investment-business-models.pdf">PDF（离线打印）</a><a href="markdown/05-investment-business-models.md">Markdown 源</a></div>
+<h1 id="05">05 · 投资与商业模式</h1>
+<blockquote>
+<p>视角：钱往哪流、谁会赢、定价模式怎么变、护城河长什么样<br />
+写作时间：2026 年 5 月<br />
+关键词：价值链分层 · wrapper trap · outcome-based · vertical AI · $600B question</p>
+</blockquote>
+<hr />
+<h2 id="_1">一句话总览</h2>
+<p><strong>AI 价值链的利润分布正在发生十年一遇的重排：基础设施层短期暴利但承受估值与折旧风险；模型层从「会被商品化」反转为「越往 agent 走越能整合赚厚利润」；应用层不再是 wrapper 笑话，而是分化成「死掉的薄壳」和「带着工作流锁定与数据 flywheel 的厚壳」两极。</strong> 投资人能赚到钱的姿势只有四种：(1) 押 picks-and-shovels（Nvidia/CoreWeave/电力/HBM）；(2) 押模型 + 应用一体化（OpenAI/Anthropic 直接做 ChatGPT 与 Claude Code）；(3) 押有真实工作流嵌入的 vertical AI（Cursor/Harvey/Glean/Perplexity）；(4) 押「AI native 替代现有 SaaS 巨头」的反叛叙事。SaaS 的 per-seat 定价正被 outcome-based / token-metered / per-action 打成筛子，Salesforce 同时挂出三种价格表已是公开承认。</p>
+<hr />
+<h2 id="10">关键句提纲（10 条）</h2>
+<ol>
+<li><strong>Nvidia FY2026 全年营收 $215.9B、毛利率 71%、数据中心同比 +75%。</strong> 这不是泡沫的描述，这是泡沫尚未破裂的描述——两者并不矛盾。</li>
+<li><strong>OpenAI 25B+ 年化 / Anthropic 30B 年化（均为 2026 Q1 数据）</strong>，三年内从零跑到 SaaS 用 20 年才到达的规模——但烧钱速度同样夸张，OpenAI 上半年 burn $9.7B。</li>
+<li><strong>David Cahn 的「$600B question」从 2024 年的 $200B 缺口翻三倍</strong>——基础设施投资与终端价值之间的剪刀差仍在扩大，但 OpenAI/Anthropic 营收曲线给了乐观派更多弹药。</li>
+<li><strong>wrapper trap 是真的，但反例同样真。</strong> Cursor 12 个月从 $100M ARR 跑到 $1B+，Harvey 从 $100M 到 $190M ARR + $11B 估值，Glean 9 个月翻倍到 $200M ARR——薄壳死于 80% 比例，厚壳估值溢价 9-12x ARR。</li>
+<li><strong>per-seat is dying。</strong> Salesforce 同时支持 per-user / per-conversation ($2)/per-action (Flex Credits, $0.10) 三套定价，标志企业软件迈入 outcome-based。</li>
+<li><strong>DeepSeek 震撼一夜抹去 Nvidia $590B 市值</strong>，但事后 SemiAnalysis 揭穿其实际硬件投入约 $1.6B、50,000 张 Hopper——叙事比数据跑得快得多，这本身就是投资机会。</li>
+<li><strong>Ben Thompson 反转关键洞察</strong>：模型商品化 → 应用层捡便宜 → 但模型公司向下做应用（ChatGPT/Claude Code）整合后利润反而比预期更高。Aggregation Theory 让位 Integration Theory。</li>
+<li><strong>Vertical AI 估值 9-12x ARR vs 传统 SaaS 5-7x</strong>，Bessemer Cloud 100 名单 AI 公司占总估值 42%（创历史新高）。</li>
+<li><strong>MSFT Copilot 在 4.5 亿商业订阅里只渗透 3.3%（1500 万付费 seats），市场份额从 18.8% 跌到 11.5%</strong>——巨头分发优势没有想象中那么自动转化为胜势。</li>
+<li><strong>AI capex 2025 ~$500B、2026 预计逼近 $700B</strong>——这是科技史上最大的一次资本支出。即便 ROI 兑现，回报周期也会以 5-10 年计算。</li>
+</ol>
+<hr />
+<h2 id="ai">AI 价值链分层（含利润分布预测）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>代表玩家</th>
+<th>当前利润 (2025-26)</th>
+<th>5 年后预测</th>
+<th>主要护城河</th>
+<th>风险点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>能源 / 电力</strong></td>
+<td>NextEra、Vistra、Constellation、SMR 玩家</td>
+<td>中等，电网瓶颈推高现货价</td>
+<td><strong>极厚</strong>：被严重低估，AI 数据中心耗电将进入电网长期赤字</td>
+<td>物理资产、地理稀缺、监管</td>
+<td>电改政策、SMR 落地不及预期</td>
+</tr>
+<tr>
+<td><strong>晶圆代工</strong></td>
+<td>TSMC、三星、Intel Foundry</td>
+<td>TSMC 一家独大、毛利 50%+</td>
+<td>厚：AI 芯片几乎全在 TSMC，CoWoS 封装是真正瓶颈</td>
+<td>工艺代差、CoWoS 产能</td>
+<td>地缘、台海、3nm 以下良率</td>
+</tr>
+<tr>
+<td><strong>HBM / 存储</strong></td>
+<td>SK Hynix、三星、美光</td>
+<td>极厚：HBM3E 满产、价格垂直拉升</td>
+<td>厚但价格回归：扩产周期 18-24 月</td>
+<td>良率工艺、长期合约绑定</td>
+<td>扩产过剩</td>
+</tr>
+<tr>
+<td><strong>AI 芯片</strong></td>
+<td>Nvidia (~92%)、AMD、Google TPU、AWS Trainium、Cerebras、Groq（被 Nvidia $20B 收编）</td>
+<td>Nvidia 一家通吃，毛利 75%</td>
+<td><strong>份额下降</strong>至 70-75%，但绝对值仍涨</td>
+<td>CUDA 生态、NVLink、整机柜系统</td>
+<td>客户自研 ASIC、推理迁移</td>
+</tr>
+<tr>
+<td><strong>云 / GPU 租赁</strong></td>
+<td>AWS、Azure、GCP、Oracle、CoreWeave、Lambda</td>
+<td>厚：Azure +33%、AWS 重新加速</td>
+<td>厚但分化：超大规模云 + 专用 AI 云双轨</td>
+<td>资本壁垒、网络效应、捆绑</td>
+<td>折旧、利用率波动</td>
+</tr>
+<tr>
+<td><strong>基础模型</strong></td>
+<td>OpenAI、Anthropic、Google DeepMind、xAI、Meta、DeepSeek、Mistral、月之暗面、智谱、阿里通义、字节豆包</td>
+<td>高营收但高烧钱；OpenAI/Anthropic 营收 2025-26 翻 5-15 倍</td>
+<td>头部 3-5 家整合下沉做应用，长尾被开源吞噬</td>
+<td>算力、数据、人才、品牌、Agent 整合</td>
+<td>模型商品化、Capex 黑洞</td>
+</tr>
+<tr>
+<td><strong>Middleware / 工具链</strong></td>
+<td>LangChain、Pinecone、Weaviate、LlamaIndex、Modal、Replicate、Hugging Face</td>
+<td>弱：被模型方/云方挤压</td>
+<td>多数被吞并/边缘化，少数作为 MCP 标准基础设施</td>
+<td>开源社区、生态绑定</td>
+<td>大厂下场、协议被 OpenAI/Anthropic 标准化</td>
+</tr>
+<tr>
+<td><strong>应用层 / vertical AI</strong></td>
+<td>Cursor、Perplexity、Harvey、Glean、Notion、Granola、ElevenLabs、Suno、Lovable、Cognition、Replit、Hebbia</td>
+<td>两极：薄壳 80% 死亡，厚壳 ARR 飞起</td>
+<td><strong>赢家显著扩张</strong>：3-5 个 vertical 跑出 $10B+ 公司</td>
+<td>工作流锁定、数据 flywheel、品牌、distribution</td>
+<td>模型方下沉、巨头跟进、token 成本</td>
+</tr>
+<tr>
+<td><strong>服务 / 集成</strong></td>
+<td>Accenture、Deloitte、TCS、Infosys；新型 AI 实施商</td>
+<td>暴利：传统 IT 服务厂商靠咨询费收割</td>
+<td>厚但人头被替代</td>
+<td>客户关系、合规、垂直经验</td>
+<td>AI agent 取代咨询师</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>利润迁移核心判断</strong>：<br />
+- <strong>2024-2026</strong>：基础设施层最赚钱（Nvidia 是最大赢家），上层都在烧钱；<br />
+- <strong>2026-2028</strong>：模型层与应用层同时整合，OpenAI/Anthropic 学会用应用赚钱，Cursor/Harvey 学会用模型省钱；<br />
+- <strong>2028+</strong>：能源 + 工艺 + vertical AI + agent 服务化构成新格局，Nvidia 份额回落但绝对利润不减。</p>
+<hr />
+<h2 id="vs-vs">应用层 vs 模型层 vs 基础设施层：博弈分析</h2>
+<h3 id="_2">三种主流叙事</h3>
+<p><strong>叙事 A：应用层会赢（a16z / Sarah Wang / Sonya Huang）</strong><br />
+- 模型商品化趋势确定，剩下的差异化在用户体验、数据、工作流。<br />
+- a16z 的 <em>Top 100 Gen AI Consumer Apps</em>（第 6 版，2026 年 3 月）显示 ChatGPT 仍是 2.7x 第二名 Gemini，但 Lovable / Cursor / Bolt / Manus / Genspark 等垂直 agent 起势——证明在某个具体场景里击败 ChatGPT 并不困难。</p>
+<p><strong>叙事 B：模型层会赢（Ben Thompson 修正版）</strong><br />
+- 当 agent 需要 model-harness 紧密集成时，OpenAI 与 Anthropic 的「模型 + Agent + 应用」一体化反而是不可分的整合产品。<br />
+- 数据点：Anthropic 在 2025 年 5 月才把 Claude Code 推到 GA，到 2026 年 2 月已是 $2.5B 年化。这不是 wrapper，这是模型公司亲手做的应用并直接吃下利润。</p>
+<p><strong>叙事 C：基础设施会赢（Brad Gerstner / Bill Gurley / 跟进 Nvidia 派）</strong><br />
+- 「AI is the trade of the decade」，资本支出 2025 年 $500B、2026 年逼近 $700B 已经锁定。<br />
+- Altimeter 减仓 MSFT、加仓 Nvidia + SK Hynix + CoreWeave + Bloom Energy（电力），反映「工具与原材料」思路。<br />
+- 风险：折旧周期被低估。Nvidia GPU 实际有用寿命 3-4 年，但折旧通常按 5-6 年算，hyperscaler 财报隐藏未来减值。</p>
+<h3 id="_3">我的综合判断</h3>
+<p><strong>短期（1-2 年）</strong>：叙事 C 继续兑现。Nvidia 加 SK Hynix 加 TSMC 仍是最稳的赚钱路径。<br />
+<strong>中期（2-4 年）</strong>：叙事 B 占上风。模型公司向下做应用，整合利润 &gt; 纯模型 API 利润。<br />
+<strong>长期（4-7 年）</strong>：叙事 A 在垂直领域兑现，少数厚壳 vertical AI 跑出 $10B+ 营收，薄壳几乎全死。</p>
+<hr />
+<h2 id="wrapper-trap">wrapper trap：真伪与例外</h2>
+<p>「你只是个 GPT wrapper」是 2023-2024 年最致命的 VC dismiss。但 2025-2026 年事实给了反例：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>公司</th>
+<th>ARR 增长</th>
+<th>估值跳跃</th>
+<th>它「不只是 wrapper」的关键</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cursor / Anysphere</strong></td>
+<td>$100M (2025-01) → $500M (06) → $1B (11) → $2B (2026-02)</td>
+<td>$2.5B → $9.9B → $29.3B → 谈判 $50B+</td>
+<td>自研代码检索 / 多文件编辑基础设施、定制 inference 栈、留存率 90%+ NDR、在程序员日常工作流中长出 daily-active 习惯</td>
+</tr>
+<tr>
+<td><strong>Harvey</strong></td>
+<td>$100M (2025-08) → $190M (2026-01)</td>
+<td>$3B → $5B → $8B → $11B</td>
+<td>嵌入 AmLaw 100 法律工作流、$150M Azure 承诺、合规与企业安全姿态、专业训练 + 客户数据闭环</td>
+</tr>
+<tr>
+<td><strong>Perplexity</strong></td>
+<td>&lt;$100M (2025-03) → $232M (2025) → $500M (2026-04)</td>
+<td>$14B → $18B → $20B → $21B</td>
+<td>自研搜索索引、检索基础设施、答案合成 pipeline、Computer agent 产品扩展</td>
+</tr>
+<tr>
+<td><strong>Glean</strong></td>
+<td>$100M (2025-03) → $200M (12)</td>
+<td>$4.6B → $7.2B</td>
+<td>企业知识图谱、20T+ tokens 年消耗、千万级 ACV 客户翻三倍、统一模型 hub</td>
+</tr>
+<tr>
+<td><strong>Cognition / Devin</strong></td>
+<td>不公开</td>
+<td>$4B+</td>
+<td>自主 agent 框架 + 自研模型</td>
+</tr>
+<tr>
+<td><strong>Granola</strong></td>
+<td>高增长（私募）</td>
+<td>数亿美金</td>
+<td>会议笔记 vertical 工作流、上下文 + 个性化记忆</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键判断</strong>：被低估的一个洞察是——「wrapper」与否的真正分界线不是「有没有自研模型」，而是「<strong>有没有用户每天打开它工作的不可替代理由</strong>」。Cursor 没有自己的 LLM，但程序员每天工作 8 小时离不开它，这就是护城河。</p>
+<p><strong>80% 死掉的薄壳通病</strong>：(1) 没有数据飞轮；(2) 没有工作流深度集成；(3) 没有专有训练或微调；(4) 价格可被 ChatGPT/Claude 直接吃下；(5) 留存率低于 80% NDR。</p>
+<hr />
+<h2 id="ai_1">AI 时代的护城河新分类</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>护城河类型</th>
+<th>含义</th>
+<th>典型代表</th>
+<th>投资可识别信号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>数据 flywheel</strong></td>
+<td>用户用得越多，专有数据越多，模型越好</td>
+<td>Tesla（自驾）、Bloomberg AI、Harvey、Replit</td>
+<td>数据采集合约、数据回流频率、专有 RLHF 标注</td>
+</tr>
+<tr>
+<td><strong>workflow lock-in</strong></td>
+<td>嵌入用户日常工作流，离开成本极高</td>
+<td>Cursor、Glean、Notion AI、Granola</td>
+<td>DAU/MAU &gt; 60%、NDR &gt; 120%</td>
+</tr>
+<tr>
+<td><strong>distribution（已有用户基数）</strong></td>
+<td>直接把 AI 推给已存在的几亿用户</td>
+<td>Microsoft (Office)、Google (Workspace)、Apple、字节、阿里</td>
+<td>渠道独占、捆绑销售比例</td>
+</tr>
+<tr>
+<td><strong>品牌 / 信任</strong></td>
+<td>在敏感场景中是默认选项</td>
+<td>OpenAI（消费者）、Anthropic（企业 / 编程）</td>
+<td>Brand search volume、API 默认占比</td>
+</tr>
+<tr>
+<td><strong>合规 / 监管</strong></td>
+<td>受监管行业（金融、医疗、法律）需要审计、合规、地区数据驻留</td>
+<td>Harvey、Hippocratic AI、OpenEvidence、Glean</td>
+<td>SOC2 / HIPAA / FedRAMP 等认证、央企 / 监管行业客户名单</td>
+</tr>
+<tr>
+<td><strong>vertical 模型 + 应用一体化</strong></td>
+<td>垂直行业自研专用模型 + 整合应用</td>
+<td>Perplexity 搜索栈、Cognition Devin、Tesla FSD</td>
+<td>自有训练数据、垂直 benchmark 领先</td>
+</tr>
+<tr>
+<td><strong>网络效应</strong></td>
+<td>多边市场（生成内容流通）</td>
+<td>Suno（音乐）、Midjourney、Lovable、Civitai</td>
+<td>内容 / 模板 / Agent 互相调用次数</td>
+</tr>
+<tr>
+<td><strong>Cost / 算力效率</strong></td>
+<td>同等质量更便宜（DeepSeek 打法）</td>
+<td>DeepSeek、Mistral、Cerebras inference</td>
+<td>$/token 对比、同 benchmark 价格优势</td>
+</tr>
+</tbody>
+</table></div>
+<p>最危险的「假护城河」：<strong>单纯的 prompt 工程、UI 美观、垂直数据集（无飞轮）</strong>——这些都能在 6 周内被复制。</p>
+<hr />
+<h2 id="per-seat">定价模式革命：per-seat 之死</h2>
+<h3 id="per-seat-saas">旧模式：per-seat（核心 SaaS 时代）</h3>
+<ul>
+<li>Salesforce、Workday、ServiceNow、Atlassian、Slack 用 20 年训练买家：每个员工每月固定订阅。</li>
+<li>边际成本极低，毛利 75-85%。</li>
+</ul>
+<h3 id="outcome-based-per-action-per-token-success-fee">新模式：outcome-based / per-action / per-token / success fee</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>案例</th>
+<th>旧定价</th>
+<th>新定价</th>
+<th>价格信号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Salesforce Agentforce</strong></td>
+<td>per user $50-200/月</td>
+<td>$2 / 对话 + Flex Credits ($0.10/action)</td>
+<td>同时挂三种</td>
+</tr>
+<tr>
+<td><strong>Intercom Fin</strong></td>
+<td>per seat</td>
+<td>$0.99 / 解决的客服会话</td>
+<td>success fee</td>
+</tr>
+<tr>
+<td><strong>Zendesk AI Agents</strong></td>
+<td>per agent</td>
+<td>per resolution</td>
+<td>outcome-based</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>$19-39 / seat / 月</td>
+<td>加上 premium request usage（2025 起）</td>
+<td>混合 metered</td>
+</tr>
+<tr>
+<td><strong>Microsoft 365 Copilot</strong></td>
+<td>$30 / seat / 月</td>
+<td>2026 涨价 + 引入 agent action 计费</td>
+<td>seat + metered</td>
+</tr>
+<tr>
+<td><strong>Anthropic Claude Code</strong></td>
+<td>per seat 订阅</td>
+<td>+ token usage（重度用户实际花费数百 / 月）</td>
+<td>effectively token-metered</td>
+</tr>
+<tr>
+<td><strong>OpenAI ChatGPT</strong></td>
+<td>$20 Plus / $200 Pro</td>
+<td>2026 引入 agent action 与 metered Sora 配额</td>
+<td>seat + metered</td>
+</tr>
+<tr>
+<td><strong>Cursor</strong></td>
+<td>$20-200 seat</td>
+<td>高耗用户 over-usage 加价</td>
+<td>seat + metered</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="per-seat_1">为什么 per-seat 必然崩塌</h3>
+<ol>
+<li><strong>AI agent 数量将远超人类员工</strong>（Aaron Levie：100x ~ 1000x agents）—— per-seat 单位的逻辑前提不复存在。</li>
+<li><strong>Token 是真实成本中心</strong>——客户耗费弹性极大（重度用户 100x 普通用户）。</li>
+<li><strong>Outcome 是真实价值锚点</strong>——CFO 不愿为「使用了 AI」付费，只愿为「关掉了 5 个客服坐席」付费。</li>
+<li><strong>AI native 公司天然按 token / action 卖</strong>——形成竞争压力。</li>
+</ol>
+<h3 id="_4">财务后果</h3>
+<ul>
+<li>收入预测变难：MRR / ARR 不再是稳定数列，更像消费品。</li>
+<li>毛利率结构：模型 token 成本是真实 COGS，毛利从 75-85% 降到 50-70%。</li>
+<li>估值倍数：成长性 &gt; 稳定性，但留存性会被更严格审视。</li>
+</ul>
+<hr />
+<h2 id="ai-native-vs">AI-native vs 现有巨头：谁稳谁危</h2>
+<h3 id="distribution-capital-data">看起来稳的（distribution + capital + data 三件套都有）</h3>
+<ul>
+<li><strong>Microsoft</strong>：Azure +33%、与 OpenAI 关系即便重谈仍是优势，但 Copilot 渗透 3.3% 是警示——分发不等于胜利。<strong>评级：稳但被高估</strong>。</li>
+<li><strong>Google</strong>：模型自研能力顶级（Gemini）、TPU、Search + YouTube + Workspace + Android 五大资产、Waymo 隐藏期权。Gemini 付费用户 +258% YoY。<strong>评级：被严重低估的真正赢家之一</strong>。</li>
+<li><strong>Apple</strong>：Apple Intelligence 推迟 + Siri 改造缓慢，但终端分发 + 隐私品牌 + 自研芯片让它在 on-device AI 与隐私 agent 仍有战略空间。<strong>评级：观望，2026-2027 必须证明</strong>。</li>
+<li><strong>Meta</strong>：Llama 开源策略 + 推荐系统 AI + Reality Labs。Threads / Instagram 内嵌 AI、广告系统效率持续提升。<strong>评级：稳，被低估的 AI 玩家</strong>。</li>
+<li><strong>Amazon</strong>：Bedrock 模型选择权、Anthropic 重金投资 + Trainium 芯片、AWS 持续放量。<strong>评级：稳</strong>。</li>
+<li><strong>Nvidia</strong>：见后文。</li>
+</ul>
+<h3 id="ai-native-saas">危险区：被 AI native 反叛的传统 SaaS</h3>
+<ul>
+<li><strong>Salesforce</strong>：Agentforce 三套价格混乱说明它在被颠覆而非定义。AI native CRM（Attio、Clay、Day.AI）从下蚕食。<strong>评级：中危</strong>。</li>
+<li><strong>Workday / SAP</strong>：HRIS / ERP 在 AI agent 自动化时代护城河变薄，但合规与数据深度仍是壁垒。<strong>评级：中危但有防御</strong>。</li>
+<li><strong>ServiceNow</strong>：作为「企业自动化平台」反而在 agent 时代受益（成为 agent 调用的底层工作流引擎）。<strong>评级：稳</strong>。</li>
+<li><strong>Adobe</strong>：Firefly 用「合规训练数据」差异化是聪明的姿态，但被 Midjourney / Sora / Runway 从消费侧蚕食，专业用户群仍稳。<strong>评级：中危</strong>。</li>
+<li><strong>Atlassian / Slack</strong>：协作类被 Notion AI / Granola / Linear 等 AI native 全面挤压。<strong>评级：危</strong>。</li>
+<li><strong>Intuit / 财务软件</strong>：被 AI agent 自动化记账与报税严重威胁。<strong>评级：危</strong>。</li>
+<li><strong>教育 / Chegg / Duolingo</strong>：Chegg 已遭 ChatGPT 直接屠杀，Duolingo 正反向用 AI。<strong>评级：分化</strong>。</li>
+</ul>
+<hr />
+<h2 id="_5">模型公司商业模式</h2>
+<h3 id="openai">OpenAI</h3>
+<ul>
+<li><strong>2026 年 4 月年化营收 $25B+</strong>，2024 年仅 $6B。</li>
+<li>收入结构：消费者订阅（ChatGPT Plus/Pro/Enterprise，5000 万 + 付费用户）约 60%、API 约 30%、Enterprise + Agents + Sora 等约 10%（向 50/50 演进）。</li>
+<li>路径：<strong>ChatGPT → Operator/Agents → Sora → Apps Store</strong>，在做「AI OS」。</li>
+<li>真问题：毛利仍为负或低；2025 上半年 burn $9.7B；预计 2029 年累计烧 $115B。靠 SoftBank/Stargate 输血。</li>
+<li>最大的潜在变现：广告（如「The Information」泄露讨论）。</li>
+</ul>
+<h3 id="anthropic">Anthropic</h3>
+<ul>
+<li><strong>2026 年 4 月年化 $30B</strong>（已超 OpenAI）；从 $1B（2024-12）→ $9B（2025-12）→ $30B（2026-04）。</li>
+<li>收入结构：<strong>API + 企业 70%+，Claude Code 单独 $2.5B 年化</strong>，消费者订阅 20% 不到。</li>
+<li>路径：「企业级 + 编程 + 安全」三角，Claude Code 是飞轮放大器。</li>
+<li>关键差异：训练成本约为 OpenAI 的 1/4（依其披露），毛利更健康。</li>
+<li>风险：消费者品牌仍弱、对 AWS / GCP 双云依赖。</li>
+</ul>
+<h3 id="xai">xAI</h3>
+<ul>
+<li>Grok 与 X 平台原生整合 + Tesla / Optimus 数据。</li>
+<li>Colossus 孟菲斯训练集群是单点最大 GPU 集群（H100/H200/B200 量级）。</li>
+<li>估值近 $200B，营收尚不透明，更多是叙事溢价。</li>
+</ul>
+<h3 id="metallama">Meta（Llama 系）</h3>
+<ul>
+<li>不卖 API，把开源作为防御性策略——目的是防止被锁在 OpenAI / Anthropic 之外。</li>
+<li>最终变现：广告系统效率提升 + Reality Labs Agent 助手。</li>
+</ul>
+<h3 id="mistral-cohere-inflection">Mistral / Cohere / Inflection</h3>
+<ul>
+<li>Mistral：欧洲合规叙事 + 开源旗帜，估值约 $14B。</li>
+<li>Cohere：企业 RAG 与知识库定位，被 Glean/Anthropic/OpenAI 夹击。</li>
+<li>Inflection：被 Microsoft 实质 acqui-hire，已退出第一线。</li>
+</ul>
+<h3 id="deepseek">DeepSeek（杭州）</h3>
+<ul>
+<li>V3/R1 让世界震惊；但实际硬件投入约 $1.6B、50,000 张 Hopper GPU。</li>
+<li>没有商业化压力（量化投资母公司输血），开源策略本身是地缘工具。</li>
+<li>影响最大：把行业 token 价格降低一个数量级，倒逼所有人重写成本曲线。</li>
+</ul>
+<h3 id="_6">中国头部（详见下节）</h3>
+<hr />
+<h2 id="nvidia">Nvidia 与硬件投资</h2>
+<h3 id="fy2026-2026-1">当下数据（FY2026 全年，截至 2026 年 1 月）</h3>
+<ul>
+<li>营收 $215.9B（+65% YoY），数据中心 $62.3B 单季（+75% YoY）</li>
+<li>GAAP 毛利率 71.1%，单季达 75%</li>
+<li>净利润 ~$43B 单季</li>
+<li>Blackwell（B200/GB200）满载，Rubin（R100）2026 年下半年量产</li>
+</ul>
+<h3 id="_7">一家通吃可持续吗？</h3>
+<p><strong>支撑因素</strong>：<br />
+- CUDA 生态：60 万 + 开发者锁定，所有顶级 AI lab 训练栈都长在 CUDA 上。<br />
+- NVLink + 整机柜系统：Nvidia 已从「卖芯片」上升到「卖整柜数据中心」（GB200 NVL72）。<br />
+- 软件栈：Triton、TensorRT、NIM 微服务、Omniverse、Cosmos 模型库——每一层都是钉子。<br />
+- $20B 收购 Groq（2025 年底）：把推理优化威胁内部消化。</p>
+<p><strong>威胁因素</strong>：<br />
+- <strong>AMD MI300/MI350/MI450</strong>：Meta + OpenAI 都签了 6 GW 部署协议。AMD 数据中心 AI 增长率预测 +80% CAGR。<br />
+- <strong>Custom ASIC</strong>：Google TPU、AWS Trainium、Microsoft Maia、Meta MTIA 都在大规模量产；ASIC 出货 +44.6% YoY，远超 GPU +16.1%。<br />
+- <strong>Cerebras</strong>：晶圆级芯片在某些大模型推理上 2x 速度，已与 OpenAI 签 $20B 协议、$23B 估值申请 IPO。<br />
+- <strong>新一代推理专用</strong>：Groq（被收）、Etched、Tenstorrent、SambaNova。<br />
+- <strong>DeepSeek 类训练效率优化</strong>：让全行业重新审视「堆 GPU 是否过度」。<br />
+- <strong>客户自研</strong>：所有 hyperscaler 都不希望 Nvidia 拿走 30-40% 的总 capex。</p>
+<p><strong>5 年判断</strong>：Nvidia 总营收继续增长（绝对值），市占从 92% 降到 70-75%，毛利从 75% 回到 60-65%。仍是最大 winner，但「一家通吃」叙事会被「Nvidia + 三家强 ASIC + 两家强 GPU 替代」的多极格局取代。</p>
+<h3 id="picks-and-shovels">Picks-and-shovels 衍生赢家</h3>
+<ul>
+<li><strong>TSMC</strong>：3nm/2nm + CoWoS 先进封装垄断。AI 芯片最大隐形赢家。</li>
+<li><strong>ASML</strong>：EUV 光刻机独家。</li>
+<li><strong>SK Hynix / Micron / Samsung</strong>：HBM 是真正瓶颈。</li>
+<li><strong>CoreWeave / Lambda / Crusoe</strong>：GPU-as-a-service 暴利期。</li>
+<li><strong>Vertiv / Schneider / Eaton</strong>：液冷与电力管理。</li>
+<li><strong>Constellation / Vistra / NextEra / 核电与 SMR</strong>：电力是终极瓶颈。</li>
+</ul>
+<hr />
+<h2 id="ai_2">中国 AI 投资格局</h2>
+<h3 id="_8">三大势力</h3>
+<p><strong>1. 大厂派</strong><br />
+- <strong>阿里通义 Qwen</strong>：开源 + 云业务（阿里云 AI 收入连续 6 季三位数增长）；估值方面，阿里整体被重估为中国最大 AI 受益者。<br />
+- <strong>字节豆包 / Doubao</strong>：To C 月活 1.4 亿+，Kimi 之后中国第一；产品层面已逼近 ChatGPT 国内体感；变现靠抖音生态。<br />
+- <strong>腾讯混元 + 微信 AI</strong>：分发优势顶级，但产品速度慢于字节、阿里。<br />
+- <strong>百度文心</strong>：跟跑，差距拉大。</p>
+<p><strong>2. 六小龙 / Six Tigers</strong>（融资烧钱期已结束，分化加剧）<br />
+- <strong>DeepSeek</strong>：开源旗手，量化母公司输血、不缺钱、不上市，价格屠夫。<br />
+- <strong>Moonshot 月之暗面</strong>：Kimi 是消费者第二，长上下文路线，2024-25 年高峰已过、用户与日活波动。<br />
+- <strong>Zhipu / 智谱 AI</strong>：To B 强、ChatGLM 系列；2025 上市路径明确但 GPU 受限风险大。<br />
+- <strong>Minimax</strong>：Talkie 海外消费应用 ARR 约 $70M（2024）；2026 寻 $4B+ 估值。<br />
+- <strong>Baichuan / 百川</strong>：医疗 / 企业 vertical 转向。<br />
+- <strong>01.AI（零一万物）</strong>：李开复主导，已大幅收缩、转向应用层。<br />
+- <strong>StepFun 阶跃星辰</strong>：多模态强项。</p>
+<p><strong>3. 应用 / vertical AI</strong><br />
+- 海外赚钱头部：Talkie（Minimax）、Trip.com AI、SHEIN 个性化引擎。<br />
+- 国内：豆包、Kimi、夸克、智谱清言、即梦（字节图像）、可灵（快手视频）、海螺（Minimax）。</p>
+<h3 id="_9">投资格局特征</h3>
+<ul>
+<li><strong>GPU 是硬约束</strong>：H20 出口限制 + 国产昇腾 / 寒武纪追赶中（仍差 1-2 代）。</li>
+<li><strong>资金来源</strong>：阿里、腾讯、字节、米哈游、小米这些产业巨头是主要 LP；传统美元 VC 退场（高瓴、红杉中国分立）。</li>
+<li><strong>变现现实</strong>：To C 流量起来快但付费率低；To B 项目制为主、续费低于美国。</li>
+<li><strong>DeepSeek 的全球地缘意义</strong>：把中国 AI 拉回世界叙事中央，但商业上反而稀释了中国「闭源派」（豆包、Kimi）的护城河。</li>
+<li><strong>晚点 LatePost / 36Kr / 极客公园</strong>报道反复揭示：六小龙的「做模型」叙事正在让位「做应用」「做 agent」叙事。</li>
+</ul>
+<h3 id="_10">关键中国可投赛道</h3>
+<ol>
+<li><strong>基础设施替代</strong>：寒武纪、海光、华为昇腾生态、HBM 国产替代（长鑫、长江存储）</li>
+<li><strong>vertical AI</strong>：跨境电商 SaaS + AI、医疗影像、金融合规、教育（多邻国式）</li>
+<li><strong>AI 硬件 + 机器人</strong>：宇树（Unitree）、智元（Agibot）、银河通用、跨维智能</li>
+<li><strong>应用出海</strong>：Talkie 模式、AI 视频生成（可灵 / 即梦海外版）</li>
+</ol>
+<hr />
+<h2 id="vs">泡沫论 vs 价值论</h2>
+<h3 id="bear-case">泡沫论（Bear case）</h3>
+<p><strong>David Cahn（Sequoia）：「$200B → $600B 缺口」</strong><br />
+- 计算公式：Nvidia 年化营收 × 2（数据中心总成本约为 GPU 的 2 倍）= AI 必须创造的年终端价值。<br />
+- 2024 年 6 月更新：缺口从 $125B 跳到 $500B（OpenAI 占大头但仍杯水车薪）。<br />
+- 2026 年视角：OpenAI/Anthropic 营收已从论文写作时的 $4B 跑到 $55B+，缺口缩小但仍未消除。</p>
+<p><strong>Jim Covello（Goldman Sachs）：「Too Much Spend, Too Little Benefit」</strong><br />
+- 2024 年 6 月报告：未来几年 AI 将花费 $1T+，但回报远不足以匹配。<br />
+- 2026 年立场：Covello 认为只有更确信——「FOMO 比股价表现更强地驱动 hyperscaler 决策」。<br />
+- 关键论点：「用极昂贵的技术取代低工资工作，是历次技术换代的反向操作」。</p>
+<p><strong>Ed Zitron（Where's Your Ed At）：「价值幻觉」</strong><br />
+- 「一个 $50B 营收的行业假装自己是 $1T 的行业」。<br />
+- OpenAI 2025 上半年 burn $9.7B；预计 2029 累计烧 $115B。<br />
+- 数据中心建设落后：宣称的 114 GW 中只有 15.2 GW 真正在建。</p>
+<p><strong>MIT / Acemoglu（学院派）</strong><br />
+- 经济学家 Daron Acemoglu 估算未来 10 年 AI 对全要素生产率贡献只有 0.06% / 年——远低于乐观派的 1-3% 估计。<br />
+- 大量工作被 AI 替代但非高生产力——回报溢出不大。</p>
+<h3 id="bull-case">价值论（Bull case）</h3>
+<p><strong>a16z（Andreessen Horowitz）</strong><br />
+- AI 是「比互联网更大的平台 shift」；应用层和工具层会出现千亿级公司。<br />
+- Top 100 Consumer Apps 报告显示用户使用每半年扩张一次量级。</p>
+<p><strong>Sequoia（Sonya Huang / Pat Grady）的 Act II / Act o1 / Act IV</strong><br />
+- 从 Act II 的「end-to-end 解决人类问题」到 Act o1「推理时代」到 2026「This is AGI」——叙事不断升级。<br />
+- 内部矛盾：Cahn 在算账，Huang/Grady 在押 Cursor、Harvey、Glean 等 portfolio 公司——这两种立场是同一家 VC 在做对冲。</p>
+<p><strong>Brad Gerstner（Altimeter）</strong><br />
+- 「AI 是 supercycle，不是 bubble」；hyperscaler capex 2025 $500B、2026 ~$700B 已锁定。<br />
+- 押 Nvidia + SK Hynix + CoreWeave + Bloom Energy + Google + Meta。</p>
+<p><strong>Foundation Capital：「$4.6T opportunity」</strong><br />
+- 把 Cahn 的 $600B 视为传统 IT 替代规模，反算 AI 重塑 SaaS / 服务业的潜在 TAM。</p>
+<p><strong>Reid Hoffman / Vinod Khosla 等</strong><br />
+- Khosla：5 年内 AI 替代 80% 经济价值工作，未来 1B 营收公司只需 10 人。<br />
+- 资本回报周期会以 10-20 年看，不应用 SaaS 的 2-3 年视角衡量。</p>
+<h3 id="_11">我的综合判断</h3>
+<p><strong>双方都对，时间尺度不同</strong>：<br />
+- 1-2 年内：基础设施估值有可能调整 30-50%（一次「AI Q4 2026 / Q1 2027 调整」概率不低）。<br />
+- 3-5 年：头部模型 + 应用赢家整合，真实生产力红利兑现 20-30%。<br />
+- 7-10 年：AI 从 Cahn 的 $600B 缺口跑到 $4T+ 经济级影响。</p>
+<p>短期估值过热是真的，长期价值兑现也是真的。投资人最危险的姿态是把两个尺度搞混。</p>
+<hr />
+<h2 id="5">不同立场和争议（核心 5+ 条）</h2>
+<ol>
+<li><strong>a16z（Marc Andreessen / Sarah Wang）</strong>：应用层会赢，wrappers 是真公司，分发与体验决定胜负。立场：超级乐观应用派。</li>
+<li><strong>Ben Thompson（Stratechery）</strong>：模型成本下降利好应用，但模型公司同时下沉做应用反而能拿到整合利润。Aggregation 让位 Integration——精彩的中间立场。</li>
+<li><strong>Vinod Khosla（Khosla Ventures）</strong>：垂直 AI 模型 + 应用一体化是王道；现有大公司未来 10 年大规模消亡。立场：极端激进派。</li>
+<li><strong>Cal Newport / Daron Acemoglu</strong>：AI 投资过度，生产力红利被夸大，长期 TFP 贡献 &lt; 0.1%/年。立场：学院怀疑派。</li>
+<li><strong>David Cahn（Sequoia）vs Jim Covello（Goldman）vs Ed Zitron</strong>：从内部 VC 算账派、卖方研究怀疑派、媒体批评派三个角度的同向论点——共同点：终端价值跑不赢 capex。</li>
+<li><strong>DeepSeek / 开源派</strong>：闭源模型护城河被严重高估，token 价格会持续指数级下跌，未来真正的护城河在分发与数据。</li>
+<li><strong>Aaron Levie（Box）</strong>：AI agent 不取代 SaaS 而与 SaaS 共生；token 价格 2026 趋近于零；per-seat 必须被重新发明。立场：温和实用派。</li>
+<li><strong>Brad Gerstner / Bill Gurley</strong>：基础设施 supercycle，「trade of the decade」是 picks-and-shovels。</li>
+<li><strong>Sonya Huang / Pat Grady</strong>：Act II → Act o1 → 2026 AGI；坚定相信 reasoning + agent 是新台阶，但内部 Cahn 在写缺口报告——两种立场并存。</li>
+</ol>
+<hr />
+<h2 id="5_1">前瞻假设（5 条可验证）</h2>
+<ol>
+<li><strong>【芯片格局】到 2027 Q4，Nvidia 数据中心市占从 92% 降到 75% 以下，但绝对营收仍 &gt; $300B</strong>——以 hyperscaler ASIC 出货比例与 AMD MI400/450 ramp 验证。</li>
+<li><strong>【模型公司变现】到 2026 年底，OpenAI 至少推出广告产品，年化广告营收 $5B+</strong>——以是否在 ChatGPT Free 引入 sponsored answer 验证。</li>
+<li><strong>【SaaS 转型】到 2027 Q2，至少 30% 的传统 SaaS 公司主推 outcome-based / metered 定价（不只 add-on，而是新合同默认）</strong>——以 Salesforce/Workday/HubSpot/Zendesk 财报披露混合定价占比验证。</li>
+<li><strong>【中国格局】到 2026 年底，六小龙中至少 2 家被并购或退出第一线</strong>（很可能是 01.AI、Baichuan、StepFun 中至少一家）——以一级市场新轮融资是否完成验证。</li>
+<li><strong>【vertical AI 突破】到 2027 年底，至少出现 1 家 ARR &gt; $5B 的 vertical AI 应用公司（非通用 chatbot）</strong>——大概率是 Cursor、Harvey、Glean 之一，或者尚未出现的医疗 / 金融 vertical agent。</li>
+</ol>
+<hr />
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((AI 投资))
+    价值链分层
+      能源/电力
+      晶圆代工 TSMC
+      HBM 存储
+      AI 芯片 Nvidia/AMD/ASIC
+      云/GPU 租赁
+      基础模型
+      Middleware
+      应用 vertical AI
+      服务集成
+    护城河
+      数据 flywheel
+      workflow lock-in
+      distribution
+      brand/trust
+      合规监管
+      vertical 一体化
+      网络效应
+      cost 效率
+    定价革命
+      per-seat 之死
+      outcome-based
+      per-action
+      token-metered
+      success fee
+    巨头 vs 新势力
+      Google 被低估
+      MSFT 稳但贵
+      Meta 反弹
+      Salesforce 被颠覆
+      Adobe 中危
+      Atlassian 危
+    模型公司
+      OpenAI 25B+ ARR
+      Anthropic 30B ARR
+      xAI 叙事溢价
+      DeepSeek 价格屠夫
+      Meta Llama 防御
+    中国格局
+      大厂 阿里字节腾讯
+      六小龙分化
+      vertical 出海
+      硬件替代 寒武纪昇腾
+    泡沫争论
+      Cahn 600B 缺口
+      Covello 太多花费
+      Zitron 价值幻觉
+      Gerstner supercycle
+      Khosla 80% 替代</pre></div>
+<hr />
+<h2 id="25">来源库（25+ 条）</h2>
+<h3 id="vc">VC / 行业报告</h3>
+<ol>
+<li><a href="https://sequoiacap.com/article/ais-600b-question/">Sequoia – AI's $600B Question (David Cahn, 2024-06)</a></li>
+<li><a href="https://sequoiacap.com/article/generative-ai-act-two/">Sequoia – Generative AI's Act Two (Sonya Huang, Pat Grady)</a></li>
+<li><a href="https://sequoiacap.com/article/generative-ais-act-o1/">Sequoia – Generative AI's Act o1: Reasoning Era</a></li>
+<li><a href="https://www.sequoiacap.com/article/ai-ascent-2024/">Sequoia AI Ascent 2024 Conference</a></li>
+<li><a href="https://sequoiacap.com/article/ai-ascent-2025/">Sequoia AI Ascent 2025 Conference</a></li>
+<li><a href="https://a16z.com/100-gen-ai-apps-6/">a16z – Top 100 Gen AI Consumer Apps (6th Edition, 2026)</a></li>
+<li><a href="https://a16z.com/state-of-consumer-ai-2025-product-hits-misses-and-whats-next/">a16z – State of Consumer AI 2025</a></li>
+<li><a href="https://www.bvp.com/atlas/the-state-of-ai-2025">Bessemer – State of AI 2025</a></li>
+<li><a href="https://www.bvp.com/atlas/the-cloud-100-benchmarks-report">Bessemer – Cloud 100 Benchmarks 2025</a></li>
+<li><a href="https://foundationcapital.com/the-ai-hype-600b-question-or-4-6t-opportunity/">Foundation Capital – $4.6T Opportunity Reply to Cahn</a></li>
+</ol>
+<h3 id="_12">模型公司财务</h3>
+<ol start="11">
+<li><a href="https://www.saastr.com/openai-crosses-12-billion-arr-the-3-year-sprint-that-redefined-whats-possible-in-scaling-software/">SaaStr – OpenAI Crosses $12B ARR</a></li>
+<li><a href="https://openai.com/index/accelerating-the-next-phase-ai/">OpenAI – $122B Funding (Accelerate Next Phase)</a></li>
+<li><a href="https://www.saastr.com/anthropic-just-hit-14-billion-in-arr-up-from-1-billion-just-14-months-ago/">SaaStr – Anthropic $14B ARR (14 Months from $1B)</a></li>
+<li><a href="https://venturebeat.com/technology/anthropic-says-it-hit-a-30-billion-revenue-run-rate-after-crazy-80x-growth">VentureBeat – Anthropic $30B Run Rate, 80x Growth</a></li>
+<li><a href="https://sacra.com/c/openai/">Sacra – OpenAI Revenue &amp; Funding Profile</a></li>
+<li><a href="https://sacra.com/c/anthropic/">Sacra – Anthropic Revenue &amp; Funding</a></li>
+<li><a href="https://sacra.com/c/perplexity/">Sacra – Perplexity Revenue &amp; Funding</a></li>
+<li><a href="https://techcrunch.com/2025/06/05/cursors-anysphere-nabs-9-9b-valuation-soars-past-500m-arr/">TechCrunch – Cursor Anysphere $9.9B Valuation, $500M ARR</a></li>
+<li><a href="https://cursor.com/blog/series-d">Cursor – Series D $29.3B Valuation</a></li>
+<li><a href="https://www.harvey.ai/blog/harvey-raises-at-dollar11-billion-valuation-to-scale-agents-across-law-firms-and-enterprises">Harvey – Raises at $11B Valuation</a></li>
+<li><a href="https://www.glean.com/press/glean-surpasses-200m-in-arr-for-enterprise-ai-doubling-revenue-in-nine-months">Glean – $200M ARR, Doubled in 9 Months</a></li>
+</ol>
+<h3 id="stratechery">Stratechery / 思想领袖</h3>
+<ol start="22">
+<li><a href="https://stratechery.com/2025/checking-in-on-ai-and-the-big-five/">Stratechery – Checking In on AI and the Big Five (2025)</a></li>
+<li><a href="https://stratechery.com/2024/ai-integration-and-modularization/">Stratechery – AI Integration and Modularization</a></li>
+<li><a href="https://stratechery.com/2025/openai-microsoft-and-the-state-of-ai/">Stratechery – OpenAI, Microsoft and the State of AI</a></li>
+<li><a href="https://stratechery.com/2026/agents-over-bubbles/">Stratechery – Agents Over Bubbles (2026)</a></li>
+<li><a href="https://techcrunch.com/2025/10/29/box-ceo-aaron-levie-on-how-ai-is-changing-the-enterprise-saas-landscape/">TechCrunch – Box CEO Aaron Levie on AI &amp; Enterprise SaaS</a></li>
+<li><a href="https://www.khoslaventures.com/entrepreneurs/thought-provoking">Khosla Ventures – Vinod Khosla Thought Provoking</a></li>
+<li><a href="https://techcrunch.com/2025/09/23/vinod-khosla-on-ai-moonshots-and-building-enduring-startups-all-at-techcrunch-disrupt-2025/">TechCrunch – Vinod Khosla at Disrupt 2025</a></li>
+</ol>
+<h3 id="_13">泡沫论 / 反方</h3>
+<ol start="29">
+<li><a href="https://www.goldmansachs.com/images/migrated/insights/pages/gs-research/gen-ai--too-much-spend,-too-little-benefit-/TOM_AI%202.0_ForRedaction.pdf">Goldman Sachs – Gen AI: Too Much Spend, Too Little Benefit?</a></li>
+<li><a href="https://fortune.com/2026/05/06/is-ai-a-bubble-goldman-sachs-skeptics-overhyped/">Fortune – Goldman's Covello Says FOMO Driving AI Boom</a></li>
+<li><a href="https://www.wheresyoured.at/where-is-openais-money-going/">Where's Your Ed At – OpenAI's Money Going</a></li>
+<li><a href="https://www.computerworld.com/article/4054928/ai-bubble-watch-openai-to-burn-through-115b-by-2029.html">Computerworld – OpenAI to Burn Through $115B by 2029</a></li>
+</ol>
+<h3 id="_14">硬件 / 基础设施</h3>
+<ol start="33">
+<li><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026">Nvidia – Q4 FY2026 Financial Results ($68.1B Q4, $215.9B FY)</a></li>
+<li><a href="https://www.servethehome.com/nvidia-reports-q4-fy2026-earnings-data-center-and-proviz-drive-revenue-records/">ServeTheHome – Nvidia Q4 FY2026 Earnings Detail</a></li>
+<li><a href="https://www.fool.com/investing/2026/04/21/cerebras-and-other-nvidia-rivals-just-made-key-mov/">The Motley Fool – Cerebras and Nvidia Rivals Make Moves</a></li>
+<li><a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/deepseek-might-not-be-as-disruptive-as-claimed-firm-reportedly-has-50-000-nvidia-gpus-and-spent-usd1-6-billion-on-buildouts">Tom's Hardware – DeepSeek's 50,000 GPUs, $1.6B Buildout</a></li>
+<li><a href="https://www.capitalaidaily.com/altimeters-brad-gerstner-reveals-google-nvidia-and-six-other-stocks-as-firms-top-picks-sees-ai-capex-jumping-to-500000000000-in-2026/">CapitalAI Daily – Altimeter Top Picks, $500B AI CapEx 2026</a></li>
+</ol>
+<h3 id="_15">定价模式</h3>
+<ol start="38">
+<li><a href="https://www.salesforce.com/news/press-releases/2025/05/15/agentforce-flexible-pricing-news/">Salesforce – Flexible Agentforce Pricing News</a></li>
+<li><a href="https://www.saastr.com/salesforce-now-has-3-pricing-models-for-agentforce-and-maybe-right-now-thats-the-way-to-do-it/">SaaStr – Salesforce Now Has 3+ Pricing Models for Agentforce</a></li>
+<li><a href="https://www.heygotrade.com/en/blog/microsoft-q1-2026-earnings-reaction/">Microsoft Q1 2026 Earnings, Copilot Adoption</a></li>
+</ol>
+<h3 id="ai_3">中国 AI</h3>
+<ol start="41">
+<li><a href="https://www.technologyreview.com/2025/02/04/1110942/four-chinese-ai-startups-deepseek/">MIT Technology Review – Four Chinese AI Startups Beyond DeepSeek</a></li>
+<li><a href="https://www.scmp.com/tech/big-tech/article/3334602/beyond-deepseek-moonshot-and-minimax-step-chinas-new-frontier-ai-labs">SCMP – Beyond DeepSeek: Moonshot, MiniMax New Frontier Labs</a></li>
+<li><a href="https://www.technologyreview.com/2026/04/21/1135658/china-open-source-models-ai-artificial-intelligence/">MIT Technology Review – China's Open-Source Bet (2026)</a></li>
+<li><a href="https://www.interconnects.ai/p/chinas-top-19-open-model-labs">Interconnects – Ranking Chinese Open Model Builders</a></li>
+</ol>
+<h3 id="wrapper-vertical-ai">Wrapper 辩论 / vertical AI</h3>
+<ol start="45">
+<li><a href="https://www.vccafe.com/2025/05/14/are-ai-wrappers-investable-the-case-for-and-against/">VC Cafe – Are AI Wrappers Investable?</a></li>
+<li><a href="https://www.marktechpost.com/2025/07/29/its-okay-to-be-just-a-wrapper-why-solution-driven-ai-companies-win/">MarkTechPost – It's Okay to Be a Wrapper</a></li>
+</ol>
+<nav class="chapter-bottom-nav"><a href="04-industry-displacement.html" class="prev"><span class="nav-arrow">← 上一章 / 04</span><span class="nav-label">行业替代地图</span></a><a href="06-personal-workflow.html" class="next"><span class="nav-arrow">下一章 / 06 →</span><span class="nav-label">个人工作流与认知重塑</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

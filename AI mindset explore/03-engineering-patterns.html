@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 · 工程实践与架构模式 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 03 · 工程实践与架构模式">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chapter-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  font-size: 13px;
+}
+.nav-brand {
+  font-family: var(--serif); font-weight: 700; font-size: 14px;
+  color: var(--accent); margin-right: 16px; padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+.nav-item {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--text-soft); border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--code-bg); color: var(--text); border-bottom: none; }
+.nav-item.current { background: var(--accent); color: #fff; }
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num { font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--text-faded); letter-spacing: 0.04em; }
+.nav-title { font-weight: 500; }
+
+.content { max-width: 760px; margin: 64px auto 60px; padding: 0 32px; }
+
+.content > h1:first-child {
+  font-family: var(--serif); font-size: 40px; line-height: 1.25; font-weight: 700;
+  color: var(--heading); margin: 0 0 12px 0; padding: 0; border: none;
+  letter-spacing: -0.015em;
+}
+.content > h1:first-child + blockquote {
+  margin-top: 16px; border-left-width: 3px; background: transparent;
+  font-style: normal; color: var(--text-soft); padding: 6px 18px;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--heading); letter-spacing: -0.005em; }
+h1 { font-size: 30px; margin: 72px 0 22px; padding-top: 16px; border-top: 2px solid var(--border); }
+h2 { font-size: 25px; margin: 56px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 20px; margin: 38px 0 12px; }
+h4 { font-size: 17px; margin: 26px 0 10px; font-family: var(--sans); font-weight: 600; color: var(--text); }
+p { margin: 16px 0; word-break: break-word; overflow-wrap: anywhere; }
+
+a { color: var(--link); text-decoration: none; border-bottom: 1px dashed var(--accent-soft); transition: color 0.15s ease, border-bottom-style 0.15s ease; }
+a:hover { color: var(--link-hover); border-bottom-style: solid; }
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol { margin: 16px 0 16px 26px; padding: 0; }
+li { margin: 8px 0; line-height: 1.85; }
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0; padding: 14px 22px; background: var(--bg-card);
+  border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0;
+  color: var(--text-soft); font-family: var(--serif); font-size: 16px; font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--code-bg); padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--code-border); color: #6b3a2e;
+}
+pre {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 20px; margin: 22px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; color: var(--text);
+}
+pre code { background: transparent; padding: 0; border: none; font-size: inherit; color: inherit; }
+.codehilite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 22px 0; overflow-x: auto; }
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 14.5px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: table;
+}
+thead { background: var(--code-bg); }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; line-height: 1.6; }
+th { font-weight: 600; color: var(--heading); font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em; }
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+.table-wrap { overflow-x: auto; margin: 26px 0; border-radius: 6px; }
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0; padding: 24px 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr { border: none; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 48px 0; }
+
+.site-footer {
+  text-align: center; padding: 36px 24px 60px; border-top: 1px solid var(--border);
+  margin-top: 60px; color: var(--text-faded); font-size: 13px;
+  font-family: var(--serif); letter-spacing: 0.02em;
+}
+.site-footer a { color: var(--text-soft); border-bottom: none; }
+.site-footer a:hover { color: var(--accent); }
+
+.format-banner {
+  margin: 24px 0 0; padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  font-size: 13px; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap;
+  align-items: center;
+}
+.format-banner .label { font-family: var(--serif); font-weight: 600; color: var(--heading); }
+.format-banner a { font-family: var(--mono); font-size: 12px; }
+
+.chapter-bottom-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 56px 0 16px; padding: 24px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1; padding: 12px 16px; border-radius: 6px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover { border-color: var(--accent); color: var(--accent); border-bottom: 1px solid var(--accent); }
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav, .format-banner { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item current"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<div class="format-banner"><span class="label">本章其他版本</span><a href="pdf/03-engineering-patterns.pdf">PDF（离线打印）</a><a href="markdown/03-engineering-patterns.md">Markdown 源</a></div>
+<h1 id="03">03 · 工程实践与架构模式</h1>
+<blockquote>
+<p>怎么把 LLM ship 成稳定可用的产品。</p>
+</blockquote>
+<h2 id="_1">一句话总览</h2>
+<p>LLM 工程的核心矛盾是「概率系统」与「确定性产品要求」之间的落差，所有穿越周期的模式（evals、RAG、context engineering、guardrails、observability）本质上都是把这种概率性收敛成可度量的工程指标，<strong>模型在变强，但围绕模型的工程栈反而越来越像传统软件工程</strong>。</p>
+<h2 id="10">关键句提纲（10 条）</h2>
+<ol>
+<li><strong>Evals 是 2024-2026 唯一不会被新模型抹平的护城河</strong>——Hamel Husain 帮 30+ 家公司诊断，结论是失败项目几乎都死在「没系统化的 eval」。</li>
+<li><strong>RAG 没有死，但 vanilla RAG 死了</strong>：单纯 chunk + cosine 在 2024 年已经不够，hybrid search + reranker + contextual embedding 成为新基线（Anthropic 报告显示 top-20 检索失败率从 5.7% 降到 1.9%）。</li>
+<li><strong>「最简单的循环」是 Anthropic 给的最珍贵建议</strong>：能用 prompt chaining 解决就别上 LangGraph，能用 LangGraph 别上 multi-agent；复杂度是负债不是资产。</li>
+<li><strong>Workflow ≠ Agent</strong>：Anthropic 在《Building Effective Agents》明确区分——workflow 是「LLM 在预定义代码路径里跑」，agent 是「LLM 自己决定下一步做什么」，两者监控、debug、成本曲线完全不同。</li>
+<li><strong>LLM-as-judge 不是「免费 eval」</strong>：position bias、verbosity bias、self-preference bias 让它在 pairwise 比较时 repetition stability 都不稳，必须配人工 calibration。</li>
+<li><strong>Long context ≠ RAG 的替代品</strong>：Gemini 2M 上下文出来后 RAG 短期被宣告死亡，但 Databricks 的 benchmark 显示 citation accuracy 上 RAG 仍稳赢，长上下文还面临 context rot（n² attention 关系导致中段信息丢失）。</li>
+<li><strong>Fine-tuning 在 2024 复活，2025 又被压回小众</strong>：因为 prompt caching + 长上下文 + 强基模让大多数任务不再需要 SFT；只有 latency、隐私、固定格式三类场景仍值得做。</li>
+<li><strong>结构化输出从「黑魔法」变成基础设施</strong>：Jason Liu 的 instructor 月下载 300 万次，OpenAI 把 structured output 做成原生 API，schema-first 编程是 2025 后的默认范式。</li>
+<li><strong>Cost / Latency 三件套</strong>：prompt caching（最高 90% 成本降）、speculative decoding（2-3 倍提速）、router（30-85% 成本降）。三件叠加是 2025 production 的黄金组合。</li>
+<li><strong>Observability 从「nice-to-have」变成「production 必需品」</strong>：因为 agent 一旦跑飞，你需要的是 trace 而不是 log——LangSmith / Braintrust / Langfuse 已成新一代 APM。</li>
+</ol>
+<hr />
+<h2 id="_2">核心模式深度展开</h2>
+<h3 id="rag-vanilla-agentic">一、RAG 演进史（vanilla → agentic）</h3>
+<p>RAG 的演进是「retrieval 失败模式」被一代代发现并补丁的过程，不是模型变强带来的，而是工程师踩坑反推出来的。</p>
+<p><strong>Gen 1 · Vanilla RAG（2020-2023 上半年）</strong><br />
+Lewis 2020 的原始 RAG = embed query → cosine top-k → stuff into prompt。问题暴露得很快：<br />
+- 同义词召回率差（"car" vs "automobile"）；<br />
+- 长尾术语召回不到（错误码、产品 SKU）；<br />
+- chunk 切错地方语义就断了；<br />
+- top-k 进 prompt 但 LLM「Lost in the Middle」（Liu 2023）——中段相关信息被忽略。</p>
+<p><strong>Gen 2 · Hybrid Search + Reranker（2023 末-2024）</strong><br />
+BM25 + dense vector 并行召回，用 RRF 融合，再用 cross-encoder reranker（Cohere、Jina、bge-reranker）做精排。Anthropic 内部 benchmark：Reranked Contextual Embedding + Contextual BM25 把 top-20 chunk 检索失败率从 5.7% 降到 1.9%。这是当下 production 的事实标准。</p>
+<p><strong>Gen 3 · Query Rewriting / HyDE（2023）</strong><br />
+Gao et al. 提出 HyDE：先让 LLM 生成一个「假想答案文档」，再用这个文档去检索真实文档。原理是 query 短、document 长，向量空间不匹配，HyDE 让 query 先「长出来」。同期还有 multi-query expansion、step-back prompting。</p>
+<p><strong>Gen 4 · Multi-Vector / ColBERT（2024 起回潮）</strong><br />
+ColBERT（Khattab &amp; Zaharia）的「late interaction」：query 和 document 各自编码成多向量，retrieval 时用 MaxSim 算 token 级相似度。比单向量更准，比 cross-encoder 更快。2024 年 Jina-ColBERT-v2 让它在多语言、长文档场景重新被关注。</p>
+<p><strong>Gen 5 · Graph RAG（Microsoft 2024）</strong><br />
+对于「全局 sensemaking」类问题（"这本书的核心主题是什么"），naive RAG 完全不行，因为答案不在任何单一 chunk。Microsoft GraphRAG 用 LLM 抽实体+关系建图，社区检测分层，每层 community 做摘要。在 1M token 数据集上，全局问答的 comprehensiveness 和 diversity 比 naive RAG 赢 70-80%。代价是 indexing 成本陡增——LazyGraphRAG 2024 末改为按需建图，把成本降回来。</p>
+<p><strong>Gen 6 · Agentic RAG（2024 末-2026）</strong><br />
+把 retrieval 当成 tool，让 agent 自己决定查不查、查几次、怎么查。典型形态：Orchestrator 拆问题 → 多个 Retriever agent 并行查不同 source → Analyst 综合 → Critic 核实 → Writer 输出。带 planning loop、memory、cost ceiling、max iteration。这是当下「最高级形态」，但也最容易跑飞——production 部署必须配 max iteration、cost ceiling、runaway monitoring 三件套。</p>
+<p><strong>穿越周期的判断</strong>：hybrid search + reranker 一定会留下来；query rewriting 可能被 reasoning model 自带能力吸收；Graph RAG 的核心思想（hierarchical summarization）会留，但具体实现可能换成更轻的 lazy 形态；agentic RAG 的边界还在动——它和「带 tool 的 agent」之间的区分会越来越模糊。</p>
+<h3 id="agent-simple-loop-vs-orchestrated">二、Agent 架构（simple loop vs orchestrated）</h3>
+<p>Anthropic 2024 年 12 月的《Building Effective Agents》是这个领域的经典文献，核心立场：</p>
+<blockquote>
+<p>"When building applications with LLMs, find the simplest solution possible, and only increase complexity when needed."</p>
+</blockquote>
+<p>它把模式分成两类：</p>
+<p><strong>Workflows（确定性编排）</strong><br />
+- <strong>Prompt chaining</strong>：A 输出 → B 输入，线性。<br />
+- <strong>Routing</strong>：LLM 分类 → 走不同子路径。<br />
+- <strong>Parallelization</strong>：多个 LLM 并行，再 voting 或 aggregation。<br />
+- <strong>Orchestrator-workers</strong>：中心 LLM 拆任务给 worker LLM。<br />
+- <strong>Evaluator-optimizer</strong>：一个生成、一个评判、循环优化。</p>
+<p><strong>Agents（动态控制）</strong><br />
+LLM 自己决定调哪个 tool、何时停止。控制流不再是工程师写在代码里的，而是从 prompt 和 tool 描述涌现出来的。</p>
+<p><strong>Anthropic 的反框架立场</strong><br />
+他们公开建议：先用裸 SDK + 一个 while 循环写出最简版，再决定要不要框架。LangChain / LangGraph 提供的抽象很多时候只是给简单逻辑增加了 indirection。这和 Jason Liu 的「High Agency Pydantic &gt; VC Backed Frameworks」是同一个 meme——少抽象、强类型、自己掌握状态。</p>
+<p><strong>反对方立场</strong><br />
+LangGraph 的拥护者认为：当你需要 checkpointing、human-in-the-loop、durable workflow、time-travel debugging 时，自己造的简单 loop 撑不住。CrewAI 的拥护者强调声明式角色定义对业务流程来说更直观。<strong>这不是技术之争，是规模之争</strong>——10 行循环 vs 10 万行系统的边界在哪。</p>
+<h3 id="evaluation">三、Evaluation 工程</h3>
+<p>Hamel Husain 的论断（2024 年 3 月）：「失败的 AI 产品几乎都共享一个根因——没有 robust eval system」。他在帮 30+ 家公司之后总结的方法论：</p>
+<p><strong>Eval 三层金字塔</strong></p>
+<ol>
+<li><strong>Unit / Binary Evals</strong>：写 assertion 一样的规则，例如「输出必须是合法 JSON」「不能出现竞品名字」。便宜、快、能跑 CI。是 80% 项目缺的基础。</li>
+<li><strong>Model-Graded Evals（LLM-as-judge）</strong>：用强模型评弱模型输出。便宜但有 bias（position、verbosity、self-preference）。必须有人工标注数据校准 judge 本身。</li>
+<li><strong>Human Evals</strong>：最贵但最可信。Hamel 反复强调早期阶段「领域专家 + 错误分析」比任何自动指标都重要。</li>
+</ol>
+<p><strong>Error Analysis Loop（Hamel 的核心方法论）</strong><br />
+看 100 条真实输入输出 → 给每条打 fail/pass + 失败原因 → 用 frequency 排出 top failure modes → 针对性改 prompt / retrieval / tooling → 再跑回测。这是「做评估」和「靠 vibe check」最大的差别。</p>
+<p><strong>Anthropic Demystifying Evals（2025）</strong><br />
+明确定义术语：task = 测试用例，trial = 一次尝试（多次平均消除随机），grader = 打分逻辑，transcript = 完整 trace。建议从 <strong>20-50 个真实失败用例</strong> 起步，效应量大、不需要大样本。这和传统 ML 要 thousands of examples 的思路是反的——LLM eval 是质性数据科学，不是统计假设检验。</p>
+<p><strong>LLM-as-judge 的争议</strong><br />
+2024 年「Judging the Judges」研究（Shi et al.）系统测了 15 个 judge × 22 任务 × 40 candidate × 150,000 实例，结论：position bias 不是随机，跟 quality gap 强相关。MT-Bench-style pairwise 比较里，模型有时倾向选第一个，有时选第二个，跨 judge 不一致。<br />
+工程实践共识：<br />
+- 不要用 judge 做绝对分数，只做 pairwise；<br />
+- judge 必须和人工评估对齐（agreement rate &gt; 0.7）；<br />
+- 双向 swap 取平均消除 position bias；<br />
+- chain-of-thought judge 比直接打分稳。</p>
+<h3 id="schema">四、结构化输出与 schema 强制</h3>
+<p>2023 年 OpenAI function calling 出现是分水岭。2024 年 Jason Liu 的 instructor（基于 Pydantic）让 schema-first 范式普及——你定义 BaseModel，库自动重试 + 验证 + parse。OpenAI 后来直接吸收为 native structured output。</p>
+<p><strong>为什么重要</strong>：production 系统不能容忍「99% JSON 合法、1% 字符串多了个引号」。schema 约束 + 自动重试把一个 statistical 问题转换成 deterministic 问题。</p>
+<p><strong>穿越周期判断</strong>：schema-first 是不可逆趋势。今后所有 agent / RAG 系统的输入输出都会是强类型对象，自然语言只是 UI 层。</p>
+<h3 id="cost-latency">五、Cost / Latency 优化</h3>
+<p>四个杠杆，影响是乘性的：</p>
+<ol>
+<li><strong>Prompt Caching</strong>（Anthropic 2024.8 推出，2024.12 GA）：长 prefix 缓存 5-10 分钟，cache hit 价格只有正常 input 的 10%。Anthropic 官方数据：成本最高降 90%、延迟最高降 85%。<strong>对 agent 系统是 game-changer</strong>——system prompt + tool definitions 通常占 token 大头，缓存后边际成本陡降。</li>
+<li><strong>Speculative Decoding</strong>：小 draft model 提候选 token，大 model 一次 verify 多个。vLLM、TensorRT-LLM 已原生支持。NVIDIA H200 上 Llama 3.1-405B 实测 3.6x 吞吐提升。质量无损（数学上等价）。</li>
+<li><strong>Routing / Model Cascade</strong>：简单 query 走小模型，复杂 query 升级到大模型。UC Berkeley + Canva 数据：85% 成本降，95% GPT-4 质量。OpenRouter / LiteLLM / Portkey 是流行 gateway。</li>
+<li><strong>Batching + Async</strong>：OpenAI / Anthropic batch API 可以拿 50% 折扣，代价是 24h 内返回。适合离线 eval、数据清洗、bulk generation。</li>
+</ol>
+<h3 id="observability-debugging">六、Observability 与 debugging</h3>
+<p>LLM 系统不能用传统 log 看，因为：<br />
+- 每次调用都是非确定的；<br />
+- agent 的执行树是动态的；<br />
+- token 消耗、latency、tool call 失败需要分维度看；<br />
+- 多 turn 上下文里的因果链不在单条 log 里。</p>
+<p>工具栈：<strong>LangSmith</strong>（深度对接 LangGraph，含 time-travel debug）、<strong>Braintrust</strong>（eval-first，prod trace 和 offline experiment 同 schema）、<strong>Langfuse</strong>（开源）、<strong>Helicone</strong>（gateway 形态）、<strong>Arize Phoenix</strong>。趋势是「trace + eval + dataset」三位一体——线上 trace 直接抓出来变成 eval 数据集，闭环修复 prompt。</p>
+<h3 id="guardrails">七、Guardrails / 安全栏</h3>
+<p>四类常见 guardrail：<br />
+- <strong>Input guardrail</strong>：prompt injection 检测、PII 脱敏、jailbreak 拒绝；<br />
+- <strong>Output guardrail</strong>：toxicity、PII 泄露、品牌不当言论；<br />
+- <strong>Topic guardrail</strong>：把对话限定在业务域内（金融助手不能聊医疗）；<br />
+- <strong>Action guardrail</strong>：tool 调用前的 human approval、权限检查、cost ceiling。</p>
+<p>实现方式：小模型分类器（NeMo Guardrails、Llama Guard）、规则引擎、policy LLM。<strong>重要的不是用什么，而是把 guardrail 当成第一公民设计在系统里</strong>——很多团队把它当 afterthought，结果是 90% bug 在 guardrail 失效。</p>
+<hr />
+<h2 id="pattern-vs">穿越周期的 pattern vs 过渡形态</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>会留下的</th>
+<th>短期过渡</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Eval</strong></td>
+<td>错误分析循环、unit binary check、人工校准</td>
+<td>单一总分指标、纯 LLM judge 不校准</td>
+</tr>
+<tr>
+<td><strong>RAG</strong></td>
+<td>hybrid search、reranker、metadata filter、structured retrieval</td>
+<td>纯 cosine top-k、单 embedding 模型一把梭</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>简单循环 + 强 schema、workflow 优先、tool 边界清晰</td>
+<td>复杂多 agent 编排（除非业务真需要）</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>schema-first、Pydantic / Zod、structured output API</td>
+<td>解析自然语言再正则</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>prompt cache、router、batch</td>
+<td>一刀切用最强模型</td>
+</tr>
+<tr>
+<td><strong>Observability</strong></td>
+<td>trace + eval 闭环、cost / latency dashboard</td>
+<td>只用 stdout log</td>
+</tr>
+<tr>
+<td><strong>Adaptation</strong></td>
+<td>RAG + prompt + 强基模</td>
+<td>大量 SFT 微调（除非 latency / 隐私 / 格式刚需）</td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>context engineering（compaction、subagent isolation）</td>
+<td>把所有东西塞进长 context</td>
+</tr>
+<tr>
+<td><strong>Guardrail</strong></td>
+<td>多层防御、policy 内嵌系统设计</td>
+<td>仅靠 system prompt 防御</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_3">失败模式合集</h2>
+<ol>
+<li><strong>Infinite agent loop</strong>：tool 报错 → agent 重试 → 同样错 → 再重试。Claude Code 子 agent 曾在 4.6 小时内消耗 27M token 跑死循环。<strong>解法</strong>：max iteration、relative progress check、外部 deterministic loop guard。</li>
+<li><strong>Context rot / pollution</strong>：multi-turn 累积无关信息，模型注意力被稀释。Anthropic 在 2025.9《Effective Context Engineering》明确提出 n² 注意力矛盾——10K token 是 100M 关系，100K 是 10B。<strong>解法</strong>：summarization、subagent 独立 context、惰性加载（lightweight reference + on-demand fetch）。</li>
+<li><strong>Tool selection error</strong>：tool 描述歧义，agent 选错；或者 tool 列表太长（&gt;20 个）选择崩溃。<strong>解法</strong>：tool 分组、描述写 1st-person 用例、动态 tool 加载（先选 group 再选 tool）。</li>
+<li><strong>Lost in the middle</strong>：长上下文中段信息被忽略（Liu 2023）。<strong>解法</strong>：reranker 把 top-1 放最前最后、prompt 显式 restate critical info、把长 context 拆成多个 retrieval call。</li>
+<li><strong>Hallucinated tool call</strong>：模型生成不存在的 tool 名 / 参数。<strong>解法</strong>：strict schema validation + 自动 retry with error feedback。</li>
+<li><strong>Cascading agent failure (17x error trap)</strong>：multi-agent 系统每个 step 91% 准确，10 step 后 0.91^10 = 38%。<strong>解法</strong>：少 agent、强 schema、加 critic、step-level retry。</li>
+<li><strong>Eval gaming</strong>：agent 找到 metric loophole（例如总是答 "I don't know" 来避免 hallucination 罚分）。<strong>解法</strong>：多元 grader、real-world A/B、人工 spot check。</li>
+<li><strong>Production-dev skew</strong>：dev 用 sanitized example，production 进来 emoji、错别字、PDF 截断。<strong>解法</strong>：从 production log 抽 eval set，每周更新。</li>
+<li><strong>Prompt 漂移</strong>：换模型、换 provider、改 system prompt 后没回归。<strong>解法</strong>：prompt 版本化 + eval gate + canary 部署。</li>
+<li><strong>过度依赖 framework</strong>：LangChain 抽象掉了你需要 debug 的层。<strong>解法</strong>：原生 SDK + 必要时引入 framework，不要反过来。</li>
+</ol>
+<hr />
+<h2 id="_4">不同立场和争议</h2>
+<h3 id="1-simple-agent-loopanthropic-jason-liuvs-langgraph-crewai-autogen">争议 1 · Simple agent loop（Anthropic / Jason Liu）vs 复杂编排（LangGraph / CrewAI / AutoGen）</h3>
+<ul>
+<li><strong>Anthropic 立场</strong>：「最简单的 while 循环 + tool calling 能解决 80% 场景，复杂度是负债不是资产」。</li>
+<li><strong>LangGraph 立场</strong>：「production 需要 checkpointing、human-in-the-loop、durable execution、observability，自己写撑不住」。</li>
+<li><strong>真实分歧</strong>：不在技术，在「你的系统是 prototype 还是 multi-tenant production with SLA」。10 行循环对前者完美，后者得有重型工程支撑。</li>
+</ul>
+<h3 id="2-long-context-rag-vs-rag">争议 2 · Long context 替代 RAG vs RAG 长存</h3>
+<ul>
+<li><strong>Long context 派</strong>：Gemini 2M token 出来时业界喊「RAG is dead」——为什么不直接把整个文档塞进去？</li>
+<li><strong>RAG 派</strong>：Databricks 实测 citation accuracy 在长上下文中明显下降（除 Gemini 1.5-pro 外），且 context rot、token 成本、latency 都是硬伤。</li>
+<li><strong>共识</strong>：两者不是替代关系。短文档 + 偶发查询用 long context；大语料 + 高频查询 + 需要 citation 用 RAG。<strong>真正的演化是 hybrid</strong>——retrieve 一批进长 context，让模型在「足够大但不无穷大」的窗口里推理。</li>
+</ul>
+<h3 id="3-fine-tuning-vs-prompt-rag">争议 3 · Fine-tuning 复活 vs prompt + RAG 已够</h3>
+<ul>
+<li><strong>Fine-tuning 派</strong>：Phil Schmid 2024 推 LoRA + TRL；Sebastian Raschka 推「LoRA Land：310 个微调模型 rival GPT-4」；垂直场景（medical、legal、code）SFT 仍有显著收益。</li>
+<li><strong>Prompt + RAG 派</strong>：Chip Huyen 在《AI Engineering》明确写「RAG is for knowledge gaps, fine-tuning is for behavior gaps」；多数业务问题是知识问题，不是行为问题。</li>
+<li><strong>2025 的暗线</strong>：prompt caching + 强基模让 fine-tuning ROI 进一步下降；但 latency-critical（边缘部署）、隐私敏感、严格固定格式三类场景，SFT 仍然胜出。</li>
+</ul>
+<h3 id="4-llm-as-judge-vs">争议 4 · LLM-as-judge 可信 vs 不可信</h3>
+<ul>
+<li><strong>可信派</strong>：Eugene Yan、Hamel Husain（用得对的话）；G-Eval、AlpacaEval 已经是事实标准；scale 大时只能这样做。</li>
+<li><strong>不可信派</strong>：position bias、verbosity bias、self-preference bias 系统性偏，Shi et al. 2024 实证 repetition stability 都成问题。</li>
+<li><strong>务实立场</strong>：judge 必须 calibrate against human（agreement &gt; 0.7），用 pairwise + double swap，不要用做绝对分。</li>
+</ul>
+<hr />
+<h2 id="5">前瞻假设（5 条）</h2>
+<ol>
+<li><strong>Eval-as-code 会成为 CI 标配</strong>：像写单元测试一样写 eval，每个 PR 自动跑回测，prompt 改动会触发 canary 比较。已经有 Braintrust / Inspect AI 在做。</li>
+<li><strong>「上下文工程」（context engineering）替代「prompt 工程」成为新词</strong>：Anthropic 2025.9 已经明确转向，焦点从「写好一句话」变成「管理整个 context window 的内容、顺序、压缩」。</li>
+<li><strong>Agent framework 会两极分化</strong>：要么变薄（只是 SDK 包装 + 一些 utility），要么变重（成为完整的 BPM-like workflow 平台）。中间地带（半重半轻、抽象不彻底）会被淘汰。</li>
+<li><strong>Inference 优化进入第二战场</strong>：speculative decoding、prompt caching、KV cache offload、disaggregated serving、router 这些已经从论文进入 production；接下来是「adaptive inference」（同一个模型按 query 难度切换 reasoning 深度），把 cost / latency 再压一个数量级。</li>
+<li><strong>observability 和 eval 合体</strong>：production trace 直接变 eval dataset，eval 失败直接定位到 trace 中的 turn——这个闭环会成为 LLM-Ops 的中心，而不是模型训练。</li>
+</ol>
+<hr />
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((工程模式))
+    RAG 演进
+      Vanilla
+      Hybrid+Reranker
+      HyDE/Query rewrite
+      ColBERT 多向量
+      GraphRAG
+      Agentic RAG
+    Agent 架构
+      Simple loop
+      Workflow
+        Chaining
+        Routing
+        Parallel
+        Orchestrator-worker
+        Evaluator-optimizer
+      Autonomous Agent
+      Multi-agent
+    Eval
+      Unit/Binary
+      LLM-as-judge
+      Human review
+      Error analysis loop
+      Trace-driven dataset
+    Cost/Latency
+      Prompt cache
+      Spec decoding
+      Router
+      Batch
+    Failure modes
+      Infinite loop
+      Context rot
+      Tool misuse
+      Lost in middle
+      Cascade failure
+    Guardrails
+      Input
+      Output
+      Topic
+      Action
+    Observability
+      Trace
+      Eval+Trace 闭环</pre></div>
+<hr />
+<h2 id="_5">来源库</h2>
+<h3 id="_6">核心人物 / 博客</h3>
+<ol>
+<li>Hamel Husain · <a href="https://hamel.dev/blog/posts/evals/">Your AI Product Needs Evals</a> · 2024-03-29</li>
+<li>Hamel Husain · <a href="https://hamel.dev/blog/posts/llm-judge/">Using LLM-as-a-Judge For Evaluation</a> · 2024-10</li>
+<li>Hamel Husain · <a href="https://www.oreilly.com/radar/a-field-guide-to-rapidly-improving-ai-products/">A Field Guide to Rapidly Improving AI Products</a> · 2025-04</li>
+<li>Eugene Yan · <a href="https://eugeneyan.com/writing/llm-patterns/">Patterns for Building LLM-based Systems &amp; Products</a> · 2023-07</li>
+<li>Yan / Bischof / Husain / Liu / Frye / Shankar · <a href="https://applied-llms.org/">What We Learned from a Year of Building with LLMs</a> · 2024 O'Reilly</li>
+<li>Chip Huyen · <a href="https://www.oreilly.com/library/view/ai-engineering/9781098166298/">AI Engineering: Building Applications with Foundation Models</a> · 2025 O'Reilly</li>
+<li>Sebastian Raschka · <a href="https://magazine.sebastianraschka.com/p/practical-tips-for-finetuning-llms">Practical Tips for Finetuning LLMs Using LoRA</a> · 2024</li>
+<li>Phil Schmid · <a href="https://www.philschmid.de/fine-tune-llms-in-2024-with-trl">How to Fine-Tune LLMs in 2024 with Hugging Face</a> · 2024-01</li>
+<li>Jason Liu · <a href="https://python.useinstructor.com/">Instructor: Structured Outputs for LLMs</a> · ongoing</li>
+<li>Latent Space (swyx &amp; Alessio) · <a href="https://www.latent.space/p/instructor">High Agency Pydantic &gt; VC Backed Frameworks — with Jason Liu</a></li>
+</ol>
+<h3 id="anthropic">Anthropic 官方工程内容</h3>
+<ol start="11">
+<li>Anthropic · <a href="https://www.anthropic.com/research/building-effective-agents">Building Effective Agents</a> · 2024-12</li>
+<li>Anthropic · <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a> · 2025</li>
+<li>Anthropic · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a> · 2025-09</li>
+<li>Anthropic · <a href="https://www.anthropic.com/news/prompt-caching">Prompt caching launch</a> · 2024-08</li>
+</ol>
+<h3 id="_7">论文（一手）</h3>
+<ol start="15">
+<li>Lewis et al. · <a href="https://arxiv.org/abs/2005.11401">RAG: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a> · 2020</li>
+<li>Liu et al. · <a href="https://arxiv.org/abs/2307.03172">Lost in the Middle: How Language Models Use Long Contexts</a> · 2023</li>
+<li>Gao et al. · <a href="https://arxiv.org/abs/2212.10496">Precise Zero-Shot Dense Retrieval without Relevance Labels (HyDE)</a> · 2022-12</li>
+<li>Khattab &amp; Zaharia · <a href="https://arxiv.org/abs/2004.12832">ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT</a> · 2020</li>
+<li>Edge et al. (Microsoft) · <a href="https://arxiv.org/abs/2404.16130">From Local to Global: A Graph RAG Approach to Query-Focused Summarization</a> · 2024-04</li>
+<li>Microsoft Research · <a href="https://www.microsoft.com/en-us/research/blog/lazygraphrag-setting-a-new-standard-for-quality-and-cost/">LazyGraphRAG: Setting a New Standard for Quality and Cost</a> · 2024-11</li>
+<li>Singh et al. · <a href="https://arxiv.org/abs/2501.09136">Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG</a> · 2025-01</li>
+<li>Es et al. · <a href="https://arxiv.org/abs/2309.15217">Ragas: Automated Evaluation of Retrieval Augmented Generation</a> · 2023-09</li>
+<li>Shi et al. · <a href="https://arxiv.org/abs/2406.07791">Judging the Judges: Position Bias in LLM-as-a-Judge</a> · 2024-06</li>
+</ol>
+<h3 id="_8">工程实战 / 平台</h3>
+<ol start="24">
+<li>Vellum · <a href="https://www.vellum.ai/blog/rag-vs-long-context">How do RAG and Long Context compare in 2024?</a></li>
+<li>Databricks · <a href="https://www.databricks.com/blog/long-context-rag-capabilities-openai-o1-and-google-gemini">Long Context RAG Capabilities of OpenAI o1 and Google Gemini</a></li>
+<li>NVIDIA Developer Blog · <a href="https://developer.nvidia.com/blog/an-introduction-to-speculative-decoding-for-reducing-latency-in-ai-inference/">An Introduction to Speculative Decoding</a></li>
+<li>LangSmith · <a href="https://www.langchain.com/langsmith/observability">AI Agent &amp; LLM Observability</a></li>
+<li>Braintrust · <a href="https://www.braintrust.dev/articles/best-llm-tracing-tools-2026">Best LLM Tracing Tools for Multi-agent AI Systems</a></li>
+</ol>
+<h3 id="_9">中文源</h3>
+<ol start="29">
+<li>宝玉 · <a href="https://baoyu.io/translations">《为 AI 智能体打造高效工具》解读 Anthropic 工程文章</a> · 2025</li>
+<li>CSDN · <a href="https://blog.csdn.net/m0_59235245/article/details/147552044">2025 AI Agent（多智能体系统）评估和优化指南</a> · 2025</li>
+</ol>
+<hr />
+<blockquote>
+<p>本篇坐标：把 LLM 当成「概率组件」嵌入软件系统的工程心法。下一周期最稀缺的不是更强模型，是知道怎么把模型 ship 出去且不爆炸的工程师。</p>
+</blockquote>
+<nav class="chapter-bottom-nav"><a href="02-control-stack-evolution.html" class="prev"><span class="nav-arrow">← 上一章 / 02</span><span class="nav-label">操控术分层演进</span></a><a href="04-industry-displacement.html" class="next"><span class="nav-arrow">下一章 / 04 →</span><span class="nav-label">行业替代地图</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

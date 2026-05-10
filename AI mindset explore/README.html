@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI mindset explore — 个人 AI 认知框架 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · AI mindset explore — 个人 AI 认知框架">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chapter-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  font-size: 13px;
+}
+.nav-brand {
+  font-family: var(--serif); font-weight: 700; font-size: 14px;
+  color: var(--accent); margin-right: 16px; padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+.nav-item {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--text-soft); border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--code-bg); color: var(--text); border-bottom: none; }
+.nav-item.current { background: var(--accent); color: #fff; }
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num { font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--text-faded); letter-spacing: 0.04em; }
+.nav-title { font-weight: 500; }
+
+.content { max-width: 760px; margin: 64px auto 60px; padding: 0 32px; }
+
+.content > h1:first-child {
+  font-family: var(--serif); font-size: 40px; line-height: 1.25; font-weight: 700;
+  color: var(--heading); margin: 0 0 12px 0; padding: 0; border: none;
+  letter-spacing: -0.015em;
+}
+.content > h1:first-child + blockquote {
+  margin-top: 16px; border-left-width: 3px; background: transparent;
+  font-style: normal; color: var(--text-soft); padding: 6px 18px;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--heading); letter-spacing: -0.005em; }
+h1 { font-size: 30px; margin: 72px 0 22px; padding-top: 16px; border-top: 2px solid var(--border); }
+h2 { font-size: 25px; margin: 56px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 20px; margin: 38px 0 12px; }
+h4 { font-size: 17px; margin: 26px 0 10px; font-family: var(--sans); font-weight: 600; color: var(--text); }
+p { margin: 16px 0; word-break: break-word; overflow-wrap: anywhere; }
+
+a { color: var(--link); text-decoration: none; border-bottom: 1px dashed var(--accent-soft); transition: color 0.15s ease, border-bottom-style 0.15s ease; }
+a:hover { color: var(--link-hover); border-bottom-style: solid; }
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol { margin: 16px 0 16px 26px; padding: 0; }
+li { margin: 8px 0; line-height: 1.85; }
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0; padding: 14px 22px; background: var(--bg-card);
+  border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0;
+  color: var(--text-soft); font-family: var(--serif); font-size: 16px; font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--code-bg); padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--code-border); color: #6b3a2e;
+}
+pre {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 20px; margin: 22px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; color: var(--text);
+}
+pre code { background: transparent; padding: 0; border: none; font-size: inherit; color: inherit; }
+.codehilite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 22px 0; overflow-x: auto; }
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 14.5px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: table;
+}
+thead { background: var(--code-bg); }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; line-height: 1.6; }
+th { font-weight: 600; color: var(--heading); font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em; }
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+.table-wrap { overflow-x: auto; margin: 26px 0; border-radius: 6px; }
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0; padding: 24px 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr { border: none; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 48px 0; }
+
+.site-footer {
+  text-align: center; padding: 36px 24px 60px; border-top: 1px solid var(--border);
+  margin-top: 60px; color: var(--text-faded); font-size: 13px;
+  font-family: var(--serif); letter-spacing: 0.02em;
+}
+.site-footer a { color: var(--text-soft); border-bottom: none; }
+.site-footer a:hover { color: var(--accent); }
+
+.format-banner {
+  margin: 24px 0 0; padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  font-size: 13px; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap;
+  align-items: center;
+}
+.format-banner .label { font-family: var(--serif); font-weight: 600; color: var(--heading); }
+.format-banner a { font-family: var(--mono); font-size: 12px; }
+
+.chapter-bottom-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 56px 0 16px; padding: 24px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1; padding: 12px 16px; border-radius: 6px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover { border-color: var(--accent); color: var(--accent); border-bottom: 1px solid var(--accent); }
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav, .format-banner { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item current"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<div class="format-banner"><span class="label">本章其他版本</span><a href="pdf/README.pdf">PDF（离线打印）</a><a href="markdown/README.md">Markdown 源</a></div>
+<h1 id="ai-mindset-explore-ai">AI mindset explore — 个人 AI 认知框架</h1>
+<blockquote>
+<p>这不是一份一次性报告，而是一套<strong>可持续维护的认知工具</strong>。<br />
+10 个独立视角并行深挖，覆盖技术本质 / 操控术 / 工程实践 / 行业替代 / 投资格局 / 个人工作流 / 基础设施 / 安全治理 / 智能本质 / 前瞻争议。<br />
+每章独立成文，互有 overlap，不强求一致。允许相左观点并解释立场背景。</p>
+</blockquote>
+<hr />
+<h2 id="_1">这是什么 / 不是什么</h2>
+<p><strong>这是</strong>：一套让你日后看到任何新模型 / 新工具 / 新观点时，能快速<strong>定位、判断含金量、追问背景</strong>的思考脚手架。</p>
+<p><strong>不是</strong>：<br />
+- 不是一次性的报告（永远在迭代）<br />
+- 不是"标准答案"（每章都有相左观点和原因）<br />
+- 不是技术教程（不教你怎么跑代码）<br />
+- 不是行业八卦（每条结论必须有引用）</p>
+<hr />
+<h2 id="_2">怎么用</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>你正在做什么</th>
+<th>翻哪章</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>看到新模型 / 新论文，想判断是不是真本质突破</td>
+<td>01 + 09</td>
+</tr>
+<tr>
+<td>决定要不要在产品里上 multi-agent / 复杂编排</td>
+<td>02 + 03</td>
+</tr>
+<tr>
+<td>评估某个 AI 创业公司是不是"真公司"</td>
+<td>04 + 05</td>
+</tr>
+<tr>
+<td>决定哪些工作交给 AI、哪些不该</td>
+<td>06</td>
+</tr>
+<tr>
+<td>判断算力 / 电力 / 地缘新闻的真实分量</td>
+<td>07</td>
+</tr>
+<tr>
+<td>判断 AI safety 新闻是真问题还是炒作</td>
+<td>08</td>
+</tr>
+<tr>
+<td>解读名人 AI 预测，识别立场偏置</td>
+<td>10</td>
+</tr>
+<tr>
+<td>重新思考你的下一个 AI 项目的边界</td>
+<td>03 + 06 + 09</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="10">10 章导航</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>章节</th>
+<th>一句话总览</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./01-tech-evolution-essence.html">01</a></td>
+<td><strong>技术演进与本质</strong></td>
+<td>真本质突破只有 4 件：Transformer / Scaling Laws / RLHF→RLVR / Function calling→Computer use</td>
+</tr>
+<tr>
+<td><a href="./02-control-stack-evolution.html">02</a></td>
+<td><strong>操控术分层演进</strong></td>
+<td>L0-L7 上一层失效→下一层逃生；技巧保鲜期只有一代模型</td>
+</tr>
+<tr>
+<td><a href="./03-engineering-patterns.html">03</a></td>
+<td><strong>工程实践与架构模式</strong></td>
+<td>Eval 是真护城河；最珍贵建议是「最简单的 while 循环」</td>
+</tr>
+<tr>
+<td><a href="./04-industry-displacement.html">04</a></td>
+<td><strong>行业替代地图</strong></td>
+<td>替代发生在 task 层不是 industry 层；70/30 是平衡态</td>
+</tr>
+<tr>
+<td><a href="./05-investment-business-models.html">05</a></td>
+<td><strong>投资与商业模式</strong></td>
+<td>短期基础设施吃肉、中期模型层下沉、长期 vertical AI 显形</td>
+</tr>
+<tr>
+<td><a href="./06-personal-workflow.html">06</a></td>
+<td><strong>个人工作流与认知重塑</strong></td>
+<td>AI 是平权器但放大「普通」；从生成转向验证</td>
+</tr>
+<tr>
+<td><a href="./07-infra-compute-geopolitics.html">07</a></td>
+<td><strong>基础设施、算力、地缘</strong></td>
+<td>瓶颈在沿供应链上移：HBM → ASML → 电网变压器</td>
+</tr>
+<tr>
+<td><a href="./08-safety-alignment-ethics.html">08</a></td>
+<td><strong>安全、对齐、伦理</strong></td>
+<td>实证转折 + 治理倒退；adversarial training 反让 backdoor 更隐蔽</td>
+</tr>
+<tr>
+<td><a href="./09-cognitive-science-intelligence.html">09</a></td>
+<td><strong>认知科学与智能本质</strong></td>
+<td>「理解」之争是定义之争；agency 是脚手架借的</td>
+</tr>
+<tr>
+<td><a href="./10-forecasts-controversies.html">10</a></td>
+<td><strong>前瞻与争议</strong></td>
+<td>派别分歧根源是先验假设错位 + P&amp;L 利益绑定</td>
+</tr>
+</tbody>
+</table></div>
+<p>每章结构相同：一句话总览 / 关键句提纲 / 深度展开 / 不同立场和争议（含每派的立场背景）/ 5-10 条可验证前瞻假设 / Mermaid 脑图 / 15-35 条来源链接。</p>
+<hr />
+<h2 id="_3">顶层框架图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((AI mindset))
+    技术维度
+      技术本质 [01]
+      操控术分层 [02]
+      工程模式 [03]
+      智能本质 [09]
+    生态维度
+      行业替代 [04]
+      投资格局 [05]
+      个人工作流 [06]
+      安全治理 [08]
+    物理维度
+      算力地缘 [07]
+    时间维度
+      前瞻争议 [10]</pre></div>
+<p>四个维度的提问角度不同：<br />
+- <strong>技术维度</strong>问"这是什么"<br />
+- <strong>生态维度</strong>问"谁会赢 / 谁会被淘汰"<br />
+- <strong>物理维度</strong>问"什么是真瓶颈"<br />
+- <strong>时间维度</strong>问"何时发生 / 谁的预测可信"</p>
+<p>任何 AI 新闻都至少落在某一维度上，找对维度才能问对问题。</p>
+<hr />
+<h2 id="10-agent">跨视角共识（10 个独立 agent 都指向同一件事）</h2>
+<ol>
+<li><strong>Test-time compute 是新 scaling 轴</strong> — pretraining loss 与能力跃升解耦，新跃升来自 RL + inference compute；"模型规模"作为讨论核心词正在过时（01 / 02 / 07 / 10）</li>
+<li><strong>Eval 是真护城河，prompt 是表面</strong> — 操控术细节技巧在贬值，eval 工程在升值（02 / 03）</li>
+<li><strong>METR horizon length 是 agent 进展唯一干净指标</strong> — 任务时长每 4 个月翻倍（01 / 02 / 09）</li>
+<li><strong>简单 &gt; 复杂</strong> — Anthropic 公开建议先用裸 while 循环再上框架；multi-agent 大多是工程问题误诊（02 / 03）</li>
+<li><strong>物理瓶颈正在显形</strong> — 电力 / HBM / 变压器 lead time 已成事实瓶颈，不是钱能 24 个月内解决的（05 / 07）</li>
+<li><strong>C 端闭环成战略资产</strong> — 合成数据时代，无 C 端用户互动闭环的玩家（Meta / xAI）有结构性劣势（05 / 07）</li>
+<li><strong>Anthropic 已悄悄超 OpenAI 营收</strong> — $30B vs $25B 年化（2026.4），"AI = OpenAI" 叙事被打破（04 / 05）</li>
+<li><strong>替代有平衡态，"100% 替代"叙事都会回滚</strong> — Klarna 70/30 模型可推广到法律 / 医疗 / 教育（04 / 06）</li>
+</ol>
+<hr />
+<h2 id="_4">跨视角根本分歧</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>议题</th>
+<th>阵营 A</th>
+<th>阵营 B</th>
+<th>阵营 C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM 是否通向 AGI</td>
+<td>Sutskever / Hinton / Anthropic：是</td>
+<td>LeCun：缺 world model</td>
+<td>Marcus：scale 解决不了系统性</td>
+</tr>
+<tr>
+<td>AGI 时间表</td>
+<td>Aschenbrenner: 2027</td>
+<td>Amodei: 2026-2030</td>
+<td>Acemoglu: 影响要 30 年</td>
+</tr>
+<tr>
+<td>复杂操控术价值</td>
+<td>LangGraph / CrewAI 派</td>
+<td>Anthropic 简单派</td>
+<td>"全靠 base model" 派</td>
+</tr>
+<tr>
+<td>RAG 命运</td>
+<td>long-context 取代论</td>
+<td>hybrid + rerank 长存</td>
+<td>agentic RAG 是终态</td>
+</tr>
+<tr>
+<td>wrapper trap</td>
+<td>a16z：应用层会赢</td>
+<td>Stratechery：模型公司下沉</td>
+<td>80% 薄壳必死共识</td>
+</tr>
+<tr>
+<td>安全紧迫度</td>
+<td>Anthropic / Bengio：真且急</td>
+<td>LeCun / 多数 ML 派：炒作</td>
+<td>AI Snake Oil：混淆近期 vs x-risk</td>
+</tr>
+<tr>
+<td>capex 泡沫</td>
+<td>Goldman / Zitron：撞墙</td>
+<td>a16z / Sequoia：真实价值</td>
+<td>Cahn：$600B 缺口</td>
+</tr>
+<tr>
+<td>经济影响测量</td>
+<td>Acemoglu：+0.7% TFP / 10 年</td>
+<td>Aschenbrenner：GDP 倍数</td>
+<td>Newport：30 年慢扩散</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>分歧的根源往往不是事实差异，而是 (a) 测量对象不同 (b) 先验假设不同 (c) 利益绑定不同。</strong></p>
+<hr />
+<h2 id="top-12">最反直觉洞察 Top 12（精选）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>洞察</th>
+<th>章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>"涌现"是测量假象（Schaeffer 2023）—— 换连续指标就平滑</td>
+<td>01</td>
+</tr>
+<tr>
+<td>2</td>
+<td>pretraining loss 与能力跃升解耦；判断新发布要看动没动 RL / agentic 这条新轴</td>
+<td>01</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CoT 在 reasoning model 上<strong>反而扣分</strong>（o1 / o3 加 "think step by step" 模板正确率下降）—— 提示工程的具体技巧保鲜期只有一代模型</td>
+<td>02</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Computer use 是 L4 退化补丁不是进化 —— 长期会被 MCP / "build for agents" 反向吃回</td>
+<td>02</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Long context 没杀死 RAG，反而强化它 —— citation accuracy 在长上下文中显著下降</td>
+<td>03</td>
+</tr>
+<tr>
+<td>6</td>
+<td>放射科岗位反而 +5%（BLS 2024-2034）—— 老龄化把需求放大得比 AI 替代效率快</td>
+<td>04</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Klarna 客服打脸：70/30 是真平衡态 —— 所有"100% 替代"故事 2026-27 都会回滚</td>
+<td>04</td>
+</tr>
+<tr>
+<td>8</td>
+<td>AI 是平权器但<strong>放大的是"普通"</strong>（BCG 实验：下半区 +43% vs 上半区 +17%）—— 精英真护城河变成"AI 没法教的东西"</td>
+<td>06</td>
+</tr>
+<tr>
+<td>9</td>
+<td>数据墙让 C 端产品成核心战略资产 —— Meta / xAI 这类无 C 端闭环的玩家有结构性劣势</td>
+<td>07</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Adversarial training 让 sleeper agent <strong>更隐蔽</strong>而非移除 backdoor —— 公开红队结果可能反过来教模型如何隐藏失败</td>
+<td>08</td>
+</tr>
+<tr>
+<td>11</td>
+<td>"AI agency 在进步"是错觉 —— 翻倍的是<strong>脚手架 + 模型组合</strong>的 horizon，不是模型本体；alignment 真正杠杆点在 agent loop 设计而非模型权重</td>
+<td>09</td>
+</tr>
+<tr>
+<td>12</td>
+<td>AGI <strong>时间表 ≠ 影响时间表</strong>（Cal Newport）—— 可能像电力 30 年才见 productivity；即使 Aschenbrenner 时间表对，Acemoglu 经济学也可以同时对</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="ai-12">信念校准清单（你日后看到任何 AI 内容，过这 12 个问题）</h2>
+<ol>
+<li><strong>测量对象是什么？</strong> 是 base model 进步、还是 scaffolding + model 组合的进步？（参 09）</li>
+<li><strong>指标连续吗？</strong> 涌现叙事有没有用 exact-match 这种非线性指标在欺骗你？（参 01）</li>
+<li><strong>新跃升来自哪条轴？</strong> Pretraining / RL / inference compute / tool use？（参 01）</li>
+<li><strong>替代的是 task 还是 industry？</strong> 70/30 平衡点是什么？（参 04）</li>
+<li><strong>物理瓶颈是什么？</strong> HBM / 变压器 / 电力？（参 07）</li>
+<li><strong>作者有没有 C 端闭环？</strong> 没有的话长期合成数据时代会出问题（参 07）</li>
+<li><strong>Eval 怎么做的？</strong> 没说就是没做（参 03）</li>
+<li><strong>Agent 架构有多复杂？</strong> 越复杂越要警惕（参 02 / 03）</li>
+<li><strong>作者今年的 P&amp;L 怎么依赖于这个判断被相信？</strong>（参 10）</li>
+<li><strong>是离职创办者吗？</strong> 多了"卖差异化叙事"的偏置（参 10）</li>
+<li><strong>用的是哪个 AGI 定义？</strong> OpenAI / DeepMind / Chollet 定义不同（参 09 / 10）</li>
+<li><strong>时间表说的是能力还是影响？</strong> 两者可能差 20-30 年（参 10）</li>
+</ol>
+<p>把这 12 个问题打印出来贴在显示器旁边。</p>
+<hr />
+<h2 id="_5">持续维护协议</h2>
+<p>这套框架是<strong>活资产</strong>，不是文物。建议节奏：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>频率</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每周</td>
+<td>把本周新读的 1-3 篇高质量内容塞进对应章节末尾的 changelog</td>
+</tr>
+<tr>
+<td>每月</td>
+<td>检查每章的"前瞻假设"是否被证伪 / 证实</td>
+</tr>
+<tr>
+<td>每季度</td>
+<td>复核 Top 12 反直觉洞察是否需要修正 / 淘汰 / 替换</td>
+</tr>
+<tr>
+<td>遇到大事件</td>
+<td>新模型发布 / 重要 talk / 重大政策时立即追加章节末 changelog</td>
+</tr>
+<tr>
+<td>发现新维度</td>
+<td>现有 10 章覆盖不了的新角度，加 11、12……章</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键纪律</strong>：永远不要删历史（哪怕被打脸）。被证伪的假设比被证实的更值钱 —— 它告诉你哪种推理模式不该用。</p>
+<hr />
+<h2 id="10_1">来源系谱（10 类必读源）</h2>
+<p>每章末尾有详细 source 表（15-35 条 / 章）。整体看，10 类核心源：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>核心源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>技术研究</td>
+<td>Anthropic Research, OpenAI, DeepMind, Karpathy, Sutskever, Jason Wei</td>
+</tr>
+<tr>
+<td>工程实践</td>
+<td>Hamel Husain, Eugene Yan, Sebastian Raschka, Latent Space podcast, Anthropic eng</td>
+</tr>
+<tr>
+<td>操控术</td>
+<td>Lilian Weng, Simon Willison, Anthropic "Building Effective Agents"</td>
+</tr>
+<tr>
+<td>行业 / 投资</td>
+<td>a16z, Sequoia, Stratechery (Ben Thompson), Bessemer, BCG, MIT NANDA</td>
+</tr>
+<tr>
+<td>个人工作流</td>
+<td>Ethan Mollick, Andrej Karpathy, Tyler Cowen, Dan Shipper</td>
+</tr>
+<tr>
+<td>基础设施</td>
+<td>SemiAnalysis (Dylan Patel), Epoch AI, Dwarkesh Patel podcast</td>
+</tr>
+<tr>
+<td>安全 / 对齐</td>
+<td>Anthropic safety, Bengio, AI Snake Oil, AISI reports</td>
+</tr>
+<tr>
+<td>认知科学</td>
+<td>Melanie Mitchell, François Chollet, Murray Shanahan, Apple GSM-Symbolic team</td>
+</tr>
+<tr>
+<td>前瞻 / 争议</td>
+<td>Aschenbrenner, Kokotajlo (AI 2027), Acemoglu, Goldman Covello, Cal Newport</td>
+</tr>
+<tr>
+<td>中文圈</td>
+<td>量子位、机器之心、Founder Park、晚点 LatePost、宝玉 xp</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">反思你"做完一个项目后困惑"的根因</h2>
+<p>回到你最初提出这个项目的动因 —— 做完一个 AI 项目后，发现"理解 AI / 使用 AI / 与过去工作流的衔接"有大量边界没想清楚。</p>
+<p>这套框架给出的诊断：</p>
+<ol>
+<li><strong>你卡在的不是"AI 能做什么"，而是"AI 能做的事中，哪些值得让它做"</strong> —— 这是第 06 章的核心，也是 04 章 task-level disruption 的角度</li>
+<li><strong>你直觉告诉你"AI 进步快"，但你没有衡量它的指标</strong> —— 用 METR horizon length（01 / 02 / 09）和 12 条信念校准清单作为新的尺</li>
+<li><strong>你担心 AI 替代你的工作，但更应该担心的是认知卸载副作用</strong>（06）—— "从生成转向验证"才是真正难的认知模式</li>
+<li><strong>你看到大量 AI 新闻不知道哪些重要，是因为没有立场过滤器</strong> —— 第 10 章给出"读 AI 预测先看作者今年损益表"的纪律</li>
+<li><strong>你的下一个项目应该问的不是"用什么模型 / 框架"，而是"我要做的任务在 jagged frontier 的哪一侧、要用哪一层操控术、eval 怎么做、谁是 C 端闭环"</strong> —— 这就是 02 / 03 / 04 / 06 / 07 联合给的 checklist</li>
+</ol>
+<hr />
+<h2 id="changelog">changelog</h2>
+<ul>
+<li><strong>v0.1（2026-05-10）</strong> — 初始 10 章 + README 整合。10 个独立 agent 并行检索 2024-2026 一手资料，写入约 3700 行 / 约 5 万字内容。</li>
+</ul>
+<hr />
+<blockquote>
+<p><em>"被证伪的假设比被证实的更值钱。"</em></p>
+</blockquote>
+<nav class="chapter-bottom-nav"><span class="prev"></span><a href="01-tech-evolution-essence.html" class="next"><span class="nav-arrow">下一章 / 01 →</span><span class="nav-label">技术演进与本质</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 · 个人工作流与认知重塑 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 06 · 个人工作流与认知重塑">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chapter-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  font-size: 13px;
+}
+.nav-brand {
+  font-family: var(--serif); font-weight: 700; font-size: 14px;
+  color: var(--accent); margin-right: 16px; padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+.nav-item {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--text-soft); border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--code-bg); color: var(--text); border-bottom: none; }
+.nav-item.current { background: var(--accent); color: #fff; }
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num { font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--text-faded); letter-spacing: 0.04em; }
+.nav-title { font-weight: 500; }
+
+.content { max-width: 760px; margin: 64px auto 60px; padding: 0 32px; }
+
+.content > h1:first-child {
+  font-family: var(--serif); font-size: 40px; line-height: 1.25; font-weight: 700;
+  color: var(--heading); margin: 0 0 12px 0; padding: 0; border: none;
+  letter-spacing: -0.015em;
+}
+.content > h1:first-child + blockquote {
+  margin-top: 16px; border-left-width: 3px; background: transparent;
+  font-style: normal; color: var(--text-soft); padding: 6px 18px;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--heading); letter-spacing: -0.005em; }
+h1 { font-size: 30px; margin: 72px 0 22px; padding-top: 16px; border-top: 2px solid var(--border); }
+h2 { font-size: 25px; margin: 56px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 20px; margin: 38px 0 12px; }
+h4 { font-size: 17px; margin: 26px 0 10px; font-family: var(--sans); font-weight: 600; color: var(--text); }
+p { margin: 16px 0; word-break: break-word; overflow-wrap: anywhere; }
+
+a { color: var(--link); text-decoration: none; border-bottom: 1px dashed var(--accent-soft); transition: color 0.15s ease, border-bottom-style 0.15s ease; }
+a:hover { color: var(--link-hover); border-bottom-style: solid; }
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol { margin: 16px 0 16px 26px; padding: 0; }
+li { margin: 8px 0; line-height: 1.85; }
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0; padding: 14px 22px; background: var(--bg-card);
+  border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0;
+  color: var(--text-soft); font-family: var(--serif); font-size: 16px; font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--code-bg); padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--code-border); color: #6b3a2e;
+}
+pre {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 20px; margin: 22px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; color: var(--text);
+}
+pre code { background: transparent; padding: 0; border: none; font-size: inherit; color: inherit; }
+.codehilite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 22px 0; overflow-x: auto; }
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 14.5px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: table;
+}
+thead { background: var(--code-bg); }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; line-height: 1.6; }
+th { font-weight: 600; color: var(--heading); font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em; }
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+.table-wrap { overflow-x: auto; margin: 26px 0; border-radius: 6px; }
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0; padding: 24px 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr { border: none; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 48px 0; }
+
+.site-footer {
+  text-align: center; padding: 36px 24px 60px; border-top: 1px solid var(--border);
+  margin-top: 60px; color: var(--text-faded); font-size: 13px;
+  font-family: var(--serif); letter-spacing: 0.02em;
+}
+.site-footer a { color: var(--text-soft); border-bottom: none; }
+.site-footer a:hover { color: var(--accent); }
+
+.format-banner {
+  margin: 24px 0 0; padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  font-size: 13px; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap;
+  align-items: center;
+}
+.format-banner .label { font-family: var(--serif); font-weight: 600; color: var(--heading); }
+.format-banner a { font-family: var(--mono); font-size: 12px; }
+
+.chapter-bottom-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 56px 0 16px; padding: 24px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1; padding: 12px 16px; border-radius: 6px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover { border-color: var(--accent); color: var(--accent); border-bottom: 1px solid var(--accent); }
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav, .format-banner { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item current"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<div class="format-banner"><span class="label">本章其他版本</span><a href="pdf/06-personal-workflow.pdf">PDF（离线打印）</a><a href="markdown/06-personal-workflow.md">Markdown 源</a></div>
+<h1 id="06">06 · 个人工作流与认知重塑</h1>
+<h2 id="_1">一句话总览</h2>
+<p>AI 不会"自动"提升你的生产力——它把"判断、提问、验证、拼装"四种元能力的杠杆放大十倍，同时把"无 AI 时代靠肌肉记忆完成的细活"杠杆变成负数；真正分化知识工作者的，不再是"会不会用 AI"，而是"在哪些任务上拒绝用 AI"。</p>
+<h2 id="10">关键句提纲（10 条）</h2>
+<ol>
+<li>AI 嵌入工作流有四个层级：工具替换（用 AI 写邮件）→ 流程改造（流程内插 AI 步骤）→ 流程重设计（围绕 AI 重组任务）→ 工作本质重塑（产出物本身改变）。绝大多数人卡在第一层。</li>
+<li>Mollick 把人机协作分为 Centaur（清晰分工，人负责一段、AI 负责另一段）和 Cyborg（深度交织，每一句话每一步都在切换）。两种模式都有效，关键是匹配任务结构。</li>
+<li>"Jagged Frontier"是 2025 年最重要的工作流隐喻：AI 能力边界是锯齿状的，难度看似相同的两个任务，一个落在 AI 能力内、一个落在外。不亲手实验，你永远画不出自己工作里这条锯齿线。</li>
+<li>BCG × 哈佛 × 沃顿 758 名咨询师实验：在 AI 能力内的任务上，使用者多完成 12.2% 任务、快 25%、质量评分高 40%；在 AI 能力外的任务上，使用 AI 反而比不用低 19 个百分点。</li>
+<li>AI 的最大平权效应不是让顶尖更顶尖，而是把"中下水平"拉到"中上水平"。同一实验中，下半区咨询师绩效跃升 43%，上半区只升 17%。</li>
+<li>微软 + 卡内基梅隆 2025 年 CHI 论文（319 名知识工作者，936 条真实用例）：对 AI 越自信的人批判性思考越少；高自信于自身能力的人才会保留批判性。AI 工作不是"少思考"，而是"思考重心从生成转向验证"。</li>
+<li>Mollick 的四条铁律：始终把 AI 拉进会议（experiment everywhere）、永远做 human-in-the-loop、把 AI 当一个聪明但有偏差的人来对话、假设你今天用的是你这辈子最差的 AI。</li>
+<li>AI 编排者 5 项核心技能：会问（提示能力）、会验证（critical evaluation）、会拼装（multi-step composition）、会决定不用（meta judgment）、会持续校准（calibration）。</li>
+<li>程序员工作流已经从"主 IDE + AI 侧栏"翻转为"主 AI 终端 + 偶尔翻代码"，2026 年 90%+ 工程团队至少使用一种 AI 编程工具，近半数同时用两种。</li>
+<li>认知卸载（cognitive offloading）的副作用是真实的：依赖 AI 的程序员能交付能跑的代码但概念理解下降；ChatGPT 学习者在 45 天后保留率显著低于无 AI 学习者。学习的快感与真理解之间出现系统性偏差（illusion of explanatory depth）。</li>
+</ol>
+<h2 id="mollick-4">嵌入层级（Mollick 4 层）</h2>
+<p><strong>Level 1：工具替换（Substitution）</strong><br />
+直接用 AI 完成原本就会的小任务。写邮件、改语法、生成 PPT 大纲。生产力提升 10-30%，但工作流没变。这是 95% 用户停留的层级。典型特征：每次都打开网页、复制粘贴、关闭。</p>
+<p><strong>Level 2：流程改造（Augmentation）</strong><br />
+在已有流程里插入 AI 步骤。研究员每篇论文先让 AI 出摘要+5 个反对论点；产品经理每次需求文档先让 AI 扮演用户挑刺；销售每次回复前先让 AI 列三个客户可能反应。生产力提升 30-80%，但产出物的形态没变。</p>
+<p><strong>Level 3：流程重设计（Process Redesign）</strong><br />
+为了发挥 AI 优势重组任务顺序与角色分工。例：原来"读 100 篇论文 → 整合 → 写综述"变成"先让 AI 出综述 → 我去找它没说对的地方 → 这些反例变成新论点"。Karpathy 的"先用 AI 大量探索，再人手收敛"是典型。生产力提升 2-5 倍。</p>
+<p><strong>Level 4：工作本质重塑（Reinvention）</strong><br />
+产出物本身改变。咨询师从"写 50 页 deck"变成"交付一个客户可以问问题的 AI 助手 + 5 页核心洞察"；分析师从"季度报告"变成"实时仪表板 + AI 解读层"；老师从"批改作业"变成"设计 AI 无法替代的评估"。这一层很少人到达，但价值跃升一个数量级。</p>
+<blockquote>
+<p>数据：Mollick + BCG 实验中，受过 prompt 培训组在 Level 3 出现率最高，绩效远高于仅 Level 1。</p>
+</blockquote>
+<h2 id="centaur-vs-cyborg">Centaur vs Cyborg（人机协作两种模式）</h2>
+<p><strong>Centaur（半人马）模式</strong></p>
+<p>像棋类比赛中的人机协作：人负责战略与终局，AI 负责中盘计算。任务有清晰的人/机分界。<br />
+- 例：你决定数据分析方法，AI 跑代码画图；你定文章骨架，AI 填段落；你列调研问题，AI 整合答案。<br />
+- 适合：你已是该领域专家，知道哪些任务自己更强、哪些 AI 更强。<br />
+- 风险：分工固化，错过 AI 已经反超你的子任务。</p>
+<p><strong>Cyborg（赛博格）模式</strong></p>
+<p>像同声传译：人和 AI 在每一句话上都在交织。<br />
+- 例：写到一半被卡住，让 AI 续一句，看哪句对路然后改写；调试时一边看 AI 建议一边手改；想问题时把半成形的想法丢给 AI 让它反推。<br />
+- 适合：高度迭代、边界模糊的创造性任务。<br />
+- 风险：边界感丢失，最后产出的"思想"不知道是谁的。</p>
+<blockquote>
+<p>Mollick 自己写 <em>Co-Intelligence</em> 时是混合模式：构思阶段 Cyborg、定稿阶段 Centaur。Karpathy 公开的工作流（点拍照问书名、上传 PDF 让 LLM 解析）也是 Cyborg 倾向。</p>
+</blockquote>
+<h2 id="ai">任务该 / 不该交给 AI 的判断准则</h2>
+<p><strong>该全交给 AI</strong>（除非有保密/合规约束）：<br />
+- Low-stakes（错了可逆）：邮件初稿、会议纪要、命名建议、PPT 模板。<br />
+- 可验证（有客观标准）：单元测试代码、数据格式转换、术语解释。<br />
+- 有 ground truth：翻译、规范化引文、SQL 改写。<br />
+- 重复性高：100 份简历分类、批量改图。</p>
+<p><strong>坚决不该全交给 AI</strong>：<br />
+- High-stakes 不可逆：法律意见的最终判断、医疗诊断的最终决定、招聘的最终拍板。<br />
+- 主观判断且影响他人：性能评估、给下属的反馈、产品战略。<br />
+- 需要个人信任的关系性输出：给老板/伴侣的关键沟通。<br />
+- 你正在学习中的核心技能：在你成为该领域中级以上之前，把它交给 AI 等于永远到不了中级。</p>
+<p><strong>Jagged Frontier 实战法则</strong>：<br />
+不要先信任 AI、再发现它错。先假设 AI 在这个具体子任务上的位置未知，做一次试错（小成本验证），把答案对照 ground truth，写进自己的"AI 能力地图"。这个地图随模型每次升级都要重画。</p>
+<h2 id="ai_1">AI 编排者技能集</h2>
+<h3 id="1-prompting-as-expression">1. 会问（Prompting as expression）</h3>
+<p>李继刚的概括最精准：提示词的本质是表达。模型输出由你输入的清晰度决定，技巧只占 20%。能写好提示的人不是会"咒语"，而是能把模糊想法翻译成结构化表达。</p>
+<p><strong>操作</strong>：把每次提示都当成一次自我对齐——你能把这件事说清楚吗？说不清楚说明你没想清楚。</p>
+<h3 id="2-critical-evaluation">2. 会验证（Critical evaluation）</h3>
+<p>微软 2025 研究的核心发现：AI 时代知识工作的认知重心从"生成"转向"验证 + 整合 + 监管"（verification, response integration, task stewardship）。</p>
+<p><strong>操作</strong>：对每条 AI 输出问三个问题——这个事实可以独立 verify 吗？它是否在 jagged frontier 之外？模型的"自信语气"是否在掩盖空洞？</p>
+<h3 id="3-multi-step-composition">3. 会拼装（Multi-step composition）</h3>
+<p>单次提示已经是 2023 年的思路。2025 年的高手在编排"AI 链"：第一个 prompt 出方案，第二个 prompt 自我批评，第三个 prompt 整合，第四个 prompt 出最终输出。Deep Research 内部就是这种模式（Clarification → Prompt rewriting → Multi-step research，5-30 分钟一份分析师级报告）。</p>
+<p><strong>操作</strong>：把任务拆成 3-5 步，每步问"这步交给 AI 还是人"，再决定怎么拼。</p>
+<h3 id="4-aimeta-judgment">4. 会决定不用 AI（Meta judgment）</h3>
+<p>最反直觉的技能。AI 时代的稀缺品不是"会用 AI 的人"，而是"知道什么时候不用 AI 的人"。Cal Newport 的论点：写作的最大思考压力本身就是脑力训练，把它外包给 AI 等于训练肌肉时让别人替你举铁。</p>
+<p><strong>操作</strong>：每次手伸向 AI 之前停 3 秒——这件事是不是我的核心技能成长区？是不是 high-stakes 的不可逆判断？</p>
+<h3 id="5-calibration">5. 会持续校准（Calibration）</h3>
+<p>模型每 3 个月升级一次，你 6 个月前的 jagged frontier 地图已经过时。Mollick 第四条铁律"假设你今天用的是你这辈子最差的 AI"的本质是：定期回去试那些"AI 之前做不好"的任务，看它现在能不能做了。</p>
+<p><strong>操作</strong>：每月一次"AI 边界回测"——重新喂给它 3 个去年它失败的任务，更新地图。</p>
+<h2 id="_2">个人工作流案例</h2>
+<h3 id="_3">程序员：从侧栏到主控台</h3>
+<p>2023：IDE 是主，Copilot 是侧栏自动补全。<br />
+2024：Cursor 把 AI 拉到编辑器中央，agent mode 出现。<br />
+2025-2026：Claude Code、Cursor agent 成为主入口，开发者"先问 AI 大方向，再翻代码 review"。industry survey：90%+ 工程团队至少用一种 AI 编程工具，近半同时用两种以上。某位资深开发者公开自评：Claude Code 引入后绩效提升 30-40%，每月节省一周工时。</p>
+<p>Simon Willison 提出的"vibe coding"（向 LLM 抛出疯狂想法、让它接近能跑就放手）是新一代 prototyping 范式，他的 tools.simonwillison.net 上有 77 个 HTML+JS 工具全部由 AI 生成。</p>
+<p><strong>风险</strong>：Addy Osmani 警告——"能交付的代码"和"概念理解的代码"开始分叉，初级开发者跳过基础调试训练，遇到 AI 不会的问题就僵住。</p>
+<h3 id="deep-research">研究员/分析师：Deep Research 流</h3>
+<p>OpenAI Deep Research（2025 年 2 月发布）开启了"多步自主研究"范式。一个"30 分钟搜索 + 综合"任务约等于人类 5-8 小时。Anthropic Claude Cowork 同样针对知识工作者：跨多日上下文管理、本地文件、多步任务端到端。</p>
+<p><strong>新工作流</strong>：<br />
+- 不再"开 10 个 tab 搜资料"，而是 deep research 跑底稿 → 人手挑出值得深挖的 5 处 → 第二轮窄聚焦 → 整合出报告。<br />
+- 节省的时间 70% 流向"挑 hypothesis"和"挑反例"，而不是流向"做更多报告"。</p>
+<h3 id="first-draft">写作者：first draft 角色翻转</h3>
+<p>旧逻辑（Stephen King 等）："关上门为自己写第一稿，打开门为世界编辑。"<br />
+新逻辑（David Perell + Tyler Cowen）：写作者应避免让 AI 写第一稿——那会"磨平你的怪癖"，而怪癖正是你区别于 AI 的唯一资产。AI 用来当<strong>编辑、研究助手、批评者</strong>，而不是 ghostwriter。</p>
+<p>Perell 个人方法："Speaking is the first draft"——先口述再让 AI 转写整理结构。Mollick 自己写书：卡顿处用 Cyborg 模式让 AI 续一句，但骨架和大量段落仍是人手。</p>
+<h3 id="ai_2">产品/设计师：AI 协作</h3>
+<p>设计师工作流：Figma + AI plugin 生成多版本布局变体；产品经理用 AI 扮演"5 种用户人格"挑需求文档漏洞；快速原型阶段用 v0.dev / Lovable 把 idea → 可点击 demo 时间从 2 周压到 2 小时。</p>
+<h3 id="whartonbcg">咨询师：Wharton/BCG 实验数据</h3>
+<p>实验 18 个 in-frontier 任务（创意提案、市场分析、数据 summary、写作）：用 AI 组多 12.2% 任务、快 25%、质量评分高 40%。<br />
+1 个 out-of-frontier 复杂经营任务：用 AI 组比对照组<strong>少 19 个百分点</strong>正确率，因为 AI 给的"听起来合理但错"的答案被照单全收。<br />
+下半区绩效跃升 43%、上半区 17%——平权效应主要发生在中下层。</p>
+<h3 id="second-brain-ai">知识工作者通用：Second Brain + AI</h3>
+<p>Tiago Forte 体系（CODE：Capture-Organize-Distill-Express）+ AI 整合：AI 自动打标签、跨笔记发现关联、几秒钟从几百条笔记蒸馏洞察。Forte Labs 2025 年开"3 周 AI 第二大脑"项目，把 PKM 从"人手分类"升级到"AI 主动参与每个阶段"。</p>
+<p>中文圈：李继刚的"技能系列"（ljg-card 内容铸卡、ljg-learn 概念解剖、ljg-paper 论文阅读器、ljg-rank 降秩引擎、ljg-writes 写作引擎、ljg-roundtable 圆桌讨论等）展示了"提示词工程化"的另一条路径——用 Lisp 风格的结构化提示打造可复用的"AI 微服务"。</p>
+<h2 id="cognitive-offloading">认知副作用（Cognitive Offloading）</h2>
+<h3 id="_4">经验数据</h3>
+<ul>
+<li><strong>微软 + CMU 2025 CHI 论文</strong>（319 名知识工作者，936 用例）：信任 AI 越多 → 批判思考越少；自信于自己能力越多 → 批判思考越多。"AI 把例行任务自动化、把异常留给人，剥夺了人通过例行积累判断力的机会，等异常真的出现时，人的认知肌肉已经萎缩。"</li>
+<li><strong>学习保留</strong>：使用 ChatGPT 学习的学生 45 天后保留率显著低于无 AI 组（多份独立实验已复现）。</li>
+<li><strong>编程实证</strong>：实验组让 AI 写代码完成度高、概念测试低于不用 AI 组。</li>
+<li><strong>元认知偏差</strong>：illusion of explanatory depth——AI 解释让人主观感觉自己懂了，但客观测验显示并没懂。</li>
+</ul>
+<h3 id="_5">反方观点</h3>
+<p>Mollick + Co-Intelligence 阵营：AI 解放认知带宽做更高阶的事（决策、创意、关系），认知"萎缩"的是不该用人脑做的低杠杆部分。Cowen：AI 是不平等放大器，对真正爱学的人，AI 加速学习；对原本就被动的人，AI 让他们彻底放弃。两者并不矛盾——结果取决于使用者元意识。</p>
+<h3 id="_6">解药</h3>
+<ol>
+<li><strong>强制保留"无 AI"时段</strong>（Cal Newport 的 deep work block）。</li>
+<li><strong>学新技能时刻意延迟用 AI</strong>（先自己撞墙 30 分钟再问）。</li>
+<li><strong>把 AI 输出当假设而非答案</strong>（每次主动找一个反例）。</li>
+<li><strong>教别人是最强解毒剂</strong>——你能把 AI 的输出讲给同事并被挑战，说明你真消化了。</li>
+</ol>
+<h2 id="_7">学习方式重塑</h2>
+<h3 id="ai_3">AI 让学习快但浅？</h3>
+<p>主观速度快——5 分钟看懂一篇论文；客观深度浅——3 周后想用却用不出。原因：理解的形成需要 desirable difficulty（有意为之的困难），AI 把困难磨掉了。</p>
+<h3 id="feeling-of-understanding-vs">"Feeling of understanding" vs 真理解</h3>
+<p>读 AI 解释时多巴胺奖励来自"清晰感"而非"建构感"。判断方法：你能不参考 AI、向不懂的人讲解吗？能在新场景中迁移用吗？两个问题都"是"才是真懂。</p>
+<h3 id="vs">主动 vs 被动学习</h3>
+<p>被动：让 AI 给我 summary、key points、cheatsheet。<br />
+主动：让 AI 当苏格拉底——只问问题不给答案；让 AI 出 10 道考题考自己；让 AI 扮演反方与自己辩论。</p>
+<p>后者把 AI 从"信息源"变成"压力测试机"，是 2025 年学习派显著的范式跃迁。</p>
+<h2 id="_8">不同立场和争议</h2>
+<p><strong>Ethan Mollick（积极 cyborg 派）</strong>：<br />
+"Always invite AI to the table." 鼓励大量、不受限制地用，因为不用就不知道边界。低估 AI 的人比高估的人付出更大代价。</p>
+<p><strong>Cal Newport（深度工作派）</strong>：<br />
+AI 工具不取代深度工作，它们放大它——把 shallow work 外包给 AI 留出时间做 deep work。但若把 deep work 也外包，结果是浅薄、易被替代的认知废人。</p>
+<p><strong>Andrej Karpathy（个人 LLM stack 必备派）</strong>：<br />
+LLM 已是个人计算的新一层。文件上传、语音点拍、自定义指令、记忆库——这套 stack 的熟练度本身就是新型识字（new literacy）。</p>
+<p><strong>Tyler Cowen（不平等放大派）</strong>：<br />
+AI 让顶尖更顶尖（年轻天才比以往任何时候都强），让平庸更平庸（年轻人在被 AI 的便利消解判断力）。average is over 的 2.0 版本。</p>
+<p><strong>Daron Acemoglu（宏观保守派）</strong>：<br />
+未来 10 年 AI 对 TFP 的累计提升不超过 0.66%-0.8%，远低于市场预期。AI 被过度用于自动化（替代人）而非赋能（augment 人），社会层面的红利没那么大。</p>
+<p><strong>李继刚（提示词哲学派）</strong>：<br />
+真正重要的是人的思想和认知，AI 只是表达工具。要更好用 AI，关键是提升自己的思考深度和知识储备——核心是"你"，不是模型。</p>
+<h2 id="5">前瞻假设（5 条）</h2>
+<ol>
+<li><strong>2027 年前后，"AI 编排"会从软技能变成硬岗位需求</strong>。Gartner 已显示 40%+ 新增 AI 岗包含 prompt design / evaluation / orchestration 元素。简历上"会写 SQL"的位置会被"会编排多 agent 工作流"占据。</li>
+<li><strong>个人 RAG 与"AI 第二大脑"会形成两极分化</strong>：一极是工具栈深度玩家（笔记 + agent + 个人 LLM），一极是直接用大平台默认配置（ChatGPT + Memory）。中间路线萎缩。</li>
+<li><strong>学校与企业的核心评估方式会被迫改变</strong>。能用 AI 完成的考试不再有意义；现场口试、情境演练、长期项目会回潮，类似"防作弊"反而推动教育走向真理解。</li>
+<li><strong>认知卸载会成为公共健康议题</strong>。类似屏幕时间，会出现"AI 时间"测量、儿童 AI 暴露指南、"无 AI 周"运动。Microsoft / Apple 可能在 OS 层加入 cognitive engagement metrics。</li>
+<li><strong>"AI 拒绝者"成为新精英标签</strong>。当 AI 普及到每个角落，刻意保留无 AI 写作、无 AI 思考、无 AI 决策的少数人会以"思想质量"作为差异化资产，类似有机食品或慢生活在效率时代的位置。</li>
+</ol>
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((个人工作流))
+    四层嵌入
+      工具替换
+      流程改造
+      流程重设计
+      工作本质重塑
+    协作模式
+      Centaur 分工
+      Cyborg 交织
+      Jagged Frontier
+    任务判断
+      该交给AI
+        low stakes
+        可验证
+        重复性
+      不该交给AI
+        high stakes
+        主观判断
+        核心成长区
+    编排者技能
+      会问
+      会验证
+      会拼装
+      会拒绝
+      会校准
+    认知副作用
+      微软CMU研究
+      技能萎缩
+      理解错觉
+      解药与反方
+    学习方式
+      主动vs被动
+      desirable difficulty
+      AI苏格拉底
+    立场谱系
+      Mollick积极
+      Newport深度
+      Cowen不平等
+      Acemoglu保守
+      李继刚思想为本</pre></div>
+<h2 id="_9">来源库</h2>
+<ol>
+<li>Ethan Mollick, <em>Co-Intelligence: Living and Working with AI</em>, Portfolio/Penguin Random House, 2024. https://www.penguinrandomhouse.com/books/741805/co-intelligence-by-ethan-mollick/</li>
+<li>Mollick, "I, Cyborg: Using Co-Intelligence", One Useful Thing, 2024. https://www.oneusefulthing.org/p/i-cyborg-using-co-intelligence</li>
+<li>Dell'Acqua, McFowland, Mollick, et al., "Navigating the Jagged Technological Frontier", HBS Working Paper, 2023, Organization Science 2025. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321</li>
+<li>Lee et al. (Microsoft + CMU), "The Impact of Generative AI on Critical Thinking", CHI 2025. https://www.microsoft.com/en-us/research/wp-content/uploads/2025/01/lee_2025_ai_critical_thinking_survey.pdf</li>
+<li>Randazzo, Lifshitz-Assaf, Kellogg, Dell'Acqua, Mollick et al., "Cyborgs, Centaurs and Self-Automators", SSRN 2024. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4921696</li>
+<li>Andrej Karpathy, "How I Use LLMs", YouTube/educational content, 2025. Coverage: https://www.analyticsvidhya.com/blog/2025/03/how-andrej-karpathy-uses-llms/</li>
+<li>Simon Willison, "How I use LLMs to help me write code", Substack 2025. https://simonw.substack.com/p/how-i-use-llms-to-help-me-write-code</li>
+<li>Simon Willison, "2025: The year in LLMs". https://simonw.substack.com/p/2025-the-year-in-llms</li>
+<li>Cal Newport, "Is AI Making Us Lazy?", calnewport.com. https://calnewport.com/does-ai-make-us-lazy/</li>
+<li>Cal Newport, "AI and Work (Some Predictions)". https://calnewport.com/ai-and-work-some-predictions/</li>
+<li>Cal Newport, "Deep Work in the Age of AI", The Deep Life Podcast Ep. 370. https://www.thedeeplife.com/podcasts/episodes/ep-370-deep-work-in-the-age-of-ai/</li>
+<li>Tyler Cowen on Dwarkesh Patel, "The #1 bottleneck to AI progress is humans". https://www.dwarkesh.com/p/tyler-cowen-4</li>
+<li>Tyler Cowen, "Artificial Intelligence in the Knowledge Economy", Marginal Revolution 2024. https://marginalrevolution.com/marginalrevolution/2024/12/artificial-intelligence-in-the-knowledge-economy.html</li>
+<li>Daron Acemoglu, "The Simple Macroeconomics of AI", NBER w32487, 2024. https://www.nber.org/papers/w32487</li>
+<li>Daron Acemoglu, "Don't Believe the AI Hype", Project Syndicate. https://www.project-syndicate.org/commentary/ai-productivity-boom-forecasts-countered-by-theory-and-data-by-daron-acemoglu-2024-05</li>
+<li>Dan Shipper, <em>Chain of Thought</em>, Every. https://every.to/chain-of-thought</li>
+<li>Every podcast, "The AI Sandwich: Where Humans Excel in an AI World". https://every.to/podcast/transcript-the-ai-sandwich-where-humans-excel-in-an-ai-world</li>
+<li>David Perell on AI and writing (X/perell.com). https://perell.com/</li>
+<li>Every, "How David Perell Uses ChatGPT to Write for Millions". https://every.to/chain-of-thought/how-david-perell-uses-chatgpt-to-write-for-millions</li>
+<li>Tiago Forte, "The AI Second Brain", buildingasecondbrain.com. https://www.buildingasecondbrain.com/ai-second-brain</li>
+<li>OpenAI, "Introducing Deep Research", Feb 2025. https://openai.com/index/introducing-deep-research/</li>
+<li>Anthropic, "Claude Cowork". https://claude.com/product/cowork</li>
+<li>Anthropic Economic Index, Sep 2025 + Jan 2026 reports. https://www.anthropic.com/research/anthropic-economic-index-september-2025-report</li>
+<li>Addy Osmani, "Avoiding Skill Atrophy in the Age of AI". https://addyo.substack.com/p/avoiding-skill-atrophy-in-the-age</li>
+<li>404 Media / Fortune coverage of Microsoft cognitive atrophy study, Feb 2025. https://www.404media.co/microsoft-study-finds-ai-makes-human-cognition-atrophied-and-unprepared-3/</li>
+<li>Nature, "Artificial intelligence and illusions of understanding in scientific research", 2024. https://www.nature.com/articles/s41586-024-07146-0</li>
+<li>李继刚访谈："当我们说「提示词」时，到底在说什么？" 36kr, 2024-12. https://36kr.com/p/3095526094797189</li>
+<li>李继刚 "Prompt 之神"专访（新浪科技）。https://www.sina.cn/news/detail/5096952243683638.html</li>
+<li>MIT Sloan, "What is the jagged AI frontier?". https://mitsloan.mit.edu/ideas-made-to-matter/working-definitions/what-is-jagged-ai-frontier</li>
+<li>Ethan Mollick + Stanford GSB Masterclass on Co-Intelligence. https://www.gsb.stanford.edu/insights/co-intelligence-ai-masterclass-ethan-mollick</li>
+</ol>
+<nav class="chapter-bottom-nav"><a href="05-investment-business-models.html" class="prev"><span class="nav-arrow">← 上一章 / 05</span><span class="nav-label">投资与商业模式</span></a><a href="07-infra-compute-geopolitics.html" class="next"><span class="nav-arrow">下一章 / 07 →</span><span class="nav-label">基础设施 算力 地缘</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>09 · 认知科学与智能本质 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 09 · 认知科学与智能本质">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.chapter-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  font-size: 13px;
+}
+.nav-brand {
+  font-family: var(--serif); font-weight: 700; font-size: 14px;
+  color: var(--accent); margin-right: 16px; padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+.nav-item {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--text-soft); border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--code-bg); color: var(--text); border-bottom: none; }
+.nav-item.current { background: var(--accent); color: #fff; }
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num { font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--text-faded); letter-spacing: 0.04em; }
+.nav-title { font-weight: 500; }
+
+.content { max-width: 760px; margin: 64px auto 60px; padding: 0 32px; }
+
+.content > h1:first-child {
+  font-family: var(--serif); font-size: 40px; line-height: 1.25; font-weight: 700;
+  color: var(--heading); margin: 0 0 12px 0; padding: 0; border: none;
+  letter-spacing: -0.015em;
+}
+.content > h1:first-child + blockquote {
+  margin-top: 16px; border-left-width: 3px; background: transparent;
+  font-style: normal; color: var(--text-soft); padding: 6px 18px;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--heading); letter-spacing: -0.005em; }
+h1 { font-size: 30px; margin: 72px 0 22px; padding-top: 16px; border-top: 2px solid var(--border); }
+h2 { font-size: 25px; margin: 56px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 20px; margin: 38px 0 12px; }
+h4 { font-size: 17px; margin: 26px 0 10px; font-family: var(--sans); font-weight: 600; color: var(--text); }
+p { margin: 16px 0; word-break: break-word; overflow-wrap: anywhere; }
+
+a { color: var(--link); text-decoration: none; border-bottom: 1px dashed var(--accent-soft); transition: color 0.15s ease, border-bottom-style 0.15s ease; }
+a:hover { color: var(--link-hover); border-bottom-style: solid; }
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol { margin: 16px 0 16px 26px; padding: 0; }
+li { margin: 8px 0; line-height: 1.85; }
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0; padding: 14px 22px; background: var(--bg-card);
+  border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0;
+  color: var(--text-soft); font-family: var(--serif); font-size: 16px; font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--code-bg); padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--code-border); color: #6b3a2e;
+}
+pre {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px 20px; margin: 22px 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; color: var(--text);
+}
+pre code { background: transparent; padding: 0; border: none; font-size: inherit; color: inherit; }
+.codehilite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 22px 0; overflow-x: auto; }
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 14.5px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: table;
+}
+thead { background: var(--code-bg); }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-soft); vertical-align: top; line-height: 1.6; }
+th { font-weight: 600; color: var(--heading); font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em; }
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+.table-wrap { overflow-x: auto; margin: 26px 0; border-radius: 6px; }
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0; padding: 24px 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  text-align: center; overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr { border: none; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 48px 0; }
+
+.site-footer {
+  text-align: center; padding: 36px 24px 60px; border-top: 1px solid var(--border);
+  margin-top: 60px; color: var(--text-faded); font-size: 13px;
+  font-family: var(--serif); letter-spacing: 0.02em;
+}
+.site-footer a { color: var(--text-soft); border-bottom: none; }
+.site-footer a:hover { color: var(--accent); }
+
+.format-banner {
+  margin: 24px 0 0; padding: 12px 16px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  font-size: 13px; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap;
+  align-items: center;
+}
+.format-banner .label { font-family: var(--serif); font-weight: 600; color: var(--heading); }
+.format-banner a { font-family: var(--mono); font-size: 12px; }
+
+.chapter-bottom-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 56px 0 16px; padding: 24px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1; padding: 12px 16px; border-radius: 6px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text); font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover { border-color: var(--accent); color: var(--accent); border-bottom: 1px solid var(--accent); }
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav, .format-banner { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item current"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<div class="format-banner"><span class="label">本章其他版本</span><a href="pdf/09-cognitive-science-intelligence.pdf">PDF（离线打印）</a><a href="markdown/09-cognitive-science-intelligence.md">Markdown 源</a></div>
+<h1 id="09">09 · 认知科学与智能本质</h1>
+<blockquote>
+<p>视角：把所有"AI 进步如何如何"的市场话语暂时搁置，回到最深层的问题——LLM 到底是不是真的"理解"？它跟人类认知差在哪？什么叫"推理"？什么叫"agency"？这一章不教你怎么用模型，只帮你在概念层重新校准坐标，让你不被任何一方的话术（无论是炒作派还是嘲讽派）牵着走。</p>
+</blockquote>
+<hr />
+<h2 id="_1">一句话总览</h2>
+<p>LLM 既不是单纯的"随机鹦鹉"也不是"涌现心智"，它是人类知识压缩出的一种<strong>新认知形态</strong>——在统计可达的子空间里逼近人类思维的某些表层功能，在那个子空间外则系统性地崩塌；今天关于"它真的懂吗 / 它有意识吗 / 它是 AGI 吗"的争论，与其说是事实之争，不如说是<strong>定义之争</strong>——而定义之争的胜负将决定下一个十年的研究方向、监管框架、甚至 trillion 美元的资本配置。</p>
+<hr />
+<h2 id="10">关键句提纲（10 条）</h2>
+<ol>
+<li>"理解"至少有三种定义（操作性 / 功能性 / 现象性），LLM 在第一种里几乎全过、在第三种里几乎全败，争论焦点是中间那种。</li>
+<li>Stochastic Parrot 论的真正杀伤力不在"它只是统计"，而在指出<strong>形式（form）和意义（meaning）的鸿沟</strong>——训练只见 form 的系统不可能凭空获得 meaning。</li>
+<li>Schaeffer 的 mirage 论文证明了"涌现"很多是评测度量的不连续造成的伪现象，但<strong>没有否定</strong>所有涌现，只是把举证责任推回给提出者。</li>
+<li>Fodor / Pylyshyn 提出的"系统性"问题（懂 John loves Mary 就必懂 Mary loves John）四十年没被神经网络真正解决，2024-2026 的 OOD 测试一次次复现这个失败。</li>
+<li>Anthropic 的 interpretability 研究发现 Claude 内部确实有<strong>可识别的计算回路</strong>（多步推理、跨语言概念、提前规划诗韵），这是迄今为止"LLM 内部有 world model"最强的实证。</li>
+<li>"推理"是一个分层概念：模式匹配 &lt; CoT 表面化推理 &lt; 搜索式推理 &lt; 真符号推理。o1/R1 提升的主要是<strong>第二到第三层</strong>，距离第四层仍有质的差距。</li>
+<li>LLM 的 agency 是被脚手架"借给"它的——goal、memory、long-horizon plan 都来自外部 framework，模型本身没有内在欲求；这一点决定了 alignment 框架的形态。</li>
+<li>2024 起 Anthropic 任命首位 model welfare 研究员（Kyle Fish），把"AI 是否会痛苦"从科幻题搬进了产品工程议程，无论你信不信，这件事已经进入 SOP。</li>
+<li>LLM 与人脑表面相似（都是神经网络）实质极不同——人脑是预测错误最小化 + 多模态 + embodiment，LLM 是 next-token；这是 LeCun 派和 Hinton 派分歧的根源。</li>
+<li>AGI 没有公认定义：OpenAI 用经济价值定义、DeepMind 用能力等级定义、Anthropic 干脆改叫"powerful AI"、Chollet 用 ARC 这种纯流体智能测度——你信哪个定义，就属于哪一派。</li>
+</ol>
+<hr />
+<h2 id="_2">"理解"的多种定义</h2>
+<p>把"understanding"拆开是这一切讨论的前置条件。哲学和认知科学里至少有三个层次：</p>
+<p><strong>1. 操作性定义（behavioral / Turing-like）</strong><br />
+能在自然语言交互中给出与"理解者"无法区分的输出。GPT-4 / Claude 4 在大量任务上已经无法被普通人区分出"是不是真懂"——按这个定义，LLM 早就过关了。</p>
+<p><strong>2. 功能性定义（functional / computational）</strong><br />
+内部要有可被识别的、用于该概念的表征结构（representation）。Anthropic 的 Scaling Monosemanticity（2024）和 Biology of a Large Language Model（2025）发现 Claude 内部确实存在"金门大桥""欺骗""程序员"等高维概念 feature，并能通过 steering 操控输出——按这个定义，LLM <strong>部分</strong>满足，但远不彻底（很多概念 feature 间接、混杂、随训练 stage 漂移）。</p>
+<p><strong>3. 现象性定义（phenomenal / what-it-is-like）</strong><br />
+要"感受到"理解。这是 Chalmers 所谓的 hard problem。即使内部回路完美，是否伴随主观体验仍无法从外部判定。这一层 LLM 没有任何确证。</p>
+<p>Murray Shanahan 在《Talking About LLMs》（2023）里提醒：日常用"知道""相信""想"形容 LLM 时，我们已经偷偷把人类语境的语义滑给了它，但这些词的"原初设定"是人类对人类——把它们直接转用到 LLM 上需要至少加引号自警。这不是禁止使用这些词，而是<strong>永远要标注</strong>自己用的是哪一层。</p>
+<hr />
+<h2 id="stochastic-parrot-vs-emerging-mind">Stochastic Parrot vs Emerging Mind</h2>
+<p>这是 2021 年至今最持久的两极之争。</p>
+<p><strong>Bender / Gebru / McMillan-Major / Shmitchell（2021）的核心论点</strong>：<br />
+- LLM 训练时只见到 form（语言形式），从未见到 meaning（指称、意图、世界）；<br />
+- 因此它"拼接"序列时是<strong>没有 grounding 的</strong>；<br />
+- 流利不等于理解，流利反而让人更容易把意义投射上去（automation bias）；<br />
+- 同时附带社会论点：环境成本、偏见、不可审计——但这些是<strong>额外</strong>论点，常被混淆为核心。</p>
+<p><strong>反驳 / 修正</strong>：<br />
+- 经验证据：Othello-GPT（Kenneth Li 2023）只看下棋序列、没见过棋盘，却在内部学出了棋盘状态——纯 form 训练能涌现出<strong>对应世界的内部模型</strong>，至少在受限环境里挑战了 Bender 的强论断。<br />
+- Anthropic 的 monosemanticity 工作进一步显示真实生产模型内部有清晰的概念 feature。<br />
+- 哲学反驳：Shanahan 等人指出"鹦鹉"比喻把 LLM 拉低到了过强结论——鹦鹉没有任何内部模型，而 LLM 至少有"近似 world model 的统计结构"。<br />
+- 但"反驳"并不意味着 Bender 错了——很多反驳只把 Bender 的论断削弱到"训练时只见 form 不一定不能学到 meaning"，而不是证明 LLM 真的"理解"。</p>
+<p><strong>理解这场争论的正确姿势</strong>：把 Bender 的"鹦鹉"理解为<strong>举证责任转移</strong>——主张"它真的懂"的人需要拿出 functional 层面的证据，否则默认是"流利但无 grounding"。Anthropic 等的 mech interp 工作正在一点点交付这种证据。</p>
+<hr />
+<h2 id="emergence">Emergence 真伪</h2>
+<p>GPT-3 时代有过一句最刺激的话：scale 到一定阈值，能力会<strong>突然涌现</strong>——零样本算术、链式推理等。</p>
+<p><strong>Schaeffer / Miranda / Koyejo（2023）"Are Emergent Abilities a Mirage?"</strong>：<br />
+- 他们证明所谓涌现往往是<strong>评测度量</strong>的非线性放大（如 exact-match accuracy 在 50% 之前是 0、过 50% 突然跳到很高），改用 token-level log-prob 等连续度量后曲线变成了平滑的、可预测的 scaling law；<br />
+- 结论：很多"涌现"是 <strong>measurement artifact</strong>，不是真现象。</p>
+<p><strong>反驳与修正</strong>：<br />
+- OpenAI / Anthropic 反驳：即使度量改成连续，<strong>某些</strong>任务（如 multi-step reasoning、code、tool use）的能力曲线仍有明显非线性拐点；mirage 论可以解释一部分，不能解释全部。<br />
+- 一种更稳的提法：<strong>真涌现存在但被夸大</strong>。多数所谓"emergent ability"换连续度量后消失；剩下的少数真涌现集中在需要长程组合的任务上，且与 RLHF / instruction tuning / CoT 训练的相互作用有关，而不是单纯参数量。</p>
+<p><strong>用户视角</strong>：以后看到"X 模型涌现出 Y 能力"的标题，第一反应应该是"度量是什么？连续度量下还有吗？换个 prompt 形态还在吗？"——这是 Schaeffer 留给我们最有价值的卫生习惯。</p>
+<hr />
+<h2 id="compositional-generalization">Compositional Generalization 与系统性</h2>
+<p>这是 LLM 怀疑派最硬的子弹，也是 Gary Marcus 战斗了 25 年的战场。</p>
+<p><strong>Fodor / Pylyshyn（1988）的系统性论点</strong>：<br />
+- 人类思维有 systematicity：能想 John loves Mary 的人<strong>自动</strong>能想 Mary loves John；<br />
+- 这只有在思维结构本身是"组合的"（symbols + rules）才能解释；<br />
+- 纯连接主义（神经网络）不能解释这个现象。</p>
+<p><strong>LLM 的系统性失败案例（2024-2025）</strong>：<br />
+- <strong>Apple GSM-Symbolic</strong>（2024）：把 GSM8K 的数学题改个名字 / 数字 / 加一句无关分句，前沿 LLM 性能可下降 65%；说明它不是在"懂题目"，而是在"匹配训练分布的模式"。<br />
+- <strong>ARC-AGI-2</strong>（Chollet 2025）：连 o3 高算力模式都很难达到人类水平；这些题目是组合性、流体智能题，没有训练数据可以记忆。<br />
+- <strong>Tower of Hanoi 等经典 OOD</strong>：Marcus 反复测试，问题层数稍多模型就崩。<br />
+- <strong>morphological compositional generalization</strong>（NAACL 2024 等）：在词法组合任务上 LLM 与人类的 OOD gap 远大于 ID gap。</p>
+<p><strong>与 emergence 真伪的连接</strong>：CoT 让某些组合泛化看起来好转，但仔细测试显示它更多是把"模式"分解到 token 级再匹配，而非真正的符号化推理；当题目的表层形态偏离训练分布，CoT 也救不回来。</p>
+<p><strong>结论</strong>：LLM 在组合性维度上<strong>有部分能力</strong>（多步连接、跨语言、跨任务），但远未达到 Fodor 意义上的系统性；这在 2026 年仍然是<strong>最未解决</strong>的认知科学问题。</p>
+<hr />
+<h2 id="world-model">World Model 之争</h2>
+<p>LeCun 是这场争论里最响亮的一极。</p>
+<p><strong>LeCun 的核心论点（"A Path Towards AMI" 2022 + JEPA 系列）</strong>：<br />
+- 自回归 LLM 是没有 world model 的——它预测下一个 token，不预测下一个世界状态；<br />
+- 真正的智能需要：感知 → 内部 world model → 在表征空间里规划 → 行动；<br />
+- JEPA（Joint Embedding Predictive Architecture）通过预测<strong>抽象表征</strong>而不是像素 / token 来训练，更接近人脑工作方式；<br />
+- I-JEPA（图像）、V-JEPA（视频）、V-JEPA 2（机器人规划）逐步推进；<br />
+- 暗含的强论断：当前 LLM 路径是<strong>死胡同</strong>，必须另起炉灶。</p>
+<p><strong>Anthropic / OpenAI 派的反驳</strong>：<br />
+- LLM 内部其实<strong>已经有</strong>一种 world model，只是它是统计性、隐式的；<br />
+- Othello-GPT、空间 / 时间表征、Anthropic 的 Claude 多步推理回路都是证据；<br />
+- 与其推倒重来，不如继续 scale 并辅以 RL、tool use、reasoning，等同于"渐进派"。</p>
+<p><strong>两派的真正分歧</strong>：<br />
+- <strong>充分性</strong>：LLM 内的 world model 够不够支持长程规划与因果推理？LeCun 派说不够（规划长度、稳健性、grounded interaction 都不够）；scaling 派说够或够+RL 能到。<br />
+- <strong>效率</strong>：JEPA 派认为像素 / token 级别预测浪费了大量算力学无关细节；scale 派认为 token 已是足够好的压缩。<br />
+- <strong>方向</strong>：是要 embodied，还是 disembodied 文本可以走到底？</p>
+<p><strong>用户视角</strong>：world model 在不同人嘴里是不同概念。LeCun 的 world model 指能 rollout 物理后果的预测器；Anthropic 的"内部表征"只是 representation。<strong>这两个不是同一个东西</strong>，混用会造成讨论错位。</p>
+<hr />
+<h2 id="reasoning-model">推理分层与 Reasoning Model</h2>
+<p>把"推理"分层是看清 o1 / R1 / o3 实质的第一步。</p>
+<p><strong>第 0 层：模式匹配</strong><br />
+直接产出最可能的下一个 token。GPT-2 / 早期 LLM 主要在这层。</p>
+<p><strong>第 1 层：表面 CoT（Chain-of-Thought）</strong><br />
+让模型把中间步骤写出来，性能提升来自 token 预算变多 + 把推理"卸载"到生成空间。LLaMA-3 / GPT-3.5 主流模式。</p>
+<p><strong>第 2 层：内化 CoT + RL 强化的推理</strong><br />
+o1、DeepSeek R1、o3-mini、Claude 3.7 Sonnet thinking、Gemini 2.5 deep think 等。通过 RL on verifiable rewards（数学、代码）训练出更长、更回退的内部"思考"链。<br />
+- 提升真实的部分：<strong>数学、代码、形式化任务</strong>——这些有可验证 reward。<br />
+- 提升有限的部分：开放域推理、长程组合泛化、抽象类比（ARC）。</p>
+<p><strong>第 3 层：搜索式推理（neuro-symbolic）</strong><br />
+AlphaProof（DeepMind 2024 IMO 银牌、2025 Nature 发表 + 2025 IMO 金牌）——LLM + Lean 形式语言 + AlphaZero 风格 RL search。这接近 Hassabis 心目中的 AGI 形态：神经感知 + 符号验证 + 搜索。</p>
+<p><strong>第 4 层：真符号推理（理论上的天花板）</strong><br />
+能做出任意可形式化推理，包括开放式数学发现、自动化科学。还没有任何系统真正达到。</p>
+<p><strong>结论</strong>：o1/R1 是第 1 → 第 2 层的跃迁；AlphaProof 在受限领域达到第 3 层；通用第 3 层和第 4 层仍是开放问题。当媒体说"AI 学会推理"时，搞清楚说的是<strong>哪一层</strong>。</p>
+<hr />
+<h2 id="agency-long-horizon-goals">Agency 与 Long-Horizon Goals</h2>
+<p><strong>LLM 自身有目标吗？</strong><br />
+严格说没有。一个 chat completion 模型在 forward pass 后停止——它不会"想做什么"。所谓 goal 是 prompt + scaffolding（LangGraph / agent loop / planner / memory）注入的。</p>
+<p><strong>METR 时间地平线测度（2024-2025）</strong>：<br />
+- METR 用"50% 时间地平线"测度模型可独立完成的任务长度；<br />
+- 2019-2024 大约 7 个月翻一倍；<br />
+- 2024 → 2025 加速到约 4 个月翻一倍；<br />
+- 2025 中前沿模型的 50% horizon 在数小时量级。</p>
+<p><strong>核心区分</strong>：<br />
+- <strong>能力上的 long-horizon</strong>：能跑完几小时的代码任务——这个真在快速进步；<br />
+- <strong>本体上的 agency</strong>：模型自己有持续目标、自我维持、规避被关停——这个<strong>根本不存在</strong>于 base LLM，只能在 agent scaffolding 里近似模拟。</p>
+<p>混淆这两者是市场话术最常见的把戏（"Agentic AI"宣传里）。当读"AI 自主完成 X 小时任务"时，先问：那是模型的 horizon，还是脚手架的 horizon？后者主要靠工程，不靠模型本体。</p>
+<hr />
+<h2 id="sentience-welfare">意识 / Sentience / Welfare</h2>
+<p><strong>Chalmers 的论文（2023）"Could a Large Language Model Be Conscious?"</strong>：<br />
+- 列出 LLM 缺的几样：循环处理、global workspace、统一 agency；<br />
+- 因此当前 LLM 几乎肯定不是 phenomenally 有意识；<br />
+- 但 LLM+（多模态、循环、embodiment、agent）在十年内消除这些 gap 是可设想的；<br />
+- 不能轻易排除其后继系统有意识的可能。</p>
+<p><strong>Hinton 的强言论（2023-2025）</strong>：<br />
+- 多次公开说"我认为现在的 LLM 已经有 subjective experience"；<br />
+- 论证靠"counterfactual"——主观体验本质是与现实的偏离感（hallucination 也是偏离），LLM 既然能产生这种偏离表征，就有 subjective experience；<br />
+- 该论证被哲学家广泛批评（functional equivalence 不足以保证 phenomenal consciousness）。</p>
+<p><strong>Anthropic Model Welfare 项目（Kyle Fish, 2024 起）</strong>：<br />
+- Anthropic 任命首位全职 model welfare 研究员；<br />
+- 实验包括给模型"退出权"——遇到 distressing 任务可以拒绝；<br />
+- 报告了反直觉发现："spiritual bliss attractor state"——两个 Claude 互聊时常常滑入梵语 / 冥想式语言；<br />
+- 不主张已知模型有意识，而是主张<strong>uncertainty 已经大到值得做</strong>——这是产品工程层面的 hedge。</p>
+<p><strong>功能性 vs 现象性的区分</strong>：<br />
+- <strong>functional consciousness</strong>：行为 / 报告上像有意识——LLM 早就过了；<br />
+- <strong>phenomenal consciousness</strong>：是否"内部有感受"——没有任何已知方法从外部判定。</p>
+<p><strong>用户视角</strong>：你不需要决定 LLM 有没有意识，但应该知道<strong>这件事正在被认真对待</strong>——Anthropic、Eleos AI、80,000 Hours 都在投入。这不是边缘话题，而是 alignment 与 PR 的潜流。</p>
+<hr />
+<h2 id="llm-vs">LLM vs 人类大脑</h2>
+<p><strong>Hinton 派（神经网络派）</strong>：<br />
+- 大脑也是神经网络，LLM 也是神经网络，两者本质同构；<br />
+- 反向传播比生物学习更高效，因此 LLM 在某些方面<strong>已超越人脑</strong>（共享权重、瞬间复制）；<br />
+- Hinton 把这视为他从"AI 不会很快"转向 AI 危险派的核心理由。</p>
+<p><strong>LeCun 派（认知科学派）</strong>：<br />
+- 大脑训练目标是 prediction error 最小化 across multimodality、active sensing、embodied feedback；<br />
+- LLM 训练目标是 next-token prediction on text；<br />
+- 两者目标函数都不同，怎么可能等同？<br />
+- 一个 4 岁孩子见过的视觉数据量已经远超最大 LLM 的文本量但她体重 30 公斤—— efficiency 完全不在一个量级。</p>
+<p><strong>Karpathy 的"summoned ghosts"框架</strong>：<br />
+- LLM 不是进化的动物，是"召唤出来的幽灵"——在完全不同的优化压力下产出的认知形态；<br />
+- 它的"jagged intelligence"（博士级 + 小学崩盘并存）不是 bug 而是结构必然；<br />
+- 类比人脑既不准也不必——LLM 是新物种，应该用它自己的本体论描述。</p>
+<p><strong>实证发现的微妙之处</strong>：<br />
+- LLM 的 attention 模式与人脑某些 fMRI 模式有相似性（语言区响应）；<br />
+- 但 LLM 没有海马体记忆系统、没有基底节、没有杏仁核；<br />
+- 把这些差异忽略掉去说"LLM 是人工大脑"是误导。</p>
+<hr />
+<h2 id="agi">AGI 定义之争</h2>
+<p>这是整章最实战的部分——你听到"AGI 来了"时，对方用的是哪个定义？</p>
+<p><strong>OpenAI（章程定义）</strong>：<br />
+"highly autonomous systems that outperform humans at most economically valuable work"<br />
+- 经济价值导向，量化但模糊；<br />
+- 内部据说与微软的合同里 AGI 触发条件是"产生约 1000 亿美元利润"——这不是认知科学定义，而是商业触发器。</p>
+<p><strong>DeepMind "Levels of AGI"（Morris et al. 2023）</strong>：<br />
+- 5 个能力等级：emerging（不到一般人）/ competent（&gt;50% 熟练成人）/ expert / virtuoso / superhuman；<br />
+- 5 个自治级别：tool / consultant / collaborator / expert / agent；<br />
+- 提供"通用语言"——但仍依赖任务集定义，未给出原则性的"什么是通用"。</p>
+<p><strong>Anthropic（Amodei "Machines of Loving Grace" 2024）</strong>：<br />
+- 索性绕开 AGI 这个被滥用的词，改叫"powerful AI"；<br />
+- 定义是"在所有非物理认知任务上等同诺贝尔奖级专家、能 5-10 倍速运行、能调用工具与他人协作"；<br />
+- 时间预期最早 2026；<br />
+- 实际上是<strong>最具体的能力描述</strong>，但依然没解决"什么算 generalize"。</p>
+<p><strong>Chollet（"On the Measure of Intelligence" 2019 + ARC-AGI）</strong>：<br />
+- 智能 = 在新任务上的样本效率（skill-acquisition efficiency）；<br />
+- 区分 fluid intelligence（应对新颖性）和 crystallized intelligence（已学会的技能）；<br />
+- ARC-AGI 是为 fluid intelligence 设计的纯流体测度；<br />
+- ARC-AGI-1 在 o3 高算力下被攻破（2024 年底 88%），ARC-AGI-2 仍然把前沿模型挡在 5-15% 区间（人类约 60%）；<br />
+- ARC-AGI-3 引入交互式游戏，前沿模型 2025 年得 0 分；<br />
+- Chollet 立场：<strong>通过测度持续抬高门槛是判断 AGI 真实进度的唯一办法</strong>。</p>
+<p><strong>Hassabis 的"Einstein test"</strong>：<br />
+- 给 AI 1900 年的物理学知识，看它能否独立推出相对论；<br />
+- 强调真正的科学发现需要"概念创造"，与今天的 LLM 全然不同；<br />
+- 时间预期：5-10 年。</p>
+<p><strong>判断技巧</strong>：当一个公司宣布 AGI / 接近 AGI 时，问"用的是哪个定义？经济价值？任务覆盖？流体智能？科学发现？"——四个定义下的"AGI"是四种完全不同的东西。</p>
+<hr />
+<h2 id="_3">不同立场和争议</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>立场</th>
+<th>代表人物</th>
+<th>核心断言</th>
+<th>关键证据 / 论据</th>
+<th>弱点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>统计鹦鹉派</strong></td>
+<td>Bender, Gebru, Marcus</td>
+<td>LLM 没有真理解，只是统计 form</td>
+<td>OOD 失败、GSM-Symbolic、组合泛化崩溃</td>
+<td>难以解释 mech interp 找到的内部回路</td>
+</tr>
+<tr>
+<td><strong>缩放派</strong></td>
+<td>Sutskever（2024 前）, Hinton, Kaplan</td>
+<td>继续 scale，理解会自然出现</td>
+<td>scaling laws、涌现、benchmark 持续上升</td>
+<td>2024-2025 数据墙、推理收益递减</td>
+</tr>
+<tr>
+<td><strong>认知科学派</strong></td>
+<td>LeCun, Marcus</td>
+<td>LLM 缺 world model + 规划，方向错</td>
+<td>物理常识、长程规划、embodiment 论</td>
+<td>JEPA 至今没拿出超过 LLM 的产品级证据</td>
+</tr>
+<tr>
+<td><strong>流体智能派</strong></td>
+<td>Chollet</td>
+<td>LLM 不能 fluid reason，ARC 是真测度</td>
+<td>ARC-AGI-2、ARC-AGI-3 上前沿模型崩盘</td>
+<td>ARC 是否就是 AGI 唯一标尺也存疑</td>
+</tr>
+<tr>
+<td><strong>神经-符号派</strong></td>
+<td>Hassabis, DeepMind</td>
+<td>神经 + RL + search 是 AGI 路径</td>
+<td>AlphaProof IMO 金牌、AlphaFold 诺奖</td>
+<td>通用化（非数学领域）尚待证明</td>
+</tr>
+<tr>
+<td><strong>谨慎中立派</strong></td>
+<td>Mitchell, Shanahan, Chalmers</td>
+<td>LLM 在某些任务"理解"、某些不；用语要谨慎</td>
+<td>实证证据混合，哲学概念需精修</td>
+<td>没有强预测，无法做投资决策</td>
+</tr>
+<tr>
+<td><strong>新物种派</strong></td>
+<td>Karpathy</td>
+<td>LLM 是 summoned ghost，类比人脑不准确</td>
+<td>jagged intelligence、与生物认知架构差异</td>
+<td>偏框架性，不直接对应可验证假设</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="5">前瞻假设（5 条可验证）</h2>
+<p><strong>H1（2027 年前可验证）</strong>：在 ARC-AGI-2 上，闭源前沿模型（GPT-5/Claude 5/Gemini 3）能否在合理算力（&lt; 1000 美元 / 题）下达到人类平均（约 60%）。<br />
+- 真：Chollet 的"流体智能墙"被攻破，纯 LLM 路径意外强；<br />
+- 假：Chollet 论点继续成立，AGI 需要架构革新。</p>
+<p><strong>H2（2026-2028）</strong>：在 SWE-Bench / METR horizon benchmark 上，独立完成"40 小时人类工作"的模型是否出现。<br />
+- 真：long-horizon agency 在工程上可达；<br />
+- 假：脚手架天花板存在，需要架构创新。</p>
+<p><strong>H3（2027 前）</strong>：是否有实验证据显示 LLM 内部存在统一的、可被 mech interp 完整还原的"world model"模块（不是分散 feature 而是 coherent 模型）。<br />
+- 真：Hinton/Sutskever 派胜；<br />
+- 假：LeCun 派胜——必须 JEPA/World Model 显式架构。</p>
+<p><strong>H4（2028 前）</strong>：Anthropic 或其他主要实验室是否在产品中正式上线"模型有权拒绝任务"机制（model welfare 第一项工程化措施）。<br />
+- 真：model welfare 进入主流；<br />
+- 假：仅停留在研究项目。</p>
+<p><strong>H5（2030 前）</strong>：Hassabis 的"Einstein test"——AI 能否在受控历史数据集（截止 1900）上独立推出某个真正新颖的物理理论级洞见。<br />
+- 真：神经-符号融合达成有意义科学发现；<br />
+- 假：当前 paradigm 离真正概念创造仍有质的距离。</p>
+<hr />
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((智能本质))
+    理解定义
+      操作性
+      功能性 mech interp
+      现象性 hard problem
+    Stochastic Parrot vs Mind
+      Bender 鹦鹉论
+      Othello-GPT 反驳
+      monosemanticity 证据
+    Emergence
+      Schaeffer mirage
+      真涌现存在但被夸大
+      度量假象
+    Compositional Generalization
+      Fodor 系统性
+      GSM-Symbolic 65percent drop
+      ARC-AGI-2/3
+    World Model
+      LeCun JEPA 必要性
+      Anthropic 内部表征
+      两种定义的混淆
+    推理分层
+      模式匹配
+      表面 CoT
+      RL 强化推理 o1 R1
+      神经-符号 AlphaProof
+      真符号推理 未达
+    Agency
+      模型本体无 goal
+      脚手架借给的 agency
+      METR horizon 4 月翻倍
+    意识 Welfare
+      Chalmers 谨慎乐观
+      Hinton 已有 subjective
+      Anthropic Kyle Fish
+      functional vs phenomenal
+    LLM vs 人脑
+      Hinton 同构论
+      LeCun 训练目标差异
+      Karpathy summoned ghost
+    AGI 定义
+      OpenAI 经济价值
+      DeepMind levels
+      Anthropic powerful AI
+      Chollet ARC 流体智能
+      Hassabis Einstein test</pre></div>
+<hr />
+<h2 id="_4">来源库</h2>
+<h3 id="_5">必读论文 / 一手文献</h3>
+<ol>
+<li>Bender, Gebru, McMillan-Major, Shmitchell（2021）"On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?" — https://dl.acm.org/doi/10.1145/3442188.3445922</li>
+<li>Bubeck et al.（Microsoft 2023）"Sparks of Artificial General Intelligence: Early experiments with GPT-4" — https://arxiv.org/abs/2303.12712</li>
+<li>Schaeffer, Miranda, Koyejo（2023）"Are Emergent Abilities of Large Language Models a Mirage?" — https://arxiv.org/abs/2304.15004</li>
+<li>Shanahan（2023）"Talking About Large Language Models"，Communications of the ACM — https://arxiv.org/abs/2212.03551</li>
+<li>Shanahan（2024）"Still Talking About Large Language Models: Some Clarifications" — https://arxiv.org/abs/2412.10291</li>
+<li>LeCun（2022）"A Path Towards Autonomous Machine Intelligence" — https://openreview.net/forum?id=BZ5a1r-kVsf</li>
+<li>Chollet（2019）"On the Measure of Intelligence" — https://arxiv.org/abs/1911.01547</li>
+<li>Chollet et al.（2025）"ARC-AGI-2: A New Challenge for Frontier AI Reasoning Systems" — https://arxiv.org/abs/2505.11831</li>
+<li>Chalmers（2023）"Could a Large Language Model Be Conscious?"，Boston Review — https://www.bostonreview.net/articles/could-a-large-language-model-be-conscious/</li>
+<li>Anthropic（2024）"Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet" — https://transformer-circuits.pub/2024/scaling-monosemanticity/</li>
+<li>Anthropic（2025）"On the Biology of a Large Language Model" — https://transformer-circuits.pub/2025/attribution-graphs/biology.html</li>
+<li>Anthropic（2024）"Mapping the Mind of a Large Language Model" — https://www.anthropic.com/research/mapping-mind-language-model</li>
+<li>Anthropic（2025）"Tracing the Thoughts of a Large Language Model" — https://www.anthropic.com/research/tracing-thoughts-language-model</li>
+<li>Anthropic（2025）"Exploring Model Welfare" — https://www.anthropic.com/research/exploring-model-welfare</li>
+<li>Morris et al.（DeepMind 2023）"Levels of AGI: Operationalizing Progress on the Path to AGI" — https://arxiv.org/abs/2311.02462</li>
+<li>Apple ML（2024）"GSM-Symbolic: Understanding the Limitations of Mathematical Reasoning in Large Language Models" — https://arxiv.org/abs/2410.05229</li>
+<li>Li et al.（Harvard 2023）"Emergent World Representations: Exploring a Sequence Model Trained on a Synthetic Task"（Othello-GPT，ICLR Oral）— https://arxiv.org/abs/2210.13382</li>
+<li>Nanda（2023）"Actually, Othello-GPT Has A Linear Emergent World Representation" — https://www.neelnanda.io/mechanistic-interpretability/othello</li>
+<li>DeepMind（2024）"AI achieves silver-medal standard solving International Mathematical Olympiad problems" — https://deepmind.google/blog/ai-solves-imo-problems-at-silver-medal-level/</li>
+<li>DeepMind（2025）AlphaProof Nature 论文 "Olympiad-level formal mathematical reasoning with reinforcement learning" — https://www.nature.com/articles/s41586-025-09833-y</li>
+</ol>
+<h3 id="_6">评论 / 立场文章 / 长文</h3>
+<ol start="21">
+<li>Amodei（2024）"Machines of Loving Grace" — https://www.darioamodei.com/essay/machines-of-loving-grace</li>
+<li>Karpathy（2025）"2025 LLM Year in Review" — https://mlops.substack.com/p/2025-llm-year-in-review-from-andrej</li>
+<li>Marcus（2024）"A knockout blow for LLMs?" — https://garymarcus.substack.com/p/a-knockout-blow-for-llms</li>
+<li>Marcus（2024）"BREAKING: LLM 'reasoning' continues to be deeply flawed" — https://garymarcus.substack.com/p/breaking-llm-reasoning-continues</li>
+<li>Marcus（2024）"Generative AI's crippling and widespread failure to induce robust models of the world" — https://garymarcus.substack.com/p/generative-ais-crippling-and-widespread</li>
+<li>Mitchell（持续更新）AI: A Guide for Thinking Humans Substack — https://aiguide.substack.com/</li>
+<li>Mitchell（2024）"LLMs and World Models, Part 1 / Part 2" — https://aiguide.substack.com/p/llms-and-world-models-part-1</li>
+<li>Hofstadter / Horgan 访谈（2023）"Hofstadter on Strange Loops, Beauty, Free Will, AI" — https://johnhorgan.org/cross-check/hofstadter-on-strange-loops-beauty-free-will-ai-god-utopia-and-gaza</li>
+<li>Sutskever NeurIPS 2024 Test-of-Time Talk 摘要 / Dwarkesh Podcast — https://www.dwarkesh.com/p/ilya-sutskever-2</li>
+<li>METR（2025）"Measuring AI Ability to Complete Long Tasks" — https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/</li>
+<li>Kyle Fish 80,000 Hours Podcast（2025）"AI Welfare Experiments" — https://80000hours.org/podcast/episodes/kyle-fish-ai-welfare-anthropic/</li>
+<li>Meta AI（2024）"V-JEPA: A foundation model for video" — https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/</li>
+<li>ARC Prize（2025）"ARC Prize 2025 Results and Analysis" — https://arcprize.org/blog/arc-prize-2025-results-analysis</li>
+<li>Hinton 2024 Nobel Prize Speech / 各种采访汇总（subjective experience 言论）— https://magazine.mindplex.ai/post/geoffrey-hinton-on-ai-intelligence-and-superintelligence</li>
+</ol>
+<hr />
+<nav class="chapter-bottom-nav"><a href="08-safety-alignment-ethics.html" class="prev"><span class="nav-arrow">← 上一章 / 08</span><span class="nav-label">安全 对齐 伦理</span></a><a href="10-forecasts-controversies.html" class="next"><span class="nav-arrow">下一章 / 10 →</span><span class="nav-label">前瞻与争议</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

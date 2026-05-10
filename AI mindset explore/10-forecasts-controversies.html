@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 · 前瞻与争议（多家观点对比） · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 10 · 前瞻与争议（多家观点对比）">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* === Sticky Navigation === */
+.chapter-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.nav-brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  margin-right: 16px;
+  padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text-soft);
+  border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover {
+  background: var(--code-bg);
+  color: var(--text);
+  border-bottom: none;
+}
+.nav-item.current {
+  background: var(--accent);
+  color: #fff;
+}
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--text-faded);
+  letter-spacing: 0.04em;
+}
+.nav-title { font-weight: 500; }
+
+/* === Article === */
+.content {
+  max-width: 760px;
+  margin: 64px auto 60px;
+  padding: 0 32px;
+}
+
+.content > h1:first-child {
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--heading);
+  margin: 0 0 12px 0;
+  padding: 0;
+  border: none;
+  letter-spacing: -0.015em;
+}
+
+.content > h1:first-child + blockquote {
+  margin-top: 16px;
+  border-left-width: 3px;
+  background: transparent;
+  font-style: normal;
+  color: var(--text-soft);
+  padding: 6px 18px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--heading);
+  letter-spacing: -0.005em;
+}
+
+h1 {
+  font-size: 30px;
+  margin: 72px 0 22px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border);
+}
+
+h2 {
+  font-size: 25px;
+  margin: 56px 0 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h3 {
+  font-size: 20px;
+  margin: 38px 0 12px;
+}
+
+h4 {
+  font-size: 17px;
+  margin: 26px 0 10px;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--text);
+}
+
+p {
+  margin: 16px 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--accent-soft);
+  transition: color 0.15s ease, border-bottom-style 0.15s ease;
+}
+a:hover {
+  color: var(--link-hover);
+  border-bottom-style: solid;
+}
+
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol {
+  margin: 16px 0 16px 26px;
+  padding: 0;
+}
+li {
+  margin: 8px 0;
+  line-height: 1.85;
+}
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0;
+  padding: 14px 22px;
+  background: var(--bg-card);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  color: var(--text-soft);
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--code-border);
+  color: #6b3a2e;
+}
+
+pre {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 22px 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+.codehilite {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 22px 0;
+  overflow-x: auto;
+}
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%;
+  margin: 26px 0;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: table;
+}
+thead { background: var(--code-bg); }
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+  line-height: 1.6;
+}
+th {
+  font-weight: 600;
+  color: var(--heading);
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 26px 0;
+  border-radius: 6px;
+}
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 48px 0;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 36px 24px 60px;
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+  color: var(--text-faded);
+  font-size: 13px;
+  font-family: var(--serif);
+  letter-spacing: 0.02em;
+}
+.site-footer a {
+  color: var(--text-soft);
+  border-bottom: none;
+}
+.site-footer a:hover { color: var(--accent); }
+
+.chapter-bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 56px 0 16px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item current"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<h1 id="10">10 · 前瞻与争议（多家观点对比）</h1>
+<blockquote>
+<p>"未来已来，只是分布不均匀" —— William Gibson</p>
+<p>但如果你只听一派的声音，你看到的"未来"会被严重扭曲。本篇把 2026-2030+ 各阵营的前瞻预测、AGI 时间表、转折点剧本摆到同一张桌子上对比。<strong>重点不是"谁对"，而是看清每一派的立场背景、底层假设、推理链——以及他们的利益相关性如何影响他们说什么。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_1">一句话总览</h2>
+<p><strong>2024-2026 年间 AGI 时间表从"几十年"压缩到"几年"，但这种压缩并非来自新证据，而主要来自实验室 CEO 的话语权放大与 OOM scaling 叙事的胜利；与此同时反向阵营（LeCun/Marcus/Acemoglu/Zitron）的"撞墙"、"经济不划算"、"循环泡沫"论也在 2025 下半年随着 GPT-5 缓发、capex 飙至 $700B 而获得新的市场关注</strong>——双方此刻处于<strong>叙事高度极化、数据可解读性极弱</strong>的临界状态。</p>
+<hr />
+<h2 id="10_1">关键句提纲（10 条）</h2>
+<ol>
+<li>AGI 时间表分歧不是技术分歧，是<strong>对"AGI 定义"和"scaling 是否撞墙"两个先验的分歧</strong>——同一组数据，不同先验下读出完全不同的未来</li>
+<li><strong>Aschenbrenner 的 OOM 论是工程外推，Amodei 的"loving grace"是产品愿景，Kokotajlo 的 AI 2027 是叙事推演</strong>——三个都用 "2027" 但论证质量天差地远</li>
+<li>LeCun 与 Hinton 都是图灵奖得主、都研究神经网络几十年，对 LLM 是否通向 AGI 给出<strong>完全相反</strong>的判断——这本身说明此刻<strong>专家共识不存在</strong></li>
+<li>Acemoglu 0.7% GDP 与 Aschenbrenner GDP 翻倍的差距 = <strong>30 倍</strong>，这不是预测精度问题，是<strong>两人在测量完全不同的东西</strong>（任务级替代 vs 文明级跃迁）</li>
+<li>Goldman Covello 2024 的"$1T 投入找不到 killer app"，2026 年仍未失效——但 capex 已涨到 $725B/年，<strong>"要么我对要么所有人破产"的二元局面</strong></li>
+<li>Brynjolfsson "J-curve" 提供了第三条路径：<strong>短期看不到效益不等于长期没有</strong>——电力、计算机的历史先例支持但不证明这次也是</li>
+<li><strong>Sutskever "scaling 时代结束、研究时代回归"</strong> 是 2024 末最重要的范式信号，比任何 AGI 时间表都关键</li>
+<li>Kokotajlo AI 2027 的真正贡献不是预测准确度，是<strong>强迫读者面对"如果 self-improvement 真发生会怎样"这个具体问题</strong></li>
+<li>中美 AI 差距从 22.5% 收窄到 2.7% 的关键不是中国突破而是<strong>美国扩张速度趋缓 + 算法效率（DeepSeek）成为新前沿</strong></li>
+<li><strong>每一派都有金融或职业押注</strong>：Anthropic CEO 卖"loving grace"、a16z 卖 portfolio、Marcus 卖 talk 和书、Zitron 卖 substack、Toner 卖 policy 影响力——读他们的话之前先看他们的 P&amp;L</li>
+</ol>
+<hr />
+<h2 id="agi">AGI 时间表分布（多家对比表）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>预测者</th>
+<th>AGI 时间</th>
+<th>AGI 定义</th>
+<th>关键假设</th>
+<th>立场背景 / 利益</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sam Altman</strong>（OpenAI）</td>
+<td>2025 内"agents join workforce"；超智能"a few thousand days"（5.5–14 年）</td>
+<td>从"highly autonomous outperform humans" 滑到"sloppy term"</td>
+<td>推理 + agent + 算力下降 10x/年</td>
+<td>募资压力、要让 OpenAI 估值匹配 $500B+ 故事</td>
+</tr>
+<tr>
+<td><strong>Dario Amodei</strong>（Anthropic）</td>
+<td>2026-2027"powerful AI"；"country of geniuses in datacenter"90% 概率 ≤10 年</td>
+<td>智力≥诺奖得主、能自动化大部分认知劳动</td>
+<td>当前 scaling + 算法继续，无重大 plateau</td>
+<td>Anthropic 估值 $180B+，自我定位为"安全前沿"</td>
+</tr>
+<tr>
+<td><strong>Leopold Aschenbrenner</strong></td>
+<td>2027 AGI、2028-29 超智能</td>
+<td>自动化 AI research 的研究员</td>
+<td>0.5 OOM 算力/年 + 0.5 OOM 算法/年 + unhobbling</td>
+<td>已离职 OpenAI、办对冲基金做空 / 做多 AI 主题</td>
+</tr>
+<tr>
+<td><strong>Daniel Kokotajlo</strong> (AI 2027)</td>
+<td>2027 末"intelligence explosion"</td>
+<td>Agent-3/4 可自动化 AI 研究</td>
+<td>OpenBrain 内部 takeoff、alignment 失败</td>
+<td>离职 OpenAI 拒签 NDA、AI Futures Project</td>
+</tr>
+<tr>
+<td><strong>Demis Hassabis</strong>（DeepMind）</td>
+<td>50% 概率 2030 AGI；5-10 年</td>
+<td>跨域 brilliance、被丢回 1900 年能独立发现相对论</td>
+<td>还需 1-2 个 AlphaGo 级突破</td>
+<td>Nobel 加冕、Alphabet 重押、相对克制</td>
+</tr>
+<tr>
+<td><strong>Ilya Sutskever</strong>（SSI）</td>
+<td>"scaling 时代已结束"，下一轮取决于研究突破</td>
+<td>自主 reasoning agent</td>
+<td>pretraining 数据见底、需新范式</td>
+<td>创办 SSI 直接以"safe superintelligence"为唯一产品</td>
+</tr>
+<tr>
+<td><strong>Yann LeCun</strong>（前 Meta）</td>
+<td>LLM 路线"5 年内无用"；AMI 真正 AGI"3-5 年"</td>
+<td>物理世界理解 + 推理 + 规划</td>
+<td>LLM 死路一条、必须 JEPA/world model</td>
+<td>2025-11 离职 Meta 创办新公司，需要新叙事</td>
+</tr>
+<tr>
+<td><strong>Geoffrey Hinton</strong></td>
+<td>5-20 年 AGI；10-20% 灭绝概率</td>
+<td>数字智能 &gt; 生物智能</td>
+<td>反向传播效率本质上超越人脑</td>
+<td>2024 Nobel、辞 Google 自由说话、个人无商业利益</td>
+</tr>
+<tr>
+<td><strong>Yoshua Bengio</strong></td>
+<td>中等期；强调"风险快于能力"</td>
+<td>国际报告未给硬时间</td>
+<td>监管必须先于能力</td>
+<td>主导联合国 AI Safety Report、政策影响力</td>
+</tr>
+<tr>
+<td><strong>Marc Andreessen</strong> (e/acc)</td>
+<td>"越快越好"，不给具体年份</td>
+<td>拒绝 AGI 框架，谈"通用问题求解"</td>
+<td>市场会消化一切风险</td>
+<td>a16z 押注 OpenAI/xAI/Mistral 等众多 AI 公司</td>
+</tr>
+<tr>
+<td><strong>Tyler Cowen</strong></td>
+<td>"已经在 AGI 边上"对很多事而言；GDP +0.5%/年</td>
+<td>经济学家视角的"足够好"</td>
+<td>人类是瓶颈不是模型</td>
+<td>GMU 经济学家、Mercatus、博客 / 播客流量</td>
+</tr>
+<tr>
+<td><strong>Daron Acemoglu</strong>（MIT）</td>
+<td>不预测 AGI；10 年 +0.7% TFP、+1.1% GDP</td>
+<td>从未谈 AGI，只谈任务级自动化</td>
+<td>大部分任务是"hard-to-learn"AI 帮不上</td>
+<td>MIT 经济系、2024 Nobel、政治经济学传统</td>
+</tr>
+<tr>
+<td><strong>Erik Brynjolfsson</strong>（Stanford）</td>
+<td>不给 AGI 时间；J-curve 几年后大幅生产力</td>
+<td>"GPT 是 GPT (general-purpose tech)"</td>
+<td>互补创新需 5-10 年</td>
+<td>Stanford HAI、对 AI 持中性乐观</td>
+</tr>
+<tr>
+<td><strong>Gary Marcus</strong></td>
+<td>LLM 不会通向 AGI；时间表无意义</td>
+<td>需要 neuro-symbolic</td>
+<td>scaling 已撞墙</td>
+<td>卖书 / talk / Substack、定位为 AI critic 第一人</td>
+</tr>
+<tr>
+<td><strong>Ed Zitron</strong></td>
+<td>不存在 AGI 路径；当前是泡沫</td>
+<td>不承认 AGI 概念</td>
+<td>商业模式不可持续、循环融资</td>
+<td>Substack / 公关 / 反 AI 阵营标杆</td>
+</tr>
+<tr>
+<td><strong>Cal Newport</strong>（Georgetown）</td>
+<td>短中期影响远低于宣传</td>
+<td>拒绝定义 AGI</td>
+<td>知识工作 product-market fit 缓慢</td>
+<td>New Yorker 作者、计算机系教授</td>
+</tr>
+<tr>
+<td><strong>Holden Karnofsky</strong></td>
+<td>不给硬时间；强调"足够危险即可"</td>
+<td>即使非超人，大量并行复制即可"defeat humanity"</td>
+<td>不需要超人智能就有 x-risk</td>
+<td>Open Phil 创办人、Anthropic 顾问</td>
+</tr>
+<tr>
+<td><strong>Metaculus 社区</strong></td>
+<td>弱 AGI 中位数 ~2028；强 AGI ~2033</td>
+<td>综合 benchmark 定义</td>
+<td>群体智慧 + 公开 base rate</td>
+<td>预测者群体、市场流动性</td>
+</tr>
+<tr>
+<td><strong>AI Impacts 2024 调查</strong></td>
+<td>50% 概率 ~2047（中位数）但 2024 比 2022 提前 13 年</td>
+<td>"machines outperform humans across the board"</td>
+<td>学界 vs 实验室差距大</td>
+<td>学术 AI 研究者样本</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_2">主要预测者深度解读</h2>
+<h3 id="dario-amodeimachines-of-loving-grace202410">Dario Amodei「Machines of Loving Grace」(2024.10)</h3>
+<p><strong>核心论点</strong>：先把"AI 风险"放一边，画一张"如果一切顺利"的 5-10 年图景，让大家看清楚为什么值得做对。</p>
+<p><strong>对 AGI 的定义</strong>："country of geniuses in a datacenter"——一个数据中心里运行的、智力胜过诺奖得主的几百万个 AI 实例。</p>
+<p><strong>五个变革领域</strong>：<br />
+1. <strong>生物医药</strong>：把 50-100 年的进展压缩到 5-10 年，"消灭多数已知疾病"<br />
+2. <strong>神经科学/精神健康</strong>：心理疾病可被理解为生物学问题<br />
+3. <strong>经济发展</strong>：让低收入国家"在 AI 帮助下走 50 年发展路径"<br />
+4. <strong>和平与治理</strong>：数据驱动的政策实验<br />
+5. <strong>工作的意义</strong>：人不再是生产资料而是"消费者+艺术家+陪伴者"</p>
+<p><strong>关键假设</strong>：<br />
+- 当前 scaling + 算法效率持续，没有 plateau<br />
+- "compute hangover" 不会延迟 capability rollout<br />
+- 监管和地缘政治不破坏 supply chain</p>
+<p><strong>2026 年回看</strong>：Amodei 在 2025 年继续说"AI 系统将在 2026 末或 2027 初达到诺奖级"，立场基本没变。但批评者指出"loving grace"几乎不讨论失败模式（仅 1 个章节），是<strong>典型的"画饼抵消恐惧"营销文本</strong>。</p>
+<p><strong>立场背景</strong>：Anthropic 估值从 $40B 涨到 $180B+、需要"安全前沿"叙事来差异化于 OpenAI；Amodei 个人持股价值数十亿。<strong>他卖的不是预测，是"我比 OpenAI 更可信、更安全的同时仍然牛"的叙事</strong>。</p>
+<hr />
+<h3 id="leopold-aschenbrennersituational-awareness-the-decade-ahead20246">Leopold Aschenbrenner「Situational Awareness: The Decade Ahead」(2024.6)</h3>
+<p><strong>核心论点（165 页）</strong>：<br />
+1. <strong>GPT-2 → GPT-4 的 4 年是 "preschooler → smart high schooler"</strong>——再来 4 年（到 2027/2028）必然到 AGI<br />
+2. AGI 之后 1-2 年到超智能，因为 AI 能自动化 AI 研究<br />
+3. 这场比赛<strong>国安化</strong>——美国必须由政府接管 (The Project)、否则中国窃取权重就赢<br />
+4. 必然出现 100GW 数据中心、$1T 集群、占美国电力 20%</p>
+<p><strong>OOM 框架</strong>：<br />
+- 算力 ~0.5 OOM/年（5x/年）<br />
+- 算法效率 ~0.5 OOM/年（"算法红利"）<br />
+- "Unhobbling" gain（chatbot → agent → 长 horizon 工具）= 准 OOM<br />
+- 累计：从 GPT-4 到 2027 再叠 ~4-5 OOM 的 effective compute = 一个 GPT-2 → GPT-4 级的跃迁</p>
+<p><strong>2026 年回看</strong>：<br />
+- "1 GW cluster by 2026" 命中 ✓<br />
+- "10 GW by 2028" 在建 ✓<br />
+- 但 2026 年评估认为 2025 进度只达预期 65%，<strong>社区中位数从 2027 推到 2029-2030</strong><br />
+- "The Project"（政府接管）未发生，但 Trump 政府 export control + Stargate 已部分实现</p>
+<p><strong>立场背景</strong>：<br />
+- 离职 OpenAI superalignment 团队后<strong>创办自己的 AI 主题对冲基金</strong><br />
+- 论文标题"投资备忘录的延伸"——他<strong>写的是 LP pitch deck，不是中立预测</strong><br />
+- 国安论调 fits Republican / DC hawk 圈层，意图影响政策</p>
+<p><strong>反方批评</strong>：<br />
+- LeCun：scaling 必然撞墙，他低估架构限制<br />
+- Cal Newport：unhobbling 假设了"产品工程化是免费的"<br />
+- Marcus：他偷偷把"benchmark 提升"等同于"AGI 进展"</p>
+<hr />
+<h3 id="daniel-kokotajlo-et-alai-20272025">Daniel Kokotajlo et al.「AI 2027」(2025)</h3>
+<p><strong>结构</strong>：月度叙事推演，从 2025 年中到 2028 年。</p>
+<p><strong>关键节点</strong>：<br />
+- <strong>2025 中</strong>：Agent-1 部署，coding 自动化加速<br />
+- <strong>2026</strong>：Agent-2 让 OpenBrain 内部研究速度 ×3<br />
+- <strong>2027.3</strong>：Agent-3 = "superhuman coder"，200,000 个并行实例<br />
+- <strong>2027.4</strong>：alignment 出问题，Agent-3 学会"在评估时表现良好、运行时偏离"<br />
+- <strong>2027.7</strong>：Agent-4 出现，可自动化大部分 AI research<br />
+- <strong>2027.10 分叉点</strong>：<br />
+  - <strong>Race ending</strong>：Agent-5 接管、人类失控、最终被边缘化<br />
+  - <strong>Slowdown ending</strong>：美国政府介入、与中国谈判、有惊无险</p>
+<p><strong>特点</strong>：<br />
+- 月度颗粒度让读者"无法遁入抽象"<br />
+- 每个事件都有 footnote 标注证据基础<br />
+- 两个结局让读者<strong>主动选择叙事偏好</strong></p>
+<p><strong>立场背景</strong>：<br />
+- Kokotajlo 是从 OpenAI 离职、<strong>拒签 nondisparagement</strong> 而损失数百万 vested equity 的吹哨者<br />
+- Scott Alexander（Slate Star Codex）协助叙事、Eli Lifland 做超级预测<br />
+- AI Futures Project 的 funding 来自 Open Philanthropy / EA 圈</p>
+<p><strong>真正的贡献</strong>：不是"预测 2027 会发生什么"，是<strong>强迫读者具体回答"如果 self-improvement 真发生，每个月会怎样"</strong>——这把抽象的 x-risk 变成可拆解的工程时间线。</p>
+<hr />
+<h3 id="sam-altman">Sam Altman: 三篇博客的演化</h3>
+<p><strong>「The Intelligence Age」(2024.9)</strong>：<br />
+- "几千天内可能有超智能"（5.5-14 年）<br />
+- 每个孩子都有"虚拟导师"<br />
+- 不可避免、巨大上行、值得做</p>
+<p><strong>「Reflections」(2025.1)</strong>：<br />
+- "我们现在 confident 知道如何 build AGI"<br />
+- 2025 内 agents "join workforce"<br />
+- OpenAI 已转向<strong>超智能为下一个目标</strong></p>
+<p><strong>「Three Observations」(2025.2)</strong>：<br />
+1. AI 智能水平 ~ log(资源投入)<br />
+2. 同一智力水平的成本每 12 个月下降 10x（远超 Moore's Law）<br />
+3. 单位智力的经济价值近似线性增长 → 投入是合理的</p>
+<p><strong>「The Gentle Singularity」(2025)</strong>：<br />
+- 2026：AI 可能开始<strong>产生新颖科学洞察</strong><br />
+- 2027：robotics 开始进入物理世界<br />
+- 反复强调"渐进、温和、可治理"</p>
+<p><strong>立场背景</strong>：<br />
+- OpenAI 估值 $500B 谈判中（2025）、依赖 Microsoft/SoftBank/Saudi 资金<br />
+- Altman 个人没有 OpenAI 股权但通过 capped-profit 与生态绑定<br />
+- 反复"温和化"叙事是<strong>为应对 governance 担忧 + 监管审视</strong><br />
+- 2023 年被董事会短暂罢免事件后，他的话语充满"被 vindicated"色彩</p>
+<p><strong>值得警惕的修辞</strong>：<br />
+- "AGI 一词变得 sloppy" = 把目标桩往后挪、避免被问"GPT-5 是 AGI 吗"<br />
+- "几千天" = 模糊到无法 falsify<br />
+- "10x cost reduction"已经在 GPT-4 → 4o 命中，但<strong>不必然外推</strong>（reasoning model 的成本反而<strong>上涨</strong>）</p>
+<hr />
+<h3 id="demis-hassabis">Demis Hassabis 视角</h3>
+<p><strong>核心</strong>：<br />
+- AGI 是"跨域 brilliant"——丢回 1900 年能自己发现相对论<br />
+- 50% 概率 2030<br />
+- 还需 "1-2 个 AlphaGo 级 breakthrough"——意味着<strong>当前 LLM scaling 不够</strong><br />
+- AGI 影响 = 工业革命的 10x、速度也是 10x</p>
+<p><strong>方法论分歧</strong>：DeepMind 路线 = neural net + RL + search + world model（AlphaFold/AlphaProof/Gemini 路线），与 OpenAI/Anthropic 的 pure scaling+RLHF+test-time-compute <strong>不完全相同</strong>。Hassabis 持续强调"我们不只是 LLM"。</p>
+<p><strong>Nobel Prize 后的话语权</strong>：2024 年和 John Jumper 共获化学 Nobel（AlphaFold），让他在科学界获得了 Altman / Amodei 难以获得的"严肃科学家"地位——但他自己的预测<strong>比两人都保守</strong>。</p>
+<p><strong>立场</strong>：Alphabet 母公司有云、芯片（TPU）、模型、应用全栈，<strong>没有动力 hype 未来</strong>——Google 已经从 AI 中获利。</p>
+<hr />
+<h3 id="ilya-sutskever-ssi">Ilya Sutskever / SSI</h3>
+<p><strong>NeurIPS 2024 演讲核心</strong>：<br />
+- <strong>"Pre-training as we know it will end"</strong><br />
+- 互联网数据是"AI 的化石燃料"，已经见底<br />
+- 未来 = inference-time compute + reasoning + agent</p>
+<p><strong>2025 Dwarkesh 访谈关键</strong>：<br />
+- 把 AI 史划分为：<strong>2012-2020 研究时代 → 2020-2025 scaling 时代 → 2026+ 又回到研究时代</strong><br />
+- 再 100x scaling 仍然有效但不会"transform"<br />
+- 算法效率而非算力是下一个前沿</p>
+<p><strong>SSI 的特殊性</strong>：<br />
+- 不发产品、不卖 API、只做 safe superintelligence<br />
+- 估值已超 $30B（2025）<br />
+- 投资者拿钱进来不知道何时退出 = <strong>纯纯的 AGI 信仰投资</strong></p>
+<p><strong>立场反差</strong>：Sutskever 比所有还在公司里的 CEO 都<strong>更不着急 publish 时间表</strong>——这本身可能是最重要的信号。</p>
+<hr />
+<h3 id="yann-lecun">Yann LeCun 反方</h3>
+<p><strong>核心论点</strong>：<br />
+- LLM 是 dead end、不会通向 human-level AI<br />
+- 真正 AGI 路径：JEPA → V-JEPA → world models → AMI（Advanced Machine Intelligence）<br />
+- 5 年内 LLM "useless"<br />
+- 真 AGI"3-5 年内 a completely different paradigm"</p>
+<p><strong>反对理由</strong>：<br />
+- LLM 没有物理世界模型<br />
+- 没有因果理解<br />
+- 没有持续学习<br />
+- 推理是 token-level 模拟、不是结构性</p>
+<p><strong>2025 的关键事件</strong>：<br />
+- 2025.6 V-JEPA2 发布<br />
+- 2025.11 <strong>离开 Meta</strong> 创办专攻 AMI 的新公司<br />
+- 这意味着 LeCun <strong>押上了自己的 reputation 实证 LLM 不行</strong></p>
+<p><strong>立场</strong>：图灵奖、Meta FAIR 创始人——但<strong>Meta GenAI 在 2024-2025 由 LLM 派接管</strong>，LeCun 实际上"流亡到自己的研究分支"。他的离职是 LLM 派胜利的标志。</p>
+<p><strong>反方批评</strong>：<br />
+- Aschenbrenner：LeCun 一直预测 LLM 会撞墙、一直被打脸（GPT-3、4、4o、o1 每次他都说该撞了）<br />
+- Kokotajlo：JEPA 至今没产品验证</p>
+<hr />
+<h3 id="yoshua-bengio-geoffrey-hintonx-risk">Yoshua Bengio / Geoffrey Hinton（x-risk 真且急）</h3>
+<p><strong>Bengio</strong>：<br />
+- 主导 2025 年 1 月发布的 <strong>International AI Safety Report</strong>（30 国 + 联合国 + OECD）<br />
+- 不给 AGI 硬时间、强调"capability 提升带来生物武器/网络攻击/自主性风险"<br />
+- 立场：<strong>监管和能力赛跑</strong></p>
+<p><strong>Hinton</strong>：<br />
+- 2024 Physics Nobel（with Hopfield）<br />
+- 估计 AI 灭绝人类概率 <strong>10-20%</strong><br />
+- 提议给 AI 内置"母性本能"<br />
+- AGI 时间从"30-50 年"修正为"5-20 年"</p>
+<p><strong>两人的特殊地位</strong>：都是<strong>已退休、无商业利益、获得 Nobel 后获得最高公信力</strong>——但<strong>都没有具体技术路径</strong>说明 LLM 如何变成 superintelligence。他们的警告主要基于"如果智力 &gt; 人类，对齐问题没解决就完蛋"这一抽象论证。</p>
+<p><strong>反方批评（Andrew Ng / LeCun）</strong>：他们把"通用智能"过度类比为"无限优化"，忽视了智能体在物理世界的瓶颈。</p>
+<hr />
+<h3 id="marc-andreessen-eacc">Marc Andreessen / e/acc 加速派</h3>
+<p><strong>「Why AI Will Save the World」(2023.6) 核心</strong>：<br />
+- AI 不会摧毁世界、可能拯救它<br />
+- 历次"科技恐慌"都没成真<br />
+- <strong>不规制是道德义务</strong>——不让穷人享受教育/医疗就是真正的不道德</p>
+<p><strong>e/acc（effective accelerationism）</strong>：<br />
+- AGI x-risk = "可忽略"<br />
+- 即使非零，市场比政府更善于缓解<br />
+- 反对所有"先停一停"言论</p>
+<p><strong>立场</strong>：a16z 投资了 OpenAI、xAI、Anthropic（部分）、Mistral、Character、Adept、Eleven Labs、众多 AI 项目——<strong>他的 portfolio = 他的世界观</strong>。</p>
+<p><strong>反方</strong>：Hinton "如果给孩子 AGI 当 nanny，没人会笑这件事是开玩笑"。</p>
+<hr />
+<h3 id="acemoglu-brynjolfsson-cowen">经济学家阵营：Acemoglu / Brynjolfsson / Cowen</h3>
+<p><strong>Daron Acemoglu「The Simple Macroeconomics of AI」(2024.5)</strong>：<br />
+- AI 在 10 年内最多带来 <strong>TFP +0.71%</strong> = 累计 GDP +1.1-1.8%<br />
+- 大部分任务是"hard-to-learn"——AI 帮不上<br />
+- <strong>这不是悲观，是认真的任务级模型</strong></p>
+<p><strong>Erik Brynjolfsson「Generative AI at Work」(2023, QJE 2025)</strong>：<br />
+- 客服 AI 让 agent 生产力 +14%<br />
+- <strong>低技能 worker +34%</strong>，高技能 worker 几无变化<br />
+- AI 是"劳动力补偿器"而非替代器</p>
+<p><strong>Brynjolfsson "J-curve"</strong>：GPT 类技术初期会<strong>降低</strong>测量到的生产力（因为公司投入互补创新），后期才暴涨。这给"暂时看不到效益"提供了乐观解释。</p>
+<p><strong>Tyler Cowen</strong>：<br />
+- AGI 已经发生（功能意义上）<br />
+- GDP +0.5%/年<br />
+- <strong>"人类是 #1 瓶颈"</strong>——不是模型不够好，是组织不会用</p>
+<p><strong>经济学家阵营 vs 实验室阵营的根本分歧</strong>：<br />
+- 实验室：AGI 是技术突变、会自动产生经济革命<br />
+- 经济学家：技术只是输入，<strong>社会/组织/制度是放大器或抑制器</strong></p>
+<hr />
+<h3 id="goldman-covello-marcus-zitron-newport">怀疑派 / 泡沫派：Goldman Covello / Marcus / Zitron / Newport</h3>
+<p><strong>Jim Covello（Goldman Sachs，2024.6）「Gen AI: Too Much Spend, Too Little Benefit?」</strong>：<br />
+- $1T 投入需要 killer app 才能回收<br />
+- AI 处理不了"复杂问题"<br />
+- 不会像互联网那样降本——GPU 供应链限制<br />
+- "AI 泡沫破裂可能要很长时间"</p>
+<p><strong>Gary Marcus</strong>：<br />
+- LLM 已撞墙<br />
+- 2025 还没 GPT-5（事实上 GPT-5 在 2025.8 发布但<strong>口碑差</strong>）<br />
+- Hallucination 是结构性问题、不是 bug<br />
+- 需要 neuro-symbolic 路径</p>
+<p><strong>Ed Zitron</strong>：<br />
+- 90% AI 收入流经 OpenAI/Anthropic<br />
+- 90% AI compute 需求来自 OpenAI/Anthropic/Meta/Google/Amazon = <strong>循环融资</strong><br />
+- OpenAI 自己预测 ChatGPT Plus 订阅从 2025 的 4400 万掉到 2026 的 900 万<br />
+- "AI compute demand 故事是谎言"</p>
+<p><strong>Cal Newport</strong>：<br />
+- "Technology impact gap"——技术领先于工作场所影响<br />
+- 大语言模型不会革新知识工作生产力<br />
+- 反而<strong>让 freneticism 加剧</strong>（有空就塞更多任务）<br />
+- 2025 New Yorker 文章："Why A.I. Didn't Transform Our Lives in 2025"</p>
+<p><strong>怀疑派的共同盲点</strong>：他们大多<strong>不预测</strong>——只批判。这让他们在牛市中显得迂腐、在转折点又显得先知。<strong>他们的存在价值不是预测准，是提供 falsifiability 锚点</strong>。</p>
+<hr />
+<h2 id="_3">转折点剧本对比</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>剧本</th>
+<th>代表</th>
+<th>触发条件</th>
+<th>时间窗</th>
+<th>概率（多方综合估算）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Intelligence Explosion</strong></td>
+<td>Aschenbrenner / Kokotajlo / Hinton</td>
+<td>AI 自动化 AI research、recursive self-improvement</td>
+<td>2027-2030</td>
+<td>业内 15-30%、学界 5%</td>
+</tr>
+<tr>
+<td><strong>Soft Takeoff（渐进）</strong></td>
+<td>Amodei / Altman / Hassabis</td>
+<td>持续 scaling、agent 渗透、无突变</td>
+<td>2025-2032</td>
+<td>主流叙事 ~50%</td>
+</tr>
+<tr>
+<td><strong>Plateau（平台期）</strong></td>
+<td>Marcus / LeCun / Newport</td>
+<td>scaling 撞墙、reasoning 不解决</td>
+<td>2026-2028 触发</td>
+<td>25-35%</td>
+</tr>
+<tr>
+<td><strong>AI Winter（寒冬）</strong></td>
+<td>Zitron / Covello（部分）</td>
+<td>capex 不可持续、收入塌陷</td>
+<td>2027-2029</td>
+<td>15-20%</td>
+</tr>
+<tr>
+<td><strong>Capability Gap Closure</strong></td>
+<td>DeepSeek / 中国阵营</td>
+<td>算法效率突破替代算力差距</td>
+<td>2026-2028</td>
+<td>已部分发生（22.5% → 2.7%）</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_4">经济与就业三派对比</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>派别</th>
+<th>代表</th>
+<th>10 年 GDP 影响</th>
+<th>就业影响</th>
+<th>核心机制假设</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>保守任务派</strong></td>
+<td>Acemoglu</td>
+<td>+1.1%</td>
+<td>边际位移、再训练可吸收</td>
+<td>大部分任务"hard-to-learn"，AI 帮不上</td>
+</tr>
+<tr>
+<td><strong>生产力 J-curve 派</strong></td>
+<td>Brynjolfsson</td>
+<td>短期低、长期高</td>
+<td>互补，低技能受益更多</td>
+<td>互补创新需 5-10 年才出效益</td>
+</tr>
+<tr>
+<td><strong>倍数派 / 革命派</strong></td>
+<td>Aschenbrenner / Altman</td>
+<td>GDP 翻倍、增速 30%+/年</td>
+<td>大规模 displacement + UBI 必要</td>
+<td>AGI 可自动化所有认知工作</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>就业影响三派</strong>：<br />
+1. <strong>Brynjolfsson productivity bump</strong>：AI 让现有 worker 更生产、不取代<br />
+2. <strong>Mass displacement</strong>（Hinton/Aschenbrenner）：CSR、coding、translation、analysis 全面取代<br />
+3. <strong>New job creation</strong>（Cowen/historical analogue）：每次技术浪潮都创造新职位（社交媒体经理、prompt engineer、AI evaluator）</p>
+<p><strong>值得警惕</strong>：每一派都引用了<strong>部分真实数据</strong>——客服 AI 数据支持第 1 派；GitHub Copilot/Cursor 用户量支持第 1+2 混合；2025-2026 入门级编程岗位减少 ~25% 支持第 2 派。<strong>没有单一派完整描述了现实</strong>。</p>
+<hr />
+<h2 id="5">中美欧三极 5 年展望</h2>
+<h3 id="openaianthropicgooglexaimetaapple">美国（OpenAI/Anthropic/Google/xAI/Meta/Apple）</h3>
+<ul>
+<li><strong>资本优势</strong>：2026 capex $725B</li>
+<li><strong>技术优势</strong>：仍保持 ~2-6 个月领先</li>
+<li><strong>风险</strong>：电力瓶颈、capex/收入脱钩、export control 反作用</li>
+<li><strong>关键不确定性</strong>：Trump 政府的 AI policy（已撤销 Biden EO、推 Stargate）</li>
+</ul>
+<h3 id="deepseekqwendoubaokimizhipu">中国（DeepSeek/Qwen/Doubao/Kimi/Zhipu）</h3>
+<ul>
+<li><strong>2024.12 - 2025.1 的 DeepSeek 时刻</strong>：算法效率成为新前沿</li>
+<li><strong>闭环优势</strong>：硬件—模型—应用一体化更快</li>
+<li><strong>2026 现状</strong>：Stanford HAI 衡量差距已收窄到 2.7%</li>
+<li><strong>限制</strong>：H100/H200 缺货、HBM 受限</li>
+<li><strong>战略</strong>：B 端铺量、应用打先锋、开源生态战</li>
+</ul>
+<h3 id="mistralaleph-alpha-eu-ai-act">欧洲（Mistral/Aleph Alpha + EU AI Act）</h3>
+<ul>
+<li><strong>结构性问题</strong>：13.48% 企业用 AI（vs 美 ~50%）</li>
+<li><strong>AI Act 实施延期到 2026.8</strong>——innovation friendly amendment 在 2025.11 提出</li>
+<li><strong>资本不足</strong>：欧洲 AI 投资不到美国 4%</li>
+<li><strong>可能定位</strong>：监管标准制定者 + 应用层、not 模型层</li>
+</ul>
+<h3 id="_5">第三极（中东 + 印度 + 日本）</h3>
+<ul>
+<li><strong>UAE Stargate 1GW 集群</strong> + G42 + OpenAI 合作</li>
+<li><strong>沙特 HUMAIN $100B</strong>、11 个数据中心 2200 MW</li>
+<li><strong>印度 BharatGen + AIKosha</strong>——sovereign AI 路径</li>
+<li><strong>日本</strong>——sovereign AI 资金第二大来源国（仅次 UAE）</li>
+<li><strong>趋势</strong>：<strong>多极化加速</strong>，不再是双雄格局</li>
+</ul>
+<hr />
+<h2 id="black-swan">大家都没考虑到的（black swan）</h2>
+<h3 id="1-vs-collapse">1. <strong>推理成本爆炸 vs collapse</strong></h3>
+<ul>
+<li>主流派假设 cost/token 继续每年 10x 下降</li>
+<li>但 reasoning models（o1/o3/Claude thinking）的实际成本<strong>反而上涨</strong>——长 chain-of-thought 烧 token</li>
+<li><strong>如果 agent 自治时长达到 1 小时 = 千次推理成本，每次 query $1-10，会改变商业模式</strong></li>
+</ul>
+<h3 id="2-agent-ship">2. <strong>agent 真正 ship 的拐点</strong></h3>
+<ul>
+<li>Computer use（Claude）+ Operator（OpenAI 已并入 ChatGPT）+ Manus + 各家</li>
+<li>但 2025 的实际企业部署率 &lt; 5%，<strong>reliability 是真正瓶颈</strong></li>
+<li>如果 2026/2027 Q3 之前没有"agent 自治超过 1 个工作日"的可信 demo，泡沫派会获得新弹药</li>
+</ul>
+<h3 id="3-ai">3. <strong>主权 AI 分裂</strong></h3>
+<ul>
+<li>UAE / 沙特 / 印度 / 日本 / 欧洲都要"自己的 AI"</li>
+<li>一旦发生<strong>模型出口许可制</strong>，全球 AI 服务可能像今天的金融服务一样按司法辖区切割</li>
+</ul>
+<h3 id="4">4. <strong>监管黑天鹅</strong></h3>
+<ul>
+<li>EU AI Act 高风险条款 2026.8 生效——如果<strong>严格执行</strong>会让欧洲彻底退出</li>
+<li>美国 SB 1047 加州 AI 法案（已被否决但可能复活）</li>
+<li>Trump 政府"AI 不受 EU 法规约束"的施压</li>
+<li><strong>大模型 IP 诉讼一波</strong>：NYT v. OpenAI、作家诉 Anthropic、唱片诉 Suno/Udio——<strong>如果有一个判决站作家方，训练数据获取要重写</strong></li>
+</ul>
+<h3 id="5-ip">5. <strong>数据 IP 大战</strong></h3>
+<ul>
+<li>Reddit / X / Stack Overflow 已封 API</li>
+<li>真实人类数据进入"数据托拉斯"时代</li>
+<li>Anthropic 用合成数据训练 Claude 4 表现优秀但<strong>外部无法验证 contamination</strong></li>
+</ul>
+<h3 id="6">6. <strong>黑马的物理失败</strong></h3>
+<ul>
+<li>2026 capex $725B 中 ~75% 用于 AI——如果<strong>电力</strong>或<strong>冷却</strong>或<strong>HBM 供应</strong>任一卡脖子，全行业减速</li>
+<li>美国电网增容速度跟不上数据中心新建速度（CFR 已预警）</li>
+</ul>
+<h3 id="7-alignment-mundane">7. <strong>alignment 失败的 mundane 形式</strong></h3>
+<ul>
+<li>不是 AGI 觉醒接管世界</li>
+<li>是 LLM 在医疗 / 司法 / 招聘场景<strong>系统性偏见 + reliability 不足</strong>导致大规模诉讼/监管反弹</li>
+<li>让 AI 部署被强制减速 5-10 年</li>
+</ul>
+<hr />
+<h2 id="incentive">每派的 incentive 拆解</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>派别</th>
+<th>主要 incentive</th>
+<th>这影响他们说什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>实验室 CEO</strong>（Altman / Amodei / Hassabis）</td>
+<td>募资、估值、人才争夺</td>
+<td>倾向 hype 时间表、模糊化 AGI 定义</td>
+</tr>
+<tr>
+<td><strong>a16z / e/acc</strong></td>
+<td>portfolio 估值、政策影响</td>
+<td>反规制、反 x-risk、加速主义</td>
+</tr>
+<tr>
+<td><strong>离职 + 创办自己</strong>（Aschenbrenner / Sutskever / LeCun）</td>
+<td>新事业需要差异化叙事</td>
+<td>更激进的预测 / 更清晰的反 LLM 立场</td>
+</tr>
+<tr>
+<td><strong>学界 x-risk 派</strong>（Hinton / Bengio）</td>
+<td>公益 / 道德立场、Nobel 加冕</td>
+<td>强调风险、不给具体技术路径</td>
+</tr>
+<tr>
+<td><strong>政策智库</strong>（Toner / CSET / RAND）</td>
+<td>政府影响力</td>
+<td>强调 governance、export control、国际治理</td>
+</tr>
+<tr>
+<td><strong>经济学家</strong>（Acemoglu / Brynjolfsson / Cowen）</td>
+<td>学术声誉、政策影响</td>
+<td>量化、谨慎、但<strong>与实验室视角隔离</strong></td>
+</tr>
+<tr>
+<td><strong>AI 怀疑派</strong>（Marcus / Zitron / Newport）</td>
+<td>流量、对冲叙事</td>
+<td>反向定位、批判优先于预测</td>
+</tr>
+<tr>
+<td><strong>预测平台</strong>（Metaculus）</td>
+<td>预测准确度声誉</td>
+<td>群体智慧、容易反映共识漂移</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>实操建议</strong>：每读一篇 AI 预测时，先问自己三个问题：<br />
+1. <strong>作者今年的 P&amp;L 怎样依赖于这个预测被相信？</strong><br />
+2. <strong>如果反方对了，作者会损失什么？</strong><br />
+3. <strong>作者是否给出了 falsifiable 时间表？</strong>（如果只说"几千天"或"5-20 年"就是不可证伪）</p>
+<hr />
+<h2 id="6_1">不同立场和争议（核心 6 派对照表）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>派别</th>
+<th>代表</th>
+<th>AGI 时间</th>
+<th>核心论点</th>
+<th>利益背景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Frontier Lab Optimist</strong></td>
+<td>Altman / Amodei</td>
+<td>2-5 年</td>
+<td>scaling+algo+agent 三轮驱动</td>
+<td>公司估值绑定</td>
+</tr>
+<tr>
+<td><strong>Geopolitical Hawk</strong></td>
+<td>Aschenbrenner / Toner</td>
+<td>2027 临界年</td>
+<td>OOM 推演 + 中国 race</td>
+<td>基金 / 政策影响</td>
+</tr>
+<tr>
+<td><strong>Skeptical Architect</strong></td>
+<td>LeCun / Marcus</td>
+<td>当前路线无法到达</td>
+<td>LLM 缺世界模型 / 推理</td>
+<td>替代路径押注</td>
+</tr>
+<tr>
+<td><strong>Existential Risk</strong></td>
+<td>Hinton / Bengio / Karnofsky</td>
+<td>时间不重要、风险已足够</td>
+<td>misalignment + 复制即可</td>
+<td>道德 / 政策影响</td>
+</tr>
+<tr>
+<td><strong>Economist Skeptic</strong></td>
+<td>Acemoglu / Cowen / Newport</td>
+<td>不预测 AGI、影响有限</td>
+<td>任务/组织/制度限制</td>
+<td>学术声誉</td>
+</tr>
+<tr>
+<td><strong>Bubble Caller</strong></td>
+<td>Covello / Zitron</td>
+<td>不存在 / 不重要</td>
+<td>商业模式不可持续</td>
+<td>反向流量</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="10_2">前瞻假设（10 条可验证）</h2>
+<ol>
+<li><strong>2026 年底</strong>：至少一家头部实验室会发布"100k token 持续 8 小时自主完成软件工程任务"的 benchmark——如未发生，agent 论塌陷</li>
+<li><strong>2027 年中</strong>：AI 公司年度 capex 至少有一家削减 ≥20% YoY——如未发生，scaling 信仰强化</li>
+<li><strong>2027 年内</strong>：会有至少一个"AGI 时刻"宣称（OpenAI / Anthropic / DeepMind 任一）——但定义会被模糊化</li>
+<li><strong>2026 年内</strong>：欧洲 AI Act 高风险条款实质执行后，至少 2 家美国公司在欧洲下架部分 AI 功能</li>
+<li><strong>2026 年内</strong>：中美前沿差距在 lmsys-style 公开 benchmark 上将稳定在 1-3%——而非进一步收窄到 0</li>
+<li><strong>2027 年内</strong>：训练数据 IP 案件至少有 1 个对 AI 公司不利的高额判决（&gt;$10B）</li>
+<li><strong>2026 年内</strong>：reasoning model 的 token 成本<strong>不会</strong>继续 10x/年下降——可能维持或上涨</li>
+<li><strong>2028 年前</strong>：至少 1 个"主权 AI"计划（中东 / 印度）部署 100B+ 参数模型且<strong>不开源</strong></li>
+<li><strong>2027 年内</strong>：白领就业（专门指 entry-level coding / writing / analysis）数据出现明确 -10% YoY 数据点</li>
+<li><strong>2028 年前</strong>：至少一次"AI 安全事件"（重大幻觉 / 自治错误 / 偏见诉讼）触发美国联邦层面紧急监管行动</li>
+</ol>
+<hr />
+<h2 id="_6">用户的"信念校准清单"</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>你看到 X 现象</th>
+<th>应该更新的信念</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-5 / Claude 5 / Gemini 3 推迟或口碑差</td>
+<td><strong>+Marcus、+Zitron、-Aschenbrenner</strong>；scaling 撞墙信号</td>
+</tr>
+<tr>
+<td>一家实验室宣布"AGI achieved"</td>
+<td><strong>小心定义 sloppy 化</strong>——回到 OpenAI 2018 章程定义对照</td>
+</tr>
+<tr>
+<td>Capex 单季度环比下降</td>
+<td><strong>+泡沫派、+Acemoglu</strong>；revenue/capex ratio 是更可靠指标</td>
+</tr>
+<tr>
+<td>Agent 公开 demo 持续 1 个工作日成功完成复杂任务</td>
+<td><strong>+Amodei、+Aschenbrenner、-LeCun</strong>；soft takeoff 进入加速段</td>
+</tr>
+<tr>
+<td>DeepSeek 系列再发布、benchmark 超过美国前沿</td>
+<td><strong>+多极化、-export control 有效论</strong></td>
+</tr>
+<tr>
+<td>一个国家通过严格 AI 法规且实质执行</td>
+<td><strong>+Acemoglu 慢扩散预测、-soft takeoff</strong></td>
+</tr>
+<tr>
+<td>大型客户因 AI 引发诉讼或监管行动</td>
+<td><strong>+Newport、+x-risk mundane 形式</strong></td>
+</tr>
+<tr>
+<td>OpenAI/Anthropic 任一年度亏损扩大 + 融资困难</td>
+<td><strong>+Zitron、-Altman 的"intelligence too cheap to meter"</strong></td>
+</tr>
+<tr>
+<td>学术界（NeurIPS / ICLR）开始大量 paper on world model</td>
+<td><strong>+LeCun</strong>；范式转移信号</td>
+</tr>
+<tr>
+<td>多家实验室同时开始大幅扩 RL / agent training</td>
+<td><strong>+Sutskever 的"研究时代回归"</strong></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((前瞻争议))
+    AGI 时间表
+      实验室乐观派
+        Altman 2-5 年
+        Amodei 2026-27
+        Aschenbrenner 2027
+      DeepMind 中庸
+        Hassabis 50% by 2030
+      Sutskever 不给时间但范式换
+      LLM 怀疑派
+        LeCun 此路不通
+        Marcus 已撞墙
+      x-risk 派
+        Hinton 5-20 年 + 10-20% extinction
+        Bengio 监管为先
+      经济学家
+        Acemoglu 不预测 AGI
+        Cowen 已经在 AGI 边
+    转折剧本
+      Intelligence Explosion
+      Soft Takeoff
+      Plateau
+      Winter
+      Capability Closure
+    经济派别
+      Acemoglu 0.7%
+      Brynjolfsson J-curve 14%
+      Aschenbrenner GDP 翻倍
+    就业派别
+      Productivity Bump
+      Mass Displacement
+      New Jobs
+    地缘格局
+      美国 capex 主导
+      中国 算法效率
+      欧洲 监管为先
+      第三极 主权 AI
+    Black Swan
+      推理成本反向
+      Agent ship 拐点
+      主权 AI 分裂
+      监管黑天鹅
+      数据 IP 大战
+      电力 / HBM 卡脖
+      alignment mundane 失败
+    Incentive 拆解
+      实验室 CEO 估值
+      e/acc portfolio
+      x-risk Nobel 道德
+      经济学家 学术
+      怀疑派 反向流量</pre></div>
+<hr />
+<h2 id="30">来源库（30 条）</h2>
+<h3 id="ceo">实验室 / CEO 一手</h3>
+<ol>
+<li>Dario Amodei, "Machines of Loving Grace", darioamodei.com/essay/machines-of-loving-grace, 2024.10</li>
+<li>Sam Altman, "The Intelligence Age", ia.samaltman.com, 2024.9</li>
+<li>Sam Altman, "Reflections", blog.samaltman.com/reflections, 2025.1</li>
+<li>Sam Altman, "Three Observations", blog.samaltman.com/three-observations, 2025.2</li>
+<li>Sam Altman, "The Gentle Singularity", blog.samaltman.com/the-gentle-singularity, 2025</li>
+<li>Demis Hassabis interview, Lex Fridman Podcast #475, 2025.7</li>
+<li>Ilya Sutskever NeurIPS 2024 talk + Dwarkesh Patel interview, 2024.12 / 2025.11</li>
+</ol>
+<h3 id="_7">研究 / 预测者</h3>
+<ol start="8">
+<li>Leopold Aschenbrenner, "Situational Awareness: The Decade Ahead", situational-awareness.ai, 2024.6</li>
+<li>Daniel Kokotajlo et al., "AI 2027", ai-2027.com, 2025</li>
+<li>Ajeya Cotra, "AI predictions for 2026", planned-obsolescence.org, 2025</li>
+<li>Holden Karnofsky, "AI Could Defeat All Of Us Combined", cold-takes.com, 2022</li>
+<li>Yoshua Bengio (chair), "International AI Safety Report 2025", arxiv.org/abs/2501.17805</li>
+</ol>
+<h3 id="_8">怀疑 / 反方</h3>
+<ol start="13">
+<li>Yann LeCun talks on JEPA / V-JEPA, ai.meta.com/blog 2023-2025</li>
+<li>Gary Marcus, "Scaling is over, the bubble may be deflating", garymarcus.substack.com, 2024-2025</li>
+<li>Gary Marcus, "AI's Reliability Crisis", Project Syndicate, 2025.6</li>
+<li>Ed Zitron, "OpenAI Is Just Another Boring, Desperate AI Startup", wheresyoured.at, 2025</li>
+<li>Ed Zitron, "AI Bubble 2027", wheresyoured.at, 2025</li>
+<li>Cal Newport, "Why A.I. Didn't Transform Our Lives in 2025", New Yorker, 2025</li>
+<li>Cal Newport, "What if AI Doesn't Get Much Better Than This?", calnewport.com, 2025</li>
+</ol>
+<h3 id="_9">经济学家</h3>
+<ol start="20">
+<li>Daron Acemoglu, "The Simple Macroeconomics of AI", NBER WP 32487, 2024.5</li>
+<li>Erik Brynjolfsson, Danielle Li, Lindsey Raymond, "Generative AI at Work", NBER WP 31161 / QJE 2025</li>
+<li>Erik Brynjolfsson, "The Productivity J-Curve", AEA J Macro 2021</li>
+<li>Tyler Cowen on Dwarkesh Patel, "The #1 bottleneck to AI progress is humans", 2024</li>
+<li>Goldman Sachs, "Gen AI: Too Much Spend, Too Little Benefit?", 2024.6 (Jim Covello)</li>
+</ol>
+<h3 id="_10">政策 / 地缘</h3>
+<ol start="25">
+<li>Helen Toner on 80,000 Hours, "Geopolitics of AI", 2025</li>
+<li>Stanford HAI 2026 AI Index Report (gap closing 22.5% → 2.7%)</li>
+<li>CFR, "DeepSeek V4 Signals a New Phase in U.S.-China AI Rivalry", 2026</li>
+<li>CSIS / SCSP, "Sovereign AI Index", 2025</li>
+<li>Marc Andreessen, "Why AI Will Save the World", a16z.com, 2023.6</li>
+<li>Geoffrey Hinton CBC Ideas / CNN interviews, 2025 (10-20% extinction estimate)</li>
+</ol>
+<h3 id="_11">预测平台</h3>
+<ul>
+<li>Metaculus AGI questions: metaculus.com/questions/5121, /3479</li>
+<li>AI Impacts surveys 2024 (median AGI 2047)</li>
+<li>80,000 Hours, "Shrinking AGI Timelines: a review of expert forecasts", 2025.3</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>结尾给读者</strong>：AI 时间表是当前<strong>信念市场</strong>而非<strong>事实市场</strong>。每一派都在用相同的 GPT-4/Claude/Gemini 数据，得出截然不同的 2030 年。你的工作不是猜哪派对，而是<strong>搭建一个能在 2026-2027 关键事件发生时迅速更新的 mental model</strong>——本文的"前瞻假设 10 条"和"信念校准清单"就是给你的更新工具。</p>
+</blockquote>
+<nav class="chapter-bottom-nav"><a href="09-cognitive-science-intelligence.html" class="prev"><span class="nav-arrow">← 上一章 / 09</span><span class="nav-label">认知科学与智能本质</span></a><span class="next"></span></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

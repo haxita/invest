@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 · 技术演进与本质 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 01 · 技术演进与本质">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* === Sticky Navigation === */
+.chapter-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.nav-brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  margin-right: 16px;
+  padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text-soft);
+  border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover {
+  background: var(--code-bg);
+  color: var(--text);
+  border-bottom: none;
+}
+.nav-item.current {
+  background: var(--accent);
+  color: #fff;
+}
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--text-faded);
+  letter-spacing: 0.04em;
+}
+.nav-title { font-weight: 500; }
+
+/* === Article === */
+.content {
+  max-width: 760px;
+  margin: 64px auto 60px;
+  padding: 0 32px;
+}
+
+.content > h1:first-child {
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--heading);
+  margin: 0 0 12px 0;
+  padding: 0;
+  border: none;
+  letter-spacing: -0.015em;
+}
+
+.content > h1:first-child + blockquote {
+  margin-top: 16px;
+  border-left-width: 3px;
+  background: transparent;
+  font-style: normal;
+  color: var(--text-soft);
+  padding: 6px 18px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--heading);
+  letter-spacing: -0.005em;
+}
+
+h1 {
+  font-size: 30px;
+  margin: 72px 0 22px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border);
+}
+
+h2 {
+  font-size: 25px;
+  margin: 56px 0 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h3 {
+  font-size: 20px;
+  margin: 38px 0 12px;
+}
+
+h4 {
+  font-size: 17px;
+  margin: 26px 0 10px;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--text);
+}
+
+p {
+  margin: 16px 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--accent-soft);
+  transition: color 0.15s ease, border-bottom-style 0.15s ease;
+}
+a:hover {
+  color: var(--link-hover);
+  border-bottom-style: solid;
+}
+
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol {
+  margin: 16px 0 16px 26px;
+  padding: 0;
+}
+li {
+  margin: 8px 0;
+  line-height: 1.85;
+}
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0;
+  padding: 14px 22px;
+  background: var(--bg-card);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  color: var(--text-soft);
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--code-border);
+  color: #6b3a2e;
+}
+
+pre {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 22px 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+.codehilite {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 22px 0;
+  overflow-x: auto;
+}
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%;
+  margin: 26px 0;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: table;
+}
+thead { background: var(--code-bg); }
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+  line-height: 1.6;
+}
+th {
+  font-weight: 600;
+  color: var(--heading);
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 26px 0;
+  border-radius: 6px;
+}
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 48px 0;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 36px 24px 60px;
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+  color: var(--text-faded);
+  font-size: 13px;
+  font-family: var(--serif);
+  letter-spacing: 0.02em;
+}
+.site-footer a {
+  color: var(--text-soft);
+  border-bottom: none;
+}
+.site-footer a:hover { color: var(--accent); }
+
+.chapter-bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 56px 0 16px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item current"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<h1 id="01">01 · 技术演进与本质</h1>
+<blockquote>
+<p>视角：从 2017 Transformer 到 2026 agentic 系统，逐个拐点拆解"底层范式"是什么、之前为什么做不到、之后什么变成可能。目标是建立一套"看到新模型/新名词能秒判断真本质 vs 工程包装"的认知滤镜。</p>
+</blockquote>
+<hr />
+<h2 id="_1">一句话总览</h2>
+<p>LLM 八年的真演进，本质只发生过<strong>四件事</strong>：(1) 把序列建模并行化（Transformer）；(2) 发现 loss 随规模可预测下降（Scaling Laws）；(3) 把"对答案的奖励信号"接入预训练后的网络（RLHF → o1/R1 的 RLVR）；(4) 把"模型说话"扩成"模型行动"（tool use → computer use → agent）。其余多数"突破"，要么是这四件事的衍生工程化，要么是产品包装；判断一项新技术是否"真本质"，看它有没有改变这四个轴中的至少一个。</p>
+<hr />
+<h2 id="_2">关键句提纲</h2>
+<ul>
+<li><strong>Transformer (2017)</strong>：把"必须按时间步走"的递归换成"全部 token 同时算注意力"，让 GPU 吃满算力，规模化才成为可能。</li>
+<li><strong>Scaling Laws (Kaplan 2020)</strong>：loss 是参数/数据/算力的幂律函数，跨 7 个数量级稳定；从此训模型从手艺变工程预测。</li>
+<li><strong>GPT-3 (2020)</strong>：175B + few-shot 涌现 in-context learning，prompt 第一次取代 fine-tuning 成为接口。</li>
+<li><strong>Chinchilla (2022)</strong>：参数和 token 应等比扩张；之前所有人都把模型做太大、数据喂太少。</li>
+<li><strong>CoT + Emergent Abilities (Wei 2022)</strong>：让模型把推理链显式吐出来，多步任务首次可能；同时 Schaeffer 2023 警告"涌现"很多是评测指标的非线性假象。</li>
+<li><strong>InstructGPT / RLHF (2022)</strong>：把"人类偏好"接入 fine-tune，第一次让对话产品可用，催生 ChatGPT。</li>
+<li><strong>GPT-4 / Claude 3 (2023-2024)</strong>：多模态原生 + 长上下文，模型从"语言机"变成"视觉-语言-代码-工具"统一接口。</li>
+<li><strong>Function Calling (2023.6)</strong>：把"模型生成 JSON 调用外部 API"训成模型本身的能力，agent 时代地基。</li>
+<li><strong>o1 / R1 (2024-2025)</strong>：把 RL 的奖励信号从"人类喜欢"换成"答案对错"（RLVR），test-time compute 成为新的 scaling 维度。</li>
+<li><strong>Computer Use / Claude Code (2024-2025)</strong>：模型从"输出 token"扩到"操作屏幕和文件系统"，长 horizon agent 自治时长翻倍。</li>
+<li><strong>持续进化轴</strong>：context 长度、工具调用稳定性、agent 自治时长（METR：每 4-7 个月翻倍）、可验证领域（数学/代码）能力。</li>
+<li><strong>周期性 / 边际递减轴</strong>：纯 pretraining loss 改进、benchmark 分数、模型尺寸单一指标、对话流畅度。</li>
+</ul>
+<hr />
+<h2 id="_3">时间线深度展开</h2>
+<h3 id="2017-transformer">2017 · Transformer：把序列建模变成可并行的表示学习</h3>
+<p>Vaswani et al. <em>Attention Is All You Need</em>（NeurIPS 2017，arxiv 1706.03762）。RNN/LSTM 的根本瓶颈是"必须按时间步串行"——梯度沿时间反传，长序列梯度消失，且 GPU 用不满。Transformer 的本质动作只有一个：用 self-attention 让序列里所有位置在一次矩阵乘法里互相看，<strong>计算图变成全并行</strong>。</p>
+<p>这之前做不到的：在合理时间内训 100B 量级模型；学到长距依赖。之后变成可能的：把 NLP 当成"一个统一架构 + 大数据 + 大算力"的工程问题。Karpathy 在 2023 年 <em>Intro to Large Language Models</em> 里反复强调，Transformer 的真正意义不是"更聪明"，而是"可扩展到任意规模而不退化"。Noam Shazeer 一作之一（multi-head attention 出自他手），论文 2017 年发布时几乎没引爆，今天被引超 12.5 万次。</p>
+<p>判断滤镜：<strong>任何宣称"取代 Transformer"的新架构（RWKV、Mamba、xLSTM 等），先问它有没有保留全并行 + 长距访问这两条；保不住至少其一，就还在做 RNN 的事</strong>。</p>
+<h3 id="2020-gpt-3scaling-laws-in-context-learning">2020 · GPT-3：scaling laws + in-context learning</h3>
+<p>Kaplan et al. <em>Scaling Laws for Neural Language Models</em>（arxiv 2001.08361）：跨 7 个数量级，loss 随参数 N、数据 D、算力 C 都是干净的幂律。Brown et al. <em>Language Models are Few-Shot Learners</em>（GPT-3，arxiv 2005.14165）175B 参数在 prompt 里直接给几个例子就能做新任务，<strong>in-context learning</strong> 出场。</p>
+<p>之前做不到的：看到一个新任务直接做，不用 fine-tune 数据。之后变成可能的：prompt 成为编程接口；"训一个大模型解决无限下游任务"的范式确立。</p>
+<p>本质突破在哪？不是模型变聪明了，而是<strong>scaling 的可预测性被证明了</strong>——你给 OpenAI/Anthropic/DeepMind 一笔钱，他们能算出 loss 会到几位小数。这把 LLM 从研究项目变成基础设施投资。</p>
+<h3 id="2022-chinchilla">2022 · Chinchilla：算力最优分配</h3>
+<p>Hoffmann et al. <em>Training Compute-Optimal Large Language Models</em>（DeepMind，arxiv 2203.15556）。训 400+ 个模型后发现：Kaplan 法则给出的"参数比数据更值得加"是错的，<strong>参数和 token 应等比双倍</strong>。70B 的 Chinchilla 训 1.4T token，吊打 280B Gopher、175B GPT-3、530B MT-NLG。</p>
+<p>含义：之前所有大模型都"太胖太瘦"——参数过多、token 不够。这条法则之后，Llama、Mistral、DeepSeek 都走"小参数 + 大 token"路线，今天最强开源模型的尺寸（7B-70B 活跃参数）是这条法则的直接产物。</p>
+<h3 id="20221-cot">2022.1 · CoT 与"涌现能力"</h3>
+<p>Wei et al. <em>Chain-of-Thought Prompting Elicits Reasoning</em>（arxiv 2201.11903）。在 prompt 里给"思考过程"示例，540B 模型在 GSM8K 上准确率从 18% 跳到 57%，超过 fine-tune + verifier 的 GPT-3。同年 Wei et al. <em>Emergent Abilities of Large Language Models</em>（arxiv 2206.07682）：某些能力在小模型上 0%，跨过某尺寸阈值后陡升。</p>
+<p>之前做不到的：让模型把"中间步骤"作为可优化对象；多步算术。</p>
+<p>但要注意 Schaeffer et al. 2023 <em>Are Emergent Abilities a Mirage?</em>（NeurIPS 2023 best paper runner-up）：很多"涌现"是因为研究者用了非线性指标（如 exact-match accuracy）；换成 token edit distance，曲线就是平滑的。<strong>涌现是真，但"突然出现"多半是测量假象</strong>——这是这套认知框架里最重要的"反热度"工具。</p>
+<h3 id="20223-instructgpt-rlhf">2022.3 · InstructGPT / RLHF：让模型听人话</h3>
+<p>Ouyang et al. <em>Training language models to follow instructions with human feedback</em>（arxiv 2203.02155）。三阶段：SFT → 训 reward model → PPO。1.3B InstructGPT 在人工评测里超过 175B GPT-3。<strong>100 倍参数差被对齐方法吃掉</strong>。</p>
+<p>这才是 ChatGPT 能在 2022.11 起飞的真原因。GPT-3 在 2020 已存在，但"会聊天"这件事不是 scale 给的，是 RLHF 给的。Constitutional AI（Anthropic 2022）后续把"人类标注"换成"模型按一组宪法原则自我批评"，DPO（Rafailov 2023）干脆绕开 reward model 直接优化策略——alignment 工具栈在 2023-2024 演化得很快，但<strong>底层范式始终是"用偏好信号塑造 base model"</strong>。</p>
+<h3 id="2023-gpt-4-claude">2023 · GPT-4 / Claude：多模态 + 长上下文</h3>
+<p>GPT-4 Technical Report（OpenAI 2023.3）；Bubeck et al. <em>Sparks of Artificial General Intelligence</em>（Microsoft，arxiv 2303.12712）声称 GPT-4 早期版本展现"AGI 的火花"——能在没特殊训练的情况下解决跨学科新颖任务。Anthropic Claude 3 Opus/Sonnet/Haiku（2024.3）原生视觉 + 200K context。</p>
+<p>本质突破：<strong>模型从单一模态扩到统一表示</strong>。图像 token 化后塞进同一个 Transformer，"看图说话"不再是 caption 模型 + 语言模型拼接。这条路径让 multimodal 不再是产品功能，而是基础能力。</p>
+<h3 id="20236-function-calling">2023.6 · Function Calling：从"说话"到"做事"</h3>
+<p>OpenAI 2023 年 6 月把"调函数"做进 GPT-3.5/4 的训练目标里：模型学会判断什么时候该停止聊天、输出严格 JSON、等待外部结果再续接。11 月升级为 tools 参数支持多工具并行。这是 agent 时代的物理基础。</p>
+<p>之前做不到的：稳定的工具调用——靠 prompt 工程让模型输出 JSON 总有 5-10% 失败率，没法跑生产。之后变成可能的：检索、计算、外部 API、代码执行成为模型的"延伸器官"。</p>
+<h3 id="2024-100k-2m-context-rot">2024 · 100K-2M 长上下文：工程化但有"context rot"</h3>
+<p>Gemini 1.5 Pro 上线 1M-2M token；Claude 1M context 2026.3 GA；Gemini 在 needle-in-haystack 上 &gt;99.7% 召回。但 <strong>Chroma 2025 <em>Context Rot</em> 研究</strong>测了 18 个前沿模型（GPT-4.1 / Claude Opus 4 / Gemini 2.5），发现<strong>所有模型在每个长度增量都有性能下降</strong>——"能记住"≠"能用"。这是 attention 的架构属性，不是数据问题。</p>
+<p>判断滤镜：<strong>长 context ≠ 长记忆。看到"我家模型 10M context"先问 needle 多个 + 跨段推理的准确率</strong>。</p>
+<h3 id="20249-12-o1test-time-compute-scaling">2024.9-12 · o1：test-time compute 成为新 scaling 轴</h3>
+<p>OpenAI o1 System Card（2024.9 / 12.5）。Learning to reason with LLMs。本质：<strong>用大规模 RL 训练模型在内部生成更长的 chain-of-thought，奖励信号是"答案最终对不对"</strong>。性能在两个轴上都涨：训练时 RL 算力、推理时思考 token 数。Codeforces 89th percentile，AIME 平均 74%（单样本）。</p>
+<p>为什么这是真本质？因为它打开了<strong>第二条 scaling 维度</strong>。pretraining 数据快用完（Sutskever NeurIPS 2024：「数据是 AI 的化石燃料，我们已到 peak data」），test-time compute 给了"越想越准"的新规模化方式。</p>
+<h3 id="20251-deepseek-r1-rl">2025.1 · DeepSeek R1：纯 RL 也能涌现推理</h3>
+<p>Guo et al. <em>DeepSeek-R1: Incentivizing Reasoning Capability via Reinforcement Learning</em>（arxiv 2501.12948，Nature 2025）。R1-Zero <strong>完全跳过 SFT</strong>，只用 GRPO（Group Relative Policy Optimization，去掉 critic 网络，用同 prompt 多次 rollout 之间的相对优势）+ 答案正确性这一个 reward，居然就涌现出<strong>自我反思、回退、验证</strong>这些行为——著名的「<strong>Aha moment</strong>」：训练曲线上某一刻模型突然学会说「等等，让我重新想想」。</p>
+<p>这个发现颠覆了"必须先 SFT 才能 RL"的工程信条。开源 + 蒸馏出 1.5B-70B 一系列推理模型，几周内复现遍地开花，把 reasoning 能力的复制成本打到 50 美元（李飞飞团队 s1，蒸馏 Gemini 2.0 Flash Thinking）。</p>
+<h3 id="202410-2025-computer-use-claude-code">2024.10-2025 · Computer Use / Claude Code：从输出到行动</h3>
+<p>Anthropic 2024.10 推出 Claude 3.5 Sonnet computer use beta：模型直接看屏幕截图、移动鼠标、敲键盘。Claude Code 2025 推出后，agent 单次自治会话长度在 3 个月内<strong>从 25 分钟翻到 45 分钟</strong>（Anthropic 2026 Agentic Coding Trends Report）。METR 测得 AI 完成任务的"时长 horizon" <strong>2019-2025 每 7 个月翻倍，2024-2025 加速到每 4 个月</strong>。</p>
+<p>本质：模型的输出空间从 "next token" 扩到 "next action on real world"。这一步比 function calling 大——function calling 是结构化输出，computer use 是连续控制。</p>
+<h3 id="2024-mechanistic-interpretability-llm">2024 · Mechanistic Interpretability：第一次看见 LLM 在想什么</h3>
+<p>Anthropic <em>Towards Monosemanticity</em>（2023.10）和 <em>Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet</em>（2024.5）。用稀疏自编码器（SAE）在 Claude 3 Sonnet 残差流上抠出<strong>数千万个特征</strong>，70% 人类可解释，并能直接 steering 模型行为（"金门大桥 Claude" 实验：把"金门大桥"特征 clamp 高，模型自称是金门大桥）。</p>
+<p>这不是产品意义上的拐点，但是<strong>理解层面的拐点</strong>：之前我们对 LLM 内部完全黑箱，现在至少有了"分子生物学"——能定位概念在哪几个特征上、能做因果干预。后续 OpenAI 也跟上做 SAE 大模型化。</p>
+<h3 id="2025-memory">2025+ · 持续学习与 memory：仍未解决</h3>
+<p>Anthropic 在 Claude 3.5/4 内置 persistent memory；OpenAI 给 ChatGPT Pro 加 cross-session memory（2024）；Mem0、A-Mem、FLEX 等学术系统层出不穷。但 MemoryArena benchmark 显示：在 LoCoMo（被动记忆 QA）拿满分的系统，进入"记忆驱动决策"任务掉到 40-60%。</p>
+<p><strong>真本质突破还没发生</strong>。今天所谓的"memory"基本是 RAG + 工程 hack。Demis Hassabis 2024.12 直接说：<strong>AGI 还差 continual learning、robust memory、introspective reasoning 这三块</strong>——这些都是当前架构的结构性洞，不是 scale 能补的。</p>
+<hr />
+<h2 id="_4">哪些是真本质？哪些是表象？</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>类别</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>架构并行性（Transformer）</td>
+<td>真本质（一次性）</td>
+<td>一次完成，今天所有进步建立其上</td>
+</tr>
+<tr>
+<td>Pretraining scale loss</td>
+<td><strong>持续但已边际递减</strong></td>
+<td>Kaplan→Chinchilla→数据墙；Orion 相对 GPT-4 进步远小于 GPT-3→GPT-4</td>
+</tr>
+<tr>
+<td>In-context learning</td>
+<td>真本质（一次性）</td>
+<td>改变了交互范式，无法"再发现一次"</td>
+</tr>
+<tr>
+<td>RLHF / 偏好对齐</td>
+<td>真本质</td>
+<td>让模型可用；DPO/CAI 都是工具变体</td>
+</tr>
+<tr>
+<td>RLVR / 可验证奖励（o1/R1）</td>
+<td><strong>真本质，且仍在扩张</strong></td>
+<td>打开 test-time compute 新轴；目前只在数学/代码这种"易验证"领域 work</td>
+</tr>
+<tr>
+<td>Test-time compute</td>
+<td><strong>持续进化</strong></td>
+<td>thinking token 数、self-consistency、tree search 仍在涨</td>
+</tr>
+<tr>
+<td>Context 长度（裸数字）</td>
+<td><strong>周期性/边际</strong></td>
+<td>1M tokens 是营销，真实可用约 100-200K，再长是 context rot</td>
+</tr>
+<tr>
+<td>工具调用稳定性</td>
+<td>持续进化</td>
+<td>从 90% JSON 成功率到 99.5%+</td>
+</tr>
+<tr>
+<td>Agent 自治时长</td>
+<td><strong>持续进化（METR 每 4-7 月翻倍）</strong></td>
+<td>25 分钟 → 45 分钟，向小时级走</td>
+</tr>
+<tr>
+<td>多模态融合</td>
+<td>持续进化</td>
+<td>文本/视觉/音频统一表示已成熟，视频和具身仍开放</td>
+</tr>
+<tr>
+<td>模型参数尺寸单数字</td>
+<td><strong>已边际</strong></td>
+<td>MoE 后"总参数 vs 活跃参数"不能再单看；尺寸不是好指标</td>
+</tr>
+<tr>
+<td>通用 benchmark 分数</td>
+<td><strong>快饱和</strong></td>
+<td>MMLU、HumanEval 已到天花板；ARC-AGI-2、Frontier Math、ARC-AGI-3（人 100% AI 0%）才有信号</td>
+</tr>
+<tr>
+<td>解释性 / SAE feature</td>
+<td>真本质（仍年轻）</td>
+<td>第一次有"看见模型在想什么"的工具</td>
+</tr>
+<tr>
+<td>Memory / 持续学习</td>
+<td><strong>未解决</strong></td>
+<td>当前都是工程 hack，结构性突破未发生</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="_5">工程包装而非本质的典型例子</h3>
+<ul>
+<li><strong>"Agent 框架"层出不穷</strong>（AutoGPT, BabyAGI, CrewAI, …）：底层全是 prompt + tool calling + while-loop；模型不变，框架不会让"agent 自治时长"突破。Anthropic 2024 <em>Building effective agents</em> 直说"大多数生产系统不需要 framework"。</li>
+<li><strong>"我家模型 1M/10M context"</strong>：不配 needle-in-haystack 多针 + 跨段推理评测的，都是营销。</li>
+<li><strong>"思维链产品"包一个 prompt 就喊 reasoning model</strong>：没有 RLVR 训练的，只是 CoT prompting，o1 那一档跳跃靠的是 RL 不是 prompt。</li>
+<li><strong>MoE 总参数堆到万亿</strong>：单看总参数无意义，看活跃参数（active params）和路由质量。</li>
+</ul>
+<hr />
+<h2 id="_6">不同立场和争议</h2>
+<h3 id="yann-lecunmeta-202511-ami-labs10">Yann LeCun（Meta → 2025.11 离职创办 AMI Labs，10 亿美金种子轮）</h3>
+<p><strong>核心立场</strong>：自回归 LLM 是 dead end，不可能到达 human-level，更不用说 AGI。</p>
+<p><strong>理由</strong>：LLM 没有世界模型、不能做 grounded planning、没有持续学习。他的 JEPA / energy-based / objective-driven 路线主张"先建世界模型，再让 agent 在模型里规划"。X 原帖（2024.5）：「自回归 LLM 不足以达到人类级智能（甚至猫级智能也不行）」。</p>
+<p><strong>背景</strong>：他是连接主义 + 计算机视觉派，长期主张感官 grounded learning &gt; 文本统计；Meta 投了多年 LeCun 路线但 Llama 系列证明 LLM 路径仍在涨，他出走某种程度是路线之争。</p>
+<h3 id="sutskeveropenai-ssi-hinton">Sutskever（OpenAI → SSI）/ Hinton</h3>
+<p><strong>核心立场</strong>：scaling 路径还远未饱和，但形态会变——下一代是 agentic + reasoning + 自我意识系统。</p>
+<p><strong>理由</strong>：NeurIPS 2024 演讲明确"pre-training as we know it will end"（<strong>不是说 scaling 死了，是说 pretraining 这个具体实现方式到顶了</strong>），但 inference-time compute、agents、合成数据是新疆域。"我们已到 peak data"是核心论断。</p>
+<p><strong>背景</strong>：他亲自写了大部分 OpenAI scaling 论文，2023 年起转 alignment / superintelligence 长视角。</p>
+<h3 id="gary-marcus">Gary Marcus</h3>
+<p><strong>核心立场</strong>：推理是结构性问题，scale 永远解决不了。</p>
+<p><strong>理由</strong>：从 1998 年起就论证神经网络在分布外泛化失败；指 Apple 2024 <em>GSM-Symbolic</em> 论文（轻微改写题目就崩）作为"知识盲打"。认为 LLM 没有显式符号系统、没有可点查的世界模型。即使 o1/R1 这种 reasoning model，他认为只是"在分布内推理变好了"。</p>
+<p><strong>背景</strong>：神经符号融合派（neuro-symbolic），与 LeCun 共享"LLM 不够"的判断但路线不同——Marcus 主张混合显式符号，LeCun 主张 self-supervised 视觉/世界模型。</p>
+<h3 id="anthropic-dario-amodei">Anthropic / Dario Amodei</h3>
+<p><strong>核心立场</strong>：alignment 与能力<strong>联合演进</strong>才是关键；powerful AI 2026-2030 大概率到来。</p>
+<p><strong>理由</strong>：<em>Machines of Loving Grace</em>（2024.10）：powerful AI 的定义比 AGI 操作化（"a country of geniuses in a datacenter"），预测 5-10 年内可压缩"21 世纪生物医学进展"。但前提是 interpretability + 可控的 RL 推理一起做。</p>
+<p><strong>背景</strong>：他是 GPT-2/3 scaling 论文的合著者，对 scaling 信念深，但出走 OpenAI 创立 Anthropic 就是因为相信"光 scale 会出事"，必须 alignment first。</p>
+<h3 id="demis-hassabisdeepmind">Demis Hassabis（DeepMind）</h3>
+<p><strong>核心立场</strong>：AGI 来自 LLM + RL + search + world model 的混合架构；2030 前 50/50 概率到达。</p>
+<p><strong>理由</strong>：DeepMind 血统是 AlphaGo/AlphaZero 那条 search + RL 路线。Hassabis 反复说"missing 1-2 big ideas"，明确指 continual learning、memory、introspective reasoning。Genie 2/3 做可控世界模拟环境，让 embodied agent 先在虚拟里学。</p>
+<p><strong>背景</strong>：神经科学博士，认为生物大脑是 existence proof，AGI 要从神经科学借蓝图（海马体记忆、皮层世界模型、基底节 RL）。</p>
+<h3 id="francois-cholletarc-prize">第六派加分：François Chollet（ARC Prize）</h3>
+<p><strong>核心立场</strong>：智能不是知识量，是<strong>新任务的 skill-acquisition efficiency</strong>。</p>
+<p><strong>理由</strong>：ARC-AGI-2 上纯 LLM 0%，前沿 reasoning system 单数字百分比，人类很高。ARC-AGI-3 video-game 风格人 100% / AI 0%。这说明现有路径<strong>没在测真泛化</strong>，benchmark 进步多半是分布内。</p>
+<hr />
+<h2 id="5">前瞻假设（5 条可验证）</h2>
+<ol>
+<li>
+<p><strong>2026 内</strong>至少一家头部实验室发布<strong>纯非文本预训练</strong>的世界模型 + LLM 混合系统（视频/3D 仿真原生），benchmark 在 ARC-AGI-3 类任务上从 0% 跳到两位数。<strong>证伪条件</strong>：到 2026.12 仍是文本-only 模型小修小补。</p>
+</li>
+<li>
+<p><strong>2027 前</strong>长 horizon agent 自治时长（METR 50% 成功率口径）突破<strong>8 小时</strong>——按当前每 4 个月翻倍外推。<strong>证伪条件</strong>：2027.6 仍卡在 1-2 小时台。</p>
+</li>
+<li>
+<p><strong>持续学习</strong>至少一种工程上可用方案在 2026-2027 出现（不是简单 RAG，能在多 session 做参数级更新且不灾难性遗忘）。<strong>证伪条件</strong>：到 2027.6 仍只有"扩大 context + 向量库"路线。</p>
+</li>
+<li>
+<p><strong>RLVR 跨域</strong>：可验证奖励训练扩到目前 verify 难的领域（开放写作、设计判断、科研假设）的可信信号在 2026 出现，靠的是 reward model + 自博弈或多 agent 互查；<strong>证伪条件</strong>：到 2026.12 仍只有数学/代码这两类受益。</p>
+</li>
+<li>
+<p><strong>Pretraining 端单纯 scale loss 改进</strong> 在 2026 公开模型上<strong>不再带来</strong>前端能力质变（仍降 loss，但 benchmark/真实任务无显著跃升），所有跃升来自 RL/agentic/inference compute。<strong>证伪条件</strong>：2026 出现一个纯 scale-up 模型在通用 benchmark 上重现 GPT-3→GPT-4 量级跳跃。</p>
+</li>
+</ol>
+<hr />
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((LLM 技术本质))
+    四件真发生的事
+      并行化序列建模
+        Transformer 2017
+      可预测的规模化
+        Kaplan 2020
+        Chinchilla 2022
+      接入正确性奖励
+        RLHF 2022
+        RLVR o1 R1 2024 2025
+      从输出到行动
+        Function Calling 2023
+        Computer Use 2024
+        Claude Code 2025
+    持续进化轴
+      工具调用稳定性
+      agent 自治时长 METR
+      test-time compute thinking
+      可验证领域能力
+      解释性 SAE
+    周期性边际递减
+      pretraining loss 改进
+      参数尺寸单数字
+      MMLU 类 benchmark
+      context 长度营销数字
+    未解决结构洞
+      持续学习
+      robust memory
+      跨域可验证奖励
+      真泛化 ARC-AGI
+    争议节点
+      LeCun LLM 死路
+      Sutskever pretrain 见顶
+      Marcus 推理结构性
+      Amodei 对齐+能力
+      Hassabis RL+search 混合
+      Chollet 智能=新任务效率
+    判断滤镜
+      看是否动了四轴之一
+      看 benchmark 是否真泛化
+      看 needle 多针长 context
+      看 active params 而非总参数</pre></div>
+<hr />
+<h2 id="_7">来源库（按重要性）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标题</th>
+<th>作者/机构</th>
+<th>日期</th>
+<th>链接</th>
+<th>关键洞察</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>论文</td>
+<td>Attention Is All You Need</td>
+<td>Vaswani, Shazeer et al. (Google Brain)</td>
+<td>2017.6</td>
+<td>https://arxiv.org/abs/1706.03762</td>
+<td>序列建模并行化的奠基；今天一切的起点</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Scaling Laws for Neural Language Models</td>
+<td>Kaplan, McCandlish, Amodei et al. (OpenAI)</td>
+<td>2020.1</td>
+<td>https://arxiv.org/abs/2001.08361</td>
+<td>loss 跨 7 量级幂律；规模化变工程预测</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Language Models are Few-Shot Learners (GPT-3)</td>
+<td>Brown et al. (OpenAI)</td>
+<td>2020.5</td>
+<td>https://arxiv.org/abs/2005.14165</td>
+<td>in-context learning 出场</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Training Compute-Optimal LLMs (Chinchilla)</td>
+<td>Hoffmann et al. (DeepMind)</td>
+<td>2022.3</td>
+<td>https://arxiv.org/abs/2203.15556</td>
+<td>参数 token 等比；颠覆此前所有"大模型"</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Chain-of-Thought Prompting</td>
+<td>Wei et al. (Google)</td>
+<td>2022.1</td>
+<td>https://arxiv.org/abs/2201.11903</td>
+<td>推理链作为可优化对象</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Emergent Abilities of LLMs</td>
+<td>Wei et al. (Google)</td>
+<td>2022.6</td>
+<td>https://arxiv.org/abs/2206.07682</td>
+<td>跨阈值能力跃迁的命名与编目</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Training LMs to Follow Instructions w/ Human Feedback (InstructGPT)</td>
+<td>Ouyang et al. (OpenAI)</td>
+<td>2022.3</td>
+<td>https://arxiv.org/abs/2203.02155</td>
+<td>RLHF 三阶段；ChatGPT 的真技术地基</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Sparks of Artificial General Intelligence</td>
+<td>Bubeck et al. (Microsoft)</td>
+<td>2023.3</td>
+<td>https://arxiv.org/abs/2303.12712</td>
+<td>GPT-4 跨学科早期 AGI 信号；也带争议</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>Are Emergent Abilities a Mirage?</td>
+<td>Schaeffer, Miranda, Koyejo (Stanford)</td>
+<td>2023.4</td>
+<td>https://arxiv.org/abs/2304.15004</td>
+<td>涌现"突变"多半是评测指标非线性的产物</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>DeepSeek-R1: Incentivizing Reasoning via RL</td>
+<td>DeepSeek</td>
+<td>2025.1</td>
+<td>https://arxiv.org/abs/2501.12948</td>
+<td>纯 RL 涌现 aha moment；GRPO 算法</td>
+</tr>
+<tr>
+<td>文档</td>
+<td>OpenAI o1 System Card</td>
+<td>OpenAI</td>
+<td>2024.9 / 12.5</td>
+<td>https://cdn.openai.com/o1-system-card-20241205.pdf</td>
+<td>test-time compute 作为新 scaling 轴</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Learning to reason with LLMs</td>
+<td>OpenAI</td>
+<td>2024.9</td>
+<td>https://openai.com/index/learning-to-reason-with-llms/</td>
+<td>o1 训练框架的官方解释</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Towards Monosemanticity</td>
+<td>Anthropic</td>
+<td>2023.10</td>
+<td>https://transformer-circuits.pub/2023/monosemantic-features/</td>
+<td>稀疏自编码器 + dictionary learning</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Scaling Monosemanticity (Claude 3 Sonnet)</td>
+<td>Anthropic</td>
+<td>2024.5</td>
+<td>https://transformer-circuits.pub/2024/scaling-monosemanticity/</td>
+<td>千万级特征；金门大桥 Claude steering</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Introducing Computer Use &amp; Claude 3.5 Sonnet</td>
+<td>Anthropic</td>
+<td>2024.10</td>
+<td>https://www.anthropic.com/news/3-5-models-and-computer-use</td>
+<td>模型直接操作屏幕键鼠</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Measuring AI Ability to Complete Long Tasks</td>
+<td>METR</td>
+<td>2025.3</td>
+<td>https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/</td>
+<td>任务时长 horizon 每 7→4 月翻倍</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Context Rot: Increasing Input Tokens Impacts Performance</td>
+<td>Chroma Research</td>
+<td>2025</td>
+<td>https://www.trychroma.com/research/context-rot</td>
+<td>18 个前沿模型全部呈现 context rot</td>
+</tr>
+<tr>
+<td>文章</td>
+<td>Machines of Loving Grace</td>
+<td>Dario Amodei</td>
+<td>2024.10</td>
+<td>https://www.darioamodei.com/essay/machines-of-loving-grace</td>
+<td>"Country of geniuses in a datacenter"；2026-2030 时间线</td>
+</tr>
+<tr>
+<td>演讲</td>
+<td>Sequence to Sequence Learning: What a Decade</td>
+<td>Ilya Sutskever</td>
+<td>NeurIPS 2024.12</td>
+<td>https://www.youtube.com/watch?v=1yvBqasHLZs</td>
+<td>"Pre-training as we know it will end"；peak data</td>
+</tr>
+<tr>
+<td>演讲</td>
+<td>Software Is Changing (Again) / Software 3.0</td>
+<td>Andrej Karpathy</td>
+<td>YC AI School 2025.6</td>
+<td>https://www.latent.space/p/s3</td>
+<td>1.0 代码→2.0 权重→3.0 prompts</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>2025 LLM Year in Review</td>
+<td>Andrej Karpathy</td>
+<td>2025.12</td>
+<td>https://karpathy.bearblog.dev/year-in-review-2025/</td>
+<td>"Summoning ghosts not raising animals"；jagged intelligence</td>
+</tr>
+<tr>
+<td>视频</td>
+<td>Intro to Large Language Models</td>
+<td>Andrej Karpathy</td>
+<td>2023.11</td>
+<td>https://www.youtube.com/watch?v=zjkBMFhNj_g</td>
+<td>LLM = OS，context = RAM 的隐喻</td>
+</tr>
+<tr>
+<td>访谈</td>
+<td>Demis Hassabis on Dwarkesh Patel</td>
+<td>Hassabis × Patel</td>
+<td>2024</td>
+<td>https://www.dwarkesh.com/p/demis-hassabis</td>
+<td>AGI 还差 1-2 个 big idea</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>DeepSeekMoE: Towards Ultimate Expert Specialization</td>
+<td>DeepSeek</td>
+<td>2024.1</td>
+<td>https://arxiv.org/abs/2401.06066</td>
+<td>细粒度专家 + 共享专家；活跃参数路线</td>
+</tr>
+<tr>
+<td>论文</td>
+<td>ARC-AGI-2: Challenge for Frontier AI Reasoning</td>
+<td>Chollet et al.</td>
+<td>2025.5</td>
+<td>https://arxiv.org/abs/2505.11831</td>
+<td>LLM 0%；reasoning system 单数字</td>
+</tr>
+<tr>
+<td>报告</td>
+<td>2026 Agentic Coding Trends Report</td>
+<td>Anthropic</td>
+<td>2026</td>
+<td>https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf</td>
+<td>Claude Code 自治时长 25→45 分钟</td>
+</tr>
+<tr>
+<td>X/分析</td>
+<td>LeCun: Auto-Regressive LLMs are insufficient</td>
+<td>Yann LeCun</td>
+<td>2024.5</td>
+<td>https://x.com/ylecun/status/1793680385403957295</td>
+<td>LLM 不到 cat-level；objective-driven 替代</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>A Knockout Blow for LLMs?</td>
+<td>Gary Marcus</td>
+<td>2024</td>
+<td>https://garymarcus.substack.com/p/a-knockout-blow-for-llms</td>
+<td>推理模型仍困于 Tower of Hanoi 类分布外</td>
+</tr>
+<tr>
+<td>中文</td>
+<td>从 o1-mini 到 DeepSeek-R1：推理模型的历史与技术</td>
+<td>机器之心编译</td>
+<td>2025.2</td>
+<td>https://zhuanlan.zhihu.com/p/25978555277</td>
+<td>推理模型路径中文综述</td>
+</tr>
+<tr>
+<td>中文</td>
+<td>Karpathy 软件 3.0 演讲全文</td>
+<td>36kr / 腾讯新闻</td>
+<td>2025.6</td>
+<td>https://36kr.com/p/3344734734566016</td>
+<td>中文受众入口</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Reverse engineering OpenAI's o1</td>
+<td>Nathan Lambert (Interconnects)</td>
+<td>2024.9</td>
+<td>https://www.interconnects.ai/p/reverse-engineering-openai-o1</td>
+<td>PRM、过程奖励、self-play 拼图</td>
+</tr>
+<tr>
+<td>博文</td>
+<td>Notes on o1 chain-of-thought models</td>
+<td>Simon Willison</td>
+<td>2024.9</td>
+<td>https://simonwillison.net/2024/Sep/12/openai-o1/</td>
+<td>第一手实操观察</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_8">终极判断滤镜（一页式）</h2>
+<p>看到任何"新模型/新技术"，按这五问过：</p>
+<ol>
+<li><strong>它动了上面四件真本质中的哪一件？</strong>（架构并行性 / 可预测 scaling / 接入正确性奖励 / 输出→行动）。一件没动，多半是工程包装。</li>
+<li><strong>它的 benchmark 是不是真泛化？</strong> MMLU、HumanEval 已饱和不能用了；看 ARC-AGI-2/3、Frontier Math、SWE-bench Verified、METR 长 horizon。</li>
+<li><strong>它给出的 context / 参数 / 时长数字背后真实可用比例多少？</strong> Needle 多针、active params、50% 成功率口径，三个去掉一个就警觉。</li>
+<li><strong>它解决了 LeCun/Marcus/Hassabis 共同指出的结构洞了吗？</strong> 持续学习、robust memory、真泛化、世界模型。没解决，再强也是当前曲线上的一格。</li>
+<li><strong>它的提升是来自 pretraining loss 还是 RL/agentic/inference compute？</strong> 后者还有空间，前者已边际递减。</li>
+</ol>
+<hr />
+<p><em>完稿 2026.5.10 · 主要参照 Anthropic / OpenAI / DeepMind / Karpathy / Sutskever / LeCun / Marcus / Chollet / Anthropic Interpretability / METR / Chroma / DeepSeek 一手材料</em></p>
+<nav class="chapter-bottom-nav"><a href="README.html" class="prev"><span class="nav-arrow">← 上一章 / 总览</span><span class="nav-label">README · 顶层整合</span></a><a href="02-control-stack-evolution.html" class="next"><span class="nav-arrow">下一章 / 02 →</span><span class="nav-label">操控术分层演进</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>

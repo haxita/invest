@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 · 基础设施、算力、地缘 · AI mindset explore</title>
+<meta name="description" content="个人 AI 认知框架 · 07 · 基础设施、算力、地缘">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbf9f4;
+  --bg-card: #ffffff;
+  --text: #2a2a2a;
+  --text-soft: #555;
+  --text-faded: #8a8580;
+  --heading: #1a1a1a;
+  --accent: #b85042;
+  --accent-soft: #e7b8a0;
+  --border: #e5dfd2;
+  --border-soft: #efeae0;
+  --code-bg: #f3eee2;
+  --code-border: #e0d9c8;
+  --table-stripe: #f7f3eb;
+  --link: #8a3a2e;
+  --link-hover: #b85042;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* === Sticky Navigation === */
+.chapter-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 249, 244, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.nav-brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+  margin-right: 16px;
+  padding: 6px 4px;
+  letter-spacing: 0.02em;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text-soft);
+  border: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.nav-item:hover {
+  background: var(--code-bg);
+  color: var(--text);
+  border-bottom: none;
+}
+.nav-item.current {
+  background: var(--accent);
+  color: #fff;
+}
+.nav-item.current .nav-num { color: rgba(255,255,255,0.85); }
+.nav-num {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--text-faded);
+  letter-spacing: 0.04em;
+}
+.nav-title { font-weight: 500; }
+
+/* === Article === */
+.content {
+  max-width: 760px;
+  margin: 64px auto 60px;
+  padding: 0 32px;
+}
+
+.content > h1:first-child {
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--heading);
+  margin: 0 0 12px 0;
+  padding: 0;
+  border: none;
+  letter-spacing: -0.015em;
+}
+
+.content > h1:first-child + blockquote {
+  margin-top: 16px;
+  border-left-width: 3px;
+  background: transparent;
+  font-style: normal;
+  color: var(--text-soft);
+  padding: 6px 18px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--heading);
+  letter-spacing: -0.005em;
+}
+
+h1 {
+  font-size: 30px;
+  margin: 72px 0 22px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border);
+}
+
+h2 {
+  font-size: 25px;
+  margin: 56px 0 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h3 {
+  font-size: 20px;
+  margin: 38px 0 12px;
+}
+
+h4 {
+  font-size: 17px;
+  margin: 26px 0 10px;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--text);
+}
+
+p {
+  margin: 16px 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--accent-soft);
+  transition: color 0.15s ease, border-bottom-style 0.15s ease;
+}
+a:hover {
+  color: var(--link-hover);
+  border-bottom-style: solid;
+}
+
+strong { font-weight: 600; color: var(--heading); }
+em { font-style: italic; color: var(--text-soft); }
+
+ul, ol {
+  margin: 16px 0 16px 26px;
+  padding: 0;
+}
+li {
+  margin: 8px 0;
+  line-height: 1.85;
+}
+li > ul, li > ol { margin: 6px 0 6px 20px; }
+li::marker { color: var(--accent); }
+
+blockquote {
+  margin: 24px 0;
+  padding: 14px 22px;
+  background: var(--bg-card);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  color: var(--text-soft);
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--code-border);
+  color: #6b3a2e;
+}
+
+pre {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 22px 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+.codehilite {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 22px 0;
+  overflow-x: auto;
+}
+.codehilite pre { margin: 0; border: none; }
+
+table {
+  width: 100%;
+  margin: 26px 0;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: table;
+}
+thead { background: var(--code-bg); }
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+  line-height: 1.6;
+}
+th {
+  font-weight: 600;
+  color: var(--heading);
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+tbody tr:nth-child(even) td { background: var(--table-stripe); }
+tbody tr:last-child td { border-bottom: none; }
+table a { word-break: keep-all; }
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 26px 0;
+  border-radius: 6px;
+}
+.table-wrap > table { margin: 0; }
+
+.mermaid-wrap {
+  margin: 28px 0;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid { font-family: var(--sans); display: inline-block; min-width: 100%; }
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 48px 0;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 36px 24px 60px;
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+  color: var(--text-faded);
+  font-size: 13px;
+  font-family: var(--serif);
+  letter-spacing: 0.02em;
+}
+.site-footer a {
+  color: var(--text-soft);
+  border-bottom: none;
+}
+.site-footer a:hover { color: var(--accent); }
+
+.chapter-bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 56px 0 16px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.chapter-bottom-nav a {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+.chapter-bottom-nav a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.chapter-bottom-nav .next { text-align: right; }
+.chapter-bottom-nav .nav-arrow { color: var(--text-faded); font-size: 12px; display: block; margin-bottom: 2px; font-family: var(--mono); }
+.chapter-bottom-nav .nav-label { font-weight: 500; color: var(--heading); font-family: var(--serif); }
+
+@media (max-width: 720px) {
+  body { font-size: 16px; line-height: 1.8; }
+  .content { padding: 0 20px; margin: 36px auto 40px; }
+  .content > h1:first-child { font-size: 28px; }
+  h1 { font-size: 22px; margin: 48px 0 16px; }
+  h2 { font-size: 19px; margin: 40px 0 14px; }
+  h3 { font-size: 17px; }
+  .chapter-nav { padding: 8px 14px; gap: 2px; }
+  .nav-brand { display: none; }
+  .nav-item { padding: 5px 8px; font-size: 12px; }
+  .nav-title { display: none; }
+  .nav-item.current .nav-title { display: inline; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 10px; }
+  .chapter-bottom-nav { flex-direction: column; }
+}
+
+@media print {
+  .chapter-nav, .site-footer, .chapter-bottom-nav { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .content { max-width: none; padding: 0; margin: 0; }
+  a { color: var(--text); border-bottom: none; }
+  pre, blockquote, table, .mermaid-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="chapter-nav"><span class="nav-brand">AI mindset</span><a href="README.html" class="nav-item"><span class="nav-num">总览</span><span class="nav-title">README · 顶层整合</span></a><a href="01-tech-evolution-essence.html" class="nav-item"><span class="nav-num">01</span><span class="nav-title">技术演进与本质</span></a><a href="02-control-stack-evolution.html" class="nav-item"><span class="nav-num">02</span><span class="nav-title">操控术分层演进</span></a><a href="03-engineering-patterns.html" class="nav-item"><span class="nav-num">03</span><span class="nav-title">工程实践与架构</span></a><a href="04-industry-displacement.html" class="nav-item"><span class="nav-num">04</span><span class="nav-title">行业替代地图</span></a><a href="05-investment-business-models.html" class="nav-item"><span class="nav-num">05</span><span class="nav-title">投资与商业模式</span></a><a href="06-personal-workflow.html" class="nav-item"><span class="nav-num">06</span><span class="nav-title">个人工作流与认知重塑</span></a><a href="07-infra-compute-geopolitics.html" class="nav-item current"><span class="nav-num">07</span><span class="nav-title">基础设施 算力 地缘</span></a><a href="08-safety-alignment-ethics.html" class="nav-item"><span class="nav-num">08</span><span class="nav-title">安全 对齐 伦理</span></a><a href="09-cognitive-science-intelligence.html" class="nav-item"><span class="nav-num">09</span><span class="nav-title">认知科学与智能本质</span></a><a href="10-forecasts-controversies.html" class="nav-item"><span class="nav-num">10</span><span class="nav-title">前瞻与争议</span></a></nav>
+<main class="content">
+<h1 id="07">07 · 基础设施、算力、地缘</h1>
+<blockquote>
+<p>视角定位：把 AI 当作一台<strong>物理机器</strong>来理解。前面的章节看模型、看应用、看资本，但所有这些最终都会落到三件东西上：<strong>硅、电、人</strong>。本章关心的是 LLM 的"血肉骨骼"——谁制造芯片、谁建数据中心、谁掌握能源、谁拿到出口许可。理解这一层，才能判断 AI 的"上限"和"卡点"到底在哪里。</p>
+</blockquote>
+<hr />
+<h2 id="_1">一句话总览</h2>
+<p>AI 已经从"软件革命"硬转向"工业革命"——一个 1GW 的 AI 数据中心相当于一座中型核电站、一座小型城市，单次训练的电力成本和资本支出已逼近半导体 fab 的尺度；<strong>算力供给侧的瓶颈正从逻辑芯片移向 HBM、再移向 ASML EUV 设备和电网变压器</strong>，而中美脱钩把这条供应链强行劈成了两个互不兼容的体系。</p>
+<hr />
+<h2 id="10">关键句提纲（10 条）</h2>
+<ol>
+<li><strong>训练算力 4-5×/年增长</strong>（Epoch AI），自 2010 年起持续 14 年，2025 年首批模型跨过 1e26 FLOP（Grok-3 是第一个），预计 2030 年单次训练运行需 <strong>4-16 GW 电力</strong>。</li>
+<li><strong>数据中心尺度跃迁</strong>：从 100MW（2022 年）→ 1GW（2024 xAI Colossus、Anthropic New Carlisle）→ 5GW（2026 Anthropic-AWS、Stargate Abilene）→ 10-100GW（2027-2030 路线图）。</li>
+<li><strong>训练成本曲线</strong>：GPT-4 ~$100M（2023）→ DeepSeek V3 名义 $5.5M（2024，但实际累计 capex 50K Hopper GPUs）→ GPT-5 单次训练 $500M+（2025）→ Stargate 4 年 $500B 总投入。</li>
+<li><strong>推理成本跌 99%，但 reasoning 模型让单次"任务"成本反而上升</strong>：GPT-4 → GPT-4o 输入 token 价格降 92%，GPT-3.5 等价模型 token 价格 22 个月跌 280×；但 o1/o3 一次 ARC-AGI 推理消耗的 token 是 GPT-4o 的 60 万倍。</li>
+<li><strong>Nvidia 护城河 = CUDA × NVLink × HBM 配额 × 系统级集成（GB200 NVL72 把 72 颗 Blackwell 当一颗 GPU 跑）</strong>。Blackwell 卖到 2026 年中已售罄，订单 360 万片，Huang 把 2027 年前累计需求从 $500B 上调到 $1T。</li>
+<li><strong>挑战者三阵营</strong>：(a) 大厂自研 ASIC（Google TPU v7 Ironwood、AWS Trainium 3、Meta MTIA、Microsoft Maia）；(b) 开放生态（AMD MI355X 已在推理上对标 B200，MI400 2026 出货）；(c) 推理专用 ASIC（Groq LPU、Cerebras WSE-3、Etched Sohu Transformer-only ASIC）。</li>
+<li><strong>电力成"新铀矿"</strong>：美国数据中心耗电 2030 占总用电 9-12%（vs 2023 的 4%），微软 20 年 $16B 重启 Three Mile Island 833MW 核电、Google 与 Kairos 签 SMR、Meta 转向天然气 + 地热，Texas ERCOT 已成全美 AI 选址第一热区。</li>
+<li><strong>数据墙 2026-2028 触顶</strong>：Epoch 估高质量公开文本最早 2026 用尽，合成数据（DeepSeek R1 自蒸馏、Microsoft SynthLLM）+ 视频/多模态 + RLHF 互动数据成为下一波"燃料"。</li>
+<li><strong>中美芯片脱钩三轮升级</strong>：2022.10（首版禁令）→ 2023.10（封 H800/A800）→ 2024.10/2025.05（封 H20、AI Diffusion Rule、Huawei Ascend 全球禁运）；TSMC 2nm 留在台湾、Arizona 仍只到 4nm/3nm；华为 910C 性能逼近 H100 但被 HBM 卡到 250-300K 片/年。</li>
+<li><strong>主权 AI 兴起</strong>：UAE G42 在印度部署 8 exaflop（2025）、法国与 UAE 签 1GW 联合数据中心（$30-50B）、沙特 PIF 通过 Sanabil 投 Mistral，欧洲—中东—印度形成"非中非美"第三极。</li>
+</ol>
+<hr />
+<h2 id="vs-capex">算力增长曲线 · 训练 vs 推理 capex 拆分</h2>
+<h3 id="epoch-ai">Epoch AI 的核心数据（必读）</h3>
+<ul>
+<li><strong>训练算力增速</strong>：自 2010 至今 4-5×/年；前沿 LLM 自 2020 起 5×/年，相当于 5.2 个月翻一倍。这条线在 2018 年后略放缓（约 4.2×/年），但仍未明显出现 plateau。</li>
+<li><strong>首批 1e26 FLOP 模型</strong>：xAI Grok-3（2025.02）。Epoch 预测 2027 年起会有 ~30 个模型跨过该门槛，2030 年 200+。开源模型预计 2026 年内突破 1e26（DeepSeek V4、Qwen3、Llama 4 候选）。</li>
+<li><strong>算力分解</strong>：训练 FLOPs 增长 = 集群更大 × 训练时间更长 × 硬件单卡更强；近三年集群规模增长贡献最大。</li>
+</ul>
+<h3 id="vs-capex_1">训练 vs 推理 capex 的反转</h3>
+<p>到 <strong>2025 年下半年</strong>，全行业推理 capex 首次超过训练 capex，这是过去 15 年训练主导格局的根本性反转。原因：<br />
+1. 模型从"少而精"转向"多而广"，B 端部署量级跳一个数量级；<br />
+2. <strong>reasoning 模型</strong> 让单次推理消耗 50-100 倍 token（详见下节）；<br />
+3. agent loop（autoGPT、Devin、Computer Use）让一次"任务"调用模型几十到几百次。</p>
+<p>Dylan Patel 在 Dwarkesh 访谈（2026.03）里直言："你应该把任何号称要做 'training cluster' 的项目重新理解为 inference cluster——因为生命周期里 80% 的 GPU 时长都会被 inference 占。"</p>
+<h3 id="ai-factory">"AI factory" 概念</h3>
+<p>Jensen Huang 2025 GTC 把数据中心重新定义为 <strong>AI factory</strong>：原料 = 电 + 数据，产物 = token，单位经济用 <strong>token throughput / Joule</strong> 衡量。NVIDIA 的 DSX 平台把整栋楼当一颗"超级芯片"做协同设计，包含液冷、PSU、网络、供电——这是从"卖卡"升级到"卖发电厂"的商业模型。</p>
+<hr />
+<h2 id="100m-500b">训练成本曲线 · 从 $100M 到 $500B</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>时点</th>
+<th>模型</th>
+<th>单次训练</th>
+<th>集群规模</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023.03</td>
+<td>GPT-4</td>
+<td>~$100M</td>
+<td>~25K A100</td>
+<td>Altman 公开口径</td>
+</tr>
+<tr>
+<td>2024.04</td>
+<td>Llama-3 405B</td>
+<td>~$60M</td>
+<td>16K H100</td>
+<td>Meta 公开</td>
+</tr>
+<tr>
+<td>2024.12</td>
+<td>DeepSeek V3</td>
+<td><strong>名义 $5.5M</strong></td>
+<td>2048 H800（marginal）</td>
+<td>实际背后 ~50K Hopper GPU 集群</td>
+</tr>
+<tr>
+<td>2025.01</td>
+<td>DeepSeek R1</td>
+<td>名义 $5-6M（追加 RL）</td>
+<td>同上</td>
+<td>"训练成本神话"主角</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>GPT-5</td>
+<td>~$500M（多次 run）</td>
+<td>多次失败重训</td>
+<td>Reuters / Information 报道</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>Anthropic-AWS Rainier</td>
+<td>$35B+（基建）</td>
+<td>1M+ Trainium2/3</td>
+<td>1.1GW，史上最大 AI 集群</td>
+</tr>
+<tr>
+<td>2025-29</td>
+<td>Stargate 全计划</td>
+<td><strong>$500B</strong> 4 年</td>
+<td>7GW 已规划</td>
+<td>OpenAI + Oracle + SoftBank + MGX</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>DeepSeek 启示与争议</strong>：<br />
+- 神话派：$5.5M 把 OpenAI 的 100× 训练成本打回原形，<strong>算法 + 工程效率（FP8、MoE 路由、custom NCCL）</strong> 可以绕过算力霸权。<br />
+- 拆穿派（SemiAnalysis）：这只是 marginal GPU 租金，DeepSeek 后面其实是 ~50K Hopper 的累计 capex（远高于 $500M），加上 200+ 顶级研究员。<br />
+- <strong>真实读法</strong>：DeepSeek 真正贡献是把"前沿模型再训练成本"拉低到中等基金可承受的范围，但<strong>首次开拓</strong>的成本（数据工程、架构搜索、失败 run）仍以亿美元计。</p>
+<hr />
+<h2 id="reasoning-token">推理革命 · reasoning 模型让 token 暴涨</h2>
+<h3 id="_2">核心冲击</h3>
+<p>OpenAI o1、o3、DeepSeek R1、Google Gemini 2.5 Thinking、Anthropic 拓展思考模式，全部走"长思维链 + test-time scaling"路线。后果：<br />
+- 单次请求 token 消耗 <strong>5-100×</strong> 于传统模型。一个简单 coding 题，DeepSeek R1 生成 4000 个 thinking token，GPT-4o 仅 150 token——<strong>26× 差距</strong>。<br />
+- ARC-AGI 上 o3 的 high-efficiency 模式相对 GPT-4o 等价输出成本上涨 <strong>600,000×</strong>（极端样本）。即使 OpenAI 2025.06 把 o3 价格从 $10/$40 砍到 $2/$8 per million tokens（80% 降价），同等任务仍贵 GPT-4o 5-10×。<br />
+- <strong>KV cache 内存爆炸</strong>：30,000 token 的 reasoning chain 单次产生 ~2GB KV cache，相当于占据 50 个标准 600-token 请求的内存。</p>
+<h3 id="agent-loop">长上下文 + agent loop 的算力倍增</h3>
+<ul>
+<li><strong>长上下文</strong>：Gemini 2 Pro 200 万 token、Claude 200K、GPT-5 1M+。注意力复杂度 O(n²)，512K 上下文相当于 256× 传统 4K 上下文的算力。</li>
+<li><strong>Agent loop</strong>：一个浏览器 agent 完成"查机票 + 订酒店 + 写报告"，模型被调用 50-200 次；coding agent（Claude Code、Cursor、Devin）单次任务 100-500 次调用很常见。</li>
+</ul>
+<h3 id="_3">推理成本优化方向（必读清单）</h3>
+<ol>
+<li><strong>MoE（Mixture of Experts）</strong>：DeepSeek V3 / Mixtral / Llama4 已普及。激活参数仅 5-15% 总参数，每 token FLOPs 大幅下降，但 KV cache 和路由开销引入新瓶颈。</li>
+<li><strong>Speculative decoding</strong>：小 draft 模型并行生成多 token，大模型一次性 verify，2-3× 吞吐提升。</li>
+<li><strong>Caching</strong>（KV cache reuse、prompt caching）：Anthropic、OpenAI、Google 都已商用，长 prompt 重复场景成本降 90%。</li>
+<li><strong>Distillation</strong>：把 R1/o1 的 reasoning 能力蒸馏到 7B-30B 小模型（DeepSeek-R1-Distill 系列、Qwen QwQ）。</li>
+<li><strong>专用 ASIC</strong>：Etched Sohu 把 Transformer "刻死"在硅上，Llama 70B 推理 500K tokens/s，对比 8 卡 H100 的 23K tokens/s ——<strong>20× 性价比</strong>。</li>
+</ol>
+<blockquote>
+<p>行业判断：未来 18 个月推理 per-token 价格还会再跌 10×，但<strong>单任务成本</strong> 会因为 reasoning + agent 而<strong>上升 2-5×</strong>。也就是说：<strong>单位 token 极便宜，单位智能极昂贵</strong>。</p>
+</blockquote>
+<h3 id="_4">推理基建对硬件的反向需求重塑</h3>
+<p>reasoning 模型的崛起把硬件需求曲线从"<strong>稠密大算力</strong>"转向"<strong>高内存带宽 + 低延迟单流</strong>"。具体含义：</p>
+<ul>
+<li><strong>HBM 容量与带宽</strong>比 FLOPS 更关键——AMD MI355X 用 288GB HBM3e 在长 reasoning 场景上可以与 192GB 的 B200 抗衡，正是因为 KV cache 整体能装得下、不需要频繁 swap。</li>
+<li><strong>batch size 1 优化</strong>比"大 batch 高吞吐"更重要：用户等待 thinking token 时，无法等到聚一个大 batch 再 decode。Groq、Cerebras、Etched 押的就是这个方向。</li>
+<li><strong>rack-level 互联</strong>：72 卡 NVL72 把 KV cache 跨卡共享，本质上让 reasoning 的"长思维链"可以驻留在更大的"逻辑 GPU"内存里，这是 Nvidia 当前最锋利的差异化武器。</li>
+<li><strong>预算分配重塑</strong>：Anthropic 内部把推理 capex 比例从 2023 的 30% 调到 2025 的 60%+，OpenAI 的 Stargate 早期规划已明确写入"50% 推理用途"。</li>
+</ul>
+<hr />
+<h2 id="_5">硬件格局 · 五个梯队</h2>
+<h3 id="nvidia-85-ai">第一梯队：Nvidia（市占 ~85% AI 加速器）</h3>
+<ul>
+<li><strong>CUDA 17 年沉淀</strong>：上千万开发者、数百万行优化 kernel、PyTorch / Triton / cuDNN / TensorRT 层层深入。</li>
+<li><strong>NVLink + NVSwitch</strong>：GB200 NVL72 把 72 颗 GPU 通过 NVLink 5（1.8 TB/s 双向）拧成一颗"巨型 GPU"，13.5 TB HBM3e 共享内存。这是目前全行业唯一规模化 rack-level 解决方案。</li>
+<li><strong>Blackwell 现状</strong>（2026.05）：B200 售罄至 2026 年中，订单 backlog 360 万片；B200 单卡 20 PetaFLOPS，万亿参数推理较 H100 提速 30×。</li>
+<li><strong>Vera Rubin 路线（2026 年 H2）</strong>：Rubin GPU + Vera CPU 一体化，Huang 在 GTC 2025 把 2027 年前累计需求展望从 $500B 调到 $1T。</li>
+</ul>
+<h3 id="asic">第二梯队：大厂自研 ASIC</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>厂商</th>
+<th>当前主力</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google</td>
+<td>TPU v7 Ironwood（2025.04 发布）</td>
+<td>9216 卡 cluster 4614 TFLOP/s，用于 Gemini 训练，对外 Cloud TPU</td>
+</tr>
+<tr>
+<td>AWS</td>
+<td>Trainium 2/3</td>
+<td>Project Rainier 50 万颗 Trainium2，Anthropic 锁 5GW、$100B 10 年</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>MTIA v2</td>
+<td>内部部署，主要驱动 Llama4 推理 + 推荐</td>
+</tr>
+<tr>
+<td>Microsoft</td>
+<td>Maia 100 / Cobalt</td>
+<td>自用 Azure，推理为主</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>结论</strong>：Google TPU 是技术最成熟的非 Nvidia 生态，AWS Trainium 在性价比上对内 dump 给 Anthropic，但<strong>外部生态吸引力仍弱</strong>。SemiAnalysis 把 TPU v7 称为"房间里的 900 磅大猩猩"。</p>
+<h3 id="amd">第三梯队：AMD</h3>
+<ul>
+<li><strong>MI355X / MI350X</strong>（2025.06 发布）：288GB HBM3e（vs B200 的 192GB），声称在 DeepSeek、Llama 推理工作负载上比 B200/GB200 快 20-30%、tokens-per-dollar 高 40%。</li>
+<li><strong>MI400 "Vulkan"</strong>（2026 年 H2）：单卡 10× MI355X，3D 封装 + 300GB scale-out 带宽。</li>
+<li><strong>ROCm 7</strong>：在 PyTorch / Llama 主流栈上接近 CUDA 可用性；但 SemiAnalysis 实测 H100/H200 训练 benchmark 仍领先 ——<strong>CUDA moat still alive</strong>。</li>
+</ul>
+<h3 id="asic_1">第四梯队：推理 ASIC 创业军团</h3>
+<ul>
+<li><strong>Groq</strong>：LPU 单卡推理速度极致快（Llama 70B 750+ tok/s），但单卡内存太小，成本结构上对长上下文不友好。</li>
+<li><strong>Cerebras</strong>：Wafer-scale Engine 3，22 cm² 单芯片，可单卡跑 7B-405B；2025 IPO 重启。</li>
+<li><strong>SambaNova</strong>：可重构 dataflow，介于 GPU 与 ASIC 之间。</li>
+<li><strong>Etched Sohu</strong>：transformer-only ASIC，2025 出货，500K tok/s（Llama 70B 8 卡），但只跑 transformer——<strong>赌的是 Transformer 还会主导 5-10 年</strong>。</li>
+<li><strong>NVIDIA 反应</strong>：2026.01 NVIDIA 投资 Groq 部分股权，把潜在威胁纳入生态。</li>
+</ul>
+<h3 id="_6">第五梯队：中国"自循环"</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>厂商</th>
+<th>主力芯片</th>
+<th>性能对标</th>
+<th>瓶颈</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>华为</td>
+<td>Ascend 910C / 910D / 920</td>
+<td>接近 H100 (整包双 die)</td>
+<td>HBM 受限，2026 全年最多 25-30 万片</td>
+</tr>
+<tr>
+<td>寒武纪</td>
+<td>思元 590</td>
+<td>A100 级</td>
+<td>软件生态</td>
+</tr>
+<tr>
+<td>海光</td>
+<td>DCU K100</td>
+<td>A100/MI200 级</td>
+<td>制造受限</td>
+</tr>
+<tr>
+<td>壁仞 / 摩尔线程</td>
+<td>BR100 / MTT S4000</td>
+<td>A100 级</td>
+<td>受美国 entity list 影响</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键事实</strong>：华为 2024-2025 通过 SMIC + 部分 TSMC 流片（违规绕道，被美国 BIS 公开点名），积累了 ~290 万颗 Ascend die；但 <strong>HBM 是真瓶颈</strong>——CXMT 2026 年最多产 200 万 stack HBM，仅够 25-30 万颗 Ascend 910C；这意味着<strong>中国 2026 年自有先进 AI 加速器供给上限大约相当于 5 万张 H100 的训练等效</strong>，远低于美国头部单家 hyperscaler。</p>
+<hr />
+<h2 id="_7">数据中心 &amp; 电力 · 真正的瓶颈</h2>
+<h3 id="_8">尺度跳跃</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>时期</th>
+<th>单数据中心规模</th>
+<th>代表</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2020-2022</td>
+<td>50-100 MW</td>
+<td>传统 hyperscaler</td>
+</tr>
+<tr>
+<td>2023-2024</td>
+<td>100-300 MW</td>
+<td>xAI Colossus phase 1 (250MW)</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>500MW-1.1 GW</td>
+<td>Anthropic-AWS New Carlisle (1.1GW)、Stargate Abilene (1.2GW phase)</td>
+</tr>
+<tr>
+<td>2026-2027（规划）</td>
+<td>1-5 GW</td>
+<td>Stargate 全网 7GW、Anthropic 5GW、Meta Hyperion 5GW</td>
+</tr>
+<tr>
+<td>2030（前瞻）</td>
+<td>10-100 GW</td>
+<td>Aschenbrenner "trillion-dollar cluster"</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>对比：2023 年全美数据中心总耗电 49GW；2026 全球 96GW，其中 AI 占 40GW。Aschenbrenner 估 2030 单个训练 cluster 用电 100GW = 美国总用电 20%。</p>
+</blockquote>
+<h3 id="_9">电力供给的四条路径</h3>
+<ol>
+<li><strong>核电复苏</strong>：Microsoft × Constellation 2024.09 签 20 年 $16B，重启 Three Mile Island Unit 1（833MW，目标 2028 上电）；Amazon 收购 Talen 核电资产；Google × Kairos 签 SMR 500MW（2030+）；Oracle 公开规划自建 SMR 配套 Stargate。</li>
+<li><strong>天然气</strong>：Meta、xAI 在 Texas / Louisiana 直接 behind-the-meter 天然气发电厂（绕开电网审批 18-24 个月延迟）。</li>
+<li><strong>地热</strong>：Sam Altman 个人投资 Fervo / Helion，2025 起小规模上线。</li>
+<li><strong>电网升级</strong>：变压器 lead time 已从 2022 年 30 周拉到 2025 年的 120-200 周，是新数据中心<strong>最确定的瓶颈</strong>。</li>
+</ol>
+<h3 id="_10">美国电网瓶颈分布</h3>
+<ul>
+<li><strong>ERCOT（德州）</strong>：受益于轻监管、有自主电网、土地便宜，成 AI 选址第一热区（Stargate Abilene、xAI Memphis 实际通过 Tesla MegaPack 缓冲电网波动）。</li>
+<li><strong>PJM（中大西洋）</strong>：北弗吉尼亚 Loudoun County 已是全球最大数据中心集群，但电网容量耗尽；2024 PJM 容量拍卖价格暴涨 800%，直接传导到电费。</li>
+<li><strong>Pacific Northwest</strong>：水电 + 寒冷气候本是天然 AI 选址，但近年干旱使风险上升。</li>
+</ul>
+<h3 id="pue">散热与 PUE 革命</h3>
+<ul>
+<li>1GW AI 数据中心的余热相当于一座小钢厂，传统风冷彻底失效，<strong>直接液冷（Direct-to-Chip）+ 浸没式冷却</strong>成为新标配；GB200 NVL72 必须液冷，已不再提供风冷选项。</li>
+<li>PUE（Power Usage Effectiveness）从传统 1.5-1.6 的目标拉到 1.1-1.2；超大数据中心运营商把"水"作为新瓶颈——单 GW 数据中心年耗水可达 25-50 亿升。</li>
+<li><strong>冷却选址博弈</strong>：北欧（瑞典 Luleå、挪威 Stavanger）、爱尔兰、芬兰因低温优势再度受关注；但<strong>电网容量 + 主权法规</strong>正在反向限制——2024 爱尔兰已暂停审批新数据中心。</li>
+</ul>
+<h3 id="_11">资本支出节奏与现金流压力</h3>
+<ul>
+<li>Microsoft / Google / Amazon / Meta 四家 2025 合计 capex ~$370B，2026 预计 $500B+，<strong>首次</strong> 集体超过经营现金流 100%。</li>
+<li>Goldman 测算 hyperscaler 平均 GPU 折旧周期 4-6 年，但实际<strong>性能上的"经济寿命"</strong>只有 2-3 年（Hopper 在 Blackwell 出货后 inference 性价比下降 60%+）。</li>
+<li>行业隐藏债务：OpenAI / Anthropic 通过 hyperscaler 间接绑定的"承诺采购"已超 $400B，本质上把模型公司的偿债能力与 hyperscaler 资产负债表绑定（Anthropic-AWS $100B 10 年合约 + OpenAI 各种"compute commitments"）。</li>
+</ul>
+<hr />
+<h2 id="_12">数据墙 · 公开互联网真的耗尽了？</h2>
+<h3 id="epoch-ai_1">Epoch AI 的核心结论</h3>
+<ul>
+<li>全球高质量公开文本约 300 trillion tokens（2024 估算）。</li>
+<li>若按 5× overtraining，<strong>2027 用尽</strong>；按 100× overtraining，<strong>2025 用尽</strong>；按 Chinchilla optimal，<strong>2032-2034</strong>。</li>
+<li>LeCun 等人持反对意见：人类生成新数据的速度不慢，关键是"高质量"如何定义。</li>
+</ul>
+<h3 id="_13">替代路径</h3>
+<ol>
+<li><strong>合成数据</strong>：DeepSeek R1 用 reasoning chain 自蒸馏 → 800K 高质量 SFT 样本；Microsoft Phi 系列证明高质量合成数据 + 小模型也能达到接近前沿性能；Microsoft SynthLLM 实验表明合成数据<strong>仍服从 scaling law</strong>。</li>
+<li><strong>多模态扩展</strong>：YouTube 一个平台年新增视频 token 远超全互联网历史文本量。视频—音频—3D—具身数据是下一块"未开采矿"。</li>
+<li><strong>互动数据</strong>：ChatGPT/Claude/Gemini 用户日均生成 100+亿 token 真实交互，是闭源生态最大的隐藏护城河（OpenAI 拥有 8 亿 ChatGPT WAU 的对话数据）。</li>
+<li><strong>Agent self-play</strong>：在沙箱环境中让 agent 自我交互生成新轨迹（Voyager、SIMA、AlphaProof 已证明部分领域可行）。</li>
+</ol>
+<blockquote>
+<p>Anthropic 内部研究人员 Aug 2025 在播客中表示："对前沿实验室来说，公开网络数据只是基线，我们 60-80% 的训练价值已经来自合成 + 互动数据。"</p>
+</blockquote>
+<h3 id="_14">数据墙的反直觉含义</h3>
+<p>第一性原理上看，"数据耗尽"这件事的真正影响<strong>不是 capex 减少</strong>，而是 capex <strong>结构再分配</strong>：<br />
+1. <strong>数据采购 + 标注</strong> 成为继 GPU 之后的第二大成本项；OpenAI、Anthropic、xAI 在 2024-2025 累计花费超 $20B 用于数据交易（Reddit、Stack Overflow、新闻出版社）。<br />
+2. <strong>RLHF / RLAIF labor 市场</strong>：Scale AI、Surge、Snorkel 等数据公司估值翻倍；高难度领域（医学、法律、coding）专家时薪 $200-500。<br />
+3. <strong>计算合成数据本身需要 GPU</strong>——R1 自蒸馏过程消耗的 inference compute 与训练 compute 同量级，意味着算力需求并没有"省下来"，只是换了用途。</p>
+<p>这导致一个推论：<strong>如果数据成为强约束，前沿实验室会更需要拥有"用户互动闭环"的产品</strong>——这反过来强化了 ChatGPT、Claude.ai、Gemini App 这些 C 端产品的战略价值，而非削弱。</p>
+<hr />
+<h2 id="_15">中美地缘博弈 · 三轮升级后的格局</h2>
+<h3 id="_16">出口管制时间线</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2022.10.07</td>
+<td>BIS 首版"7nm 以下 AI 芯片禁令"，A100/H100 出口受限</td>
+</tr>
+<tr>
+<td>2023.03</td>
+<td>Nvidia 推出 H800（NVLink 降至 400GB/s）合规版</td>
+</tr>
+<tr>
+<td>2023.10.17</td>
+<td>BIS 禁令升级，H800/A800/L40S 全数禁运；引入 TPP（性能 × 互联）阈值</td>
+</tr>
+<tr>
+<td>2024.10</td>
+<td>"AI Diffusion Rule" 草案，引入"Tier 1/2/3 国家"分层</td>
+</tr>
+<tr>
+<td>2025.01</td>
+<td>Diffusion Rule 正式发布，主权国家分级</td>
+</tr>
+<tr>
+<td>2025.04</td>
+<td>Trump 政府禁 H20（Nvidia 第三代合规版）</td>
+</tr>
+<tr>
+<td>2025.05</td>
+<td>BIS 撤销 Diffusion Rule；同日<strong>全球禁用华为 Ascend 910B/C/D</strong>（任何人使用即违法）</td>
+</tr>
+<tr>
+<td>2025.07-08</td>
+<td>部分回退：Nvidia H20 / AMD MI308 重新允许销售中国，但对美政府支付 15% 收入抽成（前所未有）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="_17">三方博弈格局</h3>
+<p><strong>美国阵营</strong>：Nvidia + AMD + Intel + 大厂自研芯片 + TSMC（事实上的"美方代工厂"，2nm 留台、Arizona 4nm 已量产）+ ASML（荷兰，最关键节点）+ 三星 / SK Hynix（韩国，HBM）+ 应用材料 / LAM / KLA（设备）。</p>
+<p><strong>中国阵营</strong>：华为 Ascend + SMIC（先进制程瓶颈，N+2 节点对标 5-7nm）+ CXMT（HBM 自主，2026 仅能产 250-300K Ascend 910C 等量 HBM）+ 中芯/华虹/上海微电子（光刻机国产化，DUV 已能做 28nm，EUV 仍空白）。</p>
+<p><strong>第三极（主权 AI）</strong>：<br />
+- <strong>UAE / 沙特</strong>：G42 + ADQ + Mubadala + PIF / Sanabil 投资 Mistral、Anthropic、xAI；G42 在印度部署 8 EFLOP；与法国签 $30-50B 1GW 联合数据中心。<br />
+- <strong>印度</strong>：Yotta、Tata、Reliance 自建 GPU 集群；G42 8EFLOP 部署成最大单点。<br />
+- <strong>欧盟</strong>：Mistral（法国）+ Aleph Alpha（德国）+ EuroHPC（Jupiter 1 EFLOP）；French Stargate 类项目 (Iliad + Mistral + UAE)。<br />
+- <strong>日韩</strong>：Naver HyperCLOVA X、SoftBank（也是 Stargate 主席）；日本 SoftBank-OpenAI Cristal Intelligence 项目。</p>
+<h3 id="_18">台积电分散与"硅盾"</h3>
+<ul>
+<li><strong>Arizona</strong>：6 fab 规划（4nm 已量产，3nm 2026，2nm 2028+），由日本贷款、美国《CHIPS Act》$66B 补贴助力。</li>
+<li><strong>Kumamoto（日本）</strong>：6nm 已量产，但需求疲软，原计划 2nm 跳跃推迟。</li>
+<li><strong>Dresden（德国）</strong>：与 NXP / Bosch / Infineon 合资，主攻汽车工业 mature node。</li>
+<li><strong>核心矛盾</strong>：台湾保留 2nm 的政策红线 vs 美国不希望"硅命脉"放在台海冲突火线上。<strong>2027-2028 是关键转折点</strong>——若 Arizona 2nm 顺利量产，台湾的"硅盾"威慑会显著弱化。</li>
+</ul>
+<h3 id="_19">中国"算力闭环"的真实进度</h3>
+<p>抛开宣传与封锁两端的噪音，2026 年中国 AI 算力的实际状况大致是：</p>
+<ul>
+<li><strong>逻辑芯片自给率</strong> ~30-40%（按算力等效折合）：华为 Ascend 910C 在 SMIC 的 N+2 节点流片，单卡性能约为 H100 的 60-70%（FP16），但通过双 die 互联接近 H100 整包水平。</li>
+<li><strong>HBM 自给率</strong> &lt;15%：CXMT HBM2/2e 良率仍未稳定，HBM3 量产推迟到 2026 H2；中国 AI 加速器 HBM 大头仍依赖三星 / SK Hynix 走灰色渠道（已被美国 BIS 多轮警告）。</li>
+<li><strong>EUV 完全空白</strong>：上海微电子最先进 DUV 已能做 28nm 双重曝光，但要做 7nm 以下仍需 EUV，这条路至少落后 5-7 年。</li>
+<li><strong>DeepSeek 路径</strong>：用算法 + 集群效率（FP8、MoE、custom NCCL）把 H800 的限制变成"算法优势"，<strong>这条路径在 2025-2026 是中国前沿大模型的主战场</strong>。</li>
+<li><strong>政策抗风险</strong>：北京"东数西算"政策指引算力建在西部清洁能源充足处；但电网调度、跨省结算仍是落地难点。</li>
+</ul>
+<blockquote>
+<p>一个被低估的观察：中国的"算力受限"反而催生了<strong>全行业最专注的推理优化</strong>研究。DeepSeek、Moonshot、智谱、阿里 Qwen 团队在 inference 效率上的论文密度远超美国同行，这是被禁运逼出来的能力。</p>
+</blockquote>
+<h3 id="_20">出口管制的一个反直觉效应</h3>
+<p>CSIS、Epoch、CSET 多份分析共同指出：出口管制<strong>没能阻止中国前沿模型出现</strong>，但<strong>显著拖慢了规模化部署</strong>。<br />
+- DeepSeek、Qwen、智谱、字节豆包训练算力总和大约 = 美国一家头部实验室（如 Anthropic）的水平；<br />
+- 但中国 inference 部署能力（按累计 token 处理量）大约只有美国的 1/10——因为推理需要海量 GPU 在岗。<br />
+- 这意味着：<strong>中国正在制造"小规模前沿"，但难以构建大规模 agent 经济</strong> ——这恰恰是出口管制设计者的核心目标。</p>
+<hr />
+<h2 id="_21">不同立场和争议</h2>
+<h3 id="aaschenbrenner-bullish">立场 A：Aschenbrenner 派（最 bullish）</h3>
+<ul>
+<li>核心论点（"Situational Awareness", 2024.06）：算力 0.5 OOM/年 + 算法效率 0.5 OOM/年 + "unhobbling" gains，<strong>2027 AGI strikingly plausible</strong>；2030 出现 100GW、$1T 单 cluster。</li>
+<li>二年后复盘：Aschenbrenner 的算力路径基本被证实（2026 已有 1M H100-eq cluster），但 AGI 时间线略 over-shoot。</li>
+</ul>
+<h3 id="byann-lecun">立场 B：Yann LeCun 派（架构怀疑）</h3>
+<ul>
+<li>LLMs are a "<strong>dead end</strong>"——他们只是堆叠统计相关性，缺常识、因果、世界模型。</li>
+<li>2025.11 LeCun 离开 Meta，创办 AMI，融资 $1B 押注 JEPA / world model。</li>
+<li>后果：如果 LeCun 是对的，算力 capex 的边际收益会快速衰减——"再加 10× 算力"换不来 10× 智能。</li>
+</ul>
+<h3 id="cdylan-patel">立场 C：Dylan Patel 派（中度乐观，工程视角）</h3>
+<ul>
+<li>AMD 短期内（2026-2027）无法撼动 Nvidia，但 MI400 + ROCm 生态成熟后会侵蚀 25-30% 推理市场。</li>
+<li>真正的瓶颈不是逻辑芯片，而是 <strong>HBM / EUV / 电网变压器 / 高压电缆</strong>（2028+ 落到 ASML 单点）。</li>
+<li>DeepSeek 是真厉害，但<strong>不是颠覆性的低成本</strong>——西方实验室的 frontier model 训练里 80% 成本是数据 + 探索 + 失败 run，不是 GPU 时长。</li>
+</ul>
+<h3 id="d-deepseek">立场 D："效率派 / DeepSeek 启示"</h3>
+<ul>
+<li><strong>少即是多</strong>：算法、稀疏性、量化、distill 把 capex 需求压到 1/10。</li>
+<li>DeepSeek V3 $5.5M、Llama-3 405B $60M、Mistral Small 3 都说明<strong>前沿能力开始 commoditize</strong>。</li>
+<li>含义：对开源 / 开放权重模型生态有利，但对 capex 重投入的 hyperscaler 不利。</li>
+</ul>
+<h3 id="egoldman-covello-ed-zitroncapex">立场 E：Goldman Covello / Ed Zitron（capex 泡沫派）</h3>
+<ul>
+<li>2024 Goldman 报告：$1T+ capex 至今没有匹配的收入，95% 企业 GenAI pilot 零回报。</li>
+<li>Microsoft / Amazon / Google / Meta 现在 capex &gt; 100% 经营现金流，史无前例。</li>
+<li>Zitron：Big Tech 2030 前需要 <strong>$2T 新增 AI 收入</strong>才能 cover capex，OpenAI + Anthropic 占 hyperscaler AI capex 75%（循环资本游戏）。</li>
+<li>反驳：Aschenbrenner / Altman 派认为他们看的是"通用智能"上限和锁定行业基建的长期回报，而非短期单年 ROI。</li>
+</ul>
+<h3 id="f">立场 F："能源是真瓶颈"派</h3>
+<ul>
+<li>Meta、Microsoft、Google CTO 私下都把电力列为<strong>首要</strong>约束，超过芯片。</li>
+<li>2026-2028 期间电网变压器是单点瓶颈，无法用钱在 24 个月内突破。</li>
+<li>后果：AI cluster 的地理分布会发生大迁徙——往德州、爱荷华、北达科他（核 / 风 / 气资源充足处）。</li>
+</ul>
+<hr />
+<h2 id="5">前瞻假设（5 条）</h2>
+<ol>
+<li><strong>2027 年单个训练 cluster 突破 5 GW</strong>，对应 2-3M H100-eq；至少出现两个由主权基金（沙特或 UAE）牵头的非美主导 cluster。</li>
+<li><strong>推理 capex 在 2027 占 AI 总 capex 70%+</strong>，agent 经济（每用户每天 50-500 次模型调用）成为核心驱动；Etched / Groq / Cerebras 之一被大厂收购或上市达到 $50B+ 估值。</li>
+<li><strong>Nvidia 市占降至 60-65%</strong>（vs 2024 的 90%+），不是因为 CUDA 被打破，而是因为大厂自研 ASIC（TPU、Trainium、MTIA、Maia）已在内部消化 25-30% 推理需求。</li>
+<li><strong>HBM 短缺持续到 2027</strong>：SK Hynix + 三星 + Micron + CXMT 的 HBM4/4e 产能扩张被 ASML EUV 工具供给限速；中国 Ascend 输出实际能力锁定在 30-50 万片/年量级。</li>
+<li><strong>数据墙不会以"耗尽"形式撞墙</strong>，而以"质量陡降 + 合成数据收益递减"形式渐进式显形。前沿实验室未来 24 个月最大优势来自<strong>多模态 + 互动 + agent self-play</strong>而非更多互联网爬取。</li>
+</ol>
+<hr />
+<h2 id="mermaid">Mermaid 脑图</h2>
+<div class="mermaid-wrap"><pre class="mermaid">mindmap
+  root((算力 & 地缘))
+    训练算力曲线
+      4-5x 年增长 (Epoch)
+      Grok-3 1e26 FLOP
+      2030 10-100 GW cluster
+      数据墙 2026-28
+    推理革命
+      reasoning 50-100x token
+      agent loop 50-500x 调用
+      MoE / spec-decode / cache
+      ASIC: Etched Groq Cerebras
+    硬件格局
+      Nvidia (CUDA NVLink HBM)
+        Blackwell B200 GB200 NVL72
+        Vera Rubin 路线
+      大厂 ASIC
+        Google TPU v7 Ironwood
+        AWS Trainium 2/3
+        Meta MTIA Microsoft Maia
+      AMD MI355X MI400
+      推理 ASIC startups
+      中国: 华为 寒武纪 海光
+    数据中心 & 电力
+      100MW 1GW 5GW 100GW
+      核电复苏 (TMI Kairos)
+      天然气 + 地热 + SMR
+      电网变压器瓶颈
+      ERCOT vs PJM
+    地缘博弈
+      美国出口管制三轮
+      TSMC 分散 (AZ JP DE)
+      华为 Ascend 路径
+      HBM 真瓶颈
+    主权 AI
+      UAE G42 ADQ MGX
+      沙特 PIF Sanabil
+      欧盟 Mistral Aleph
+      印度 Yotta Tata
+      法国-UAE $30-50B
+    争议
+      Aschenbrenner 2027 AGI
+      LeCun LLM 死路
+      Patel 工程瓶颈
+      DeepSeek 效率派
+      Goldman 泡沫派
+      能源真瓶颈派</pre></div>
+<hr />
+<h2 id="_22">来源库</h2>
+<h3 id="_23">核心媒体 &amp; 分析师（必读）</h3>
+<ol>
+<li>SemiAnalysis (Dylan Patel) — semianalysis.com / newsletter.semianalysis.com 全行业最深的 chip + datacenter 追踪。</li>
+<li>Epoch AI — epoch.ai/trends 训练算力数据库，引用最权威。</li>
+<li>Dwarkesh Patel Podcast — dwarkesh.com 与 Patel、Aschenbrenner、Sutskever、Altman、Amodei 等核心访谈。</li>
+<li>Stratechery (Ben Thompson) — stratechery.com 关于 chips、CUDA、AI factory 的商业分析。</li>
+<li>The Information / Reuters / Bloomberg / FT — semi 地缘一手报道。</li>
+</ol>
+<h3 id="_24">关键文章 / 报告</h3>
+<ol start="6">
+<li>Epoch, "Training compute of frontier AI models grows by 4-5x per year" — https://epoch.ai/blog/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year</li>
+<li>Epoch, "How much power will frontier AI training demand in 2030?" — https://epoch.ai/blog/power-demands-of-frontier-ai-training</li>
+<li>Aschenbrenner, "Situational Awareness: The Decade Ahead" (2024.06) — https://situational-awareness.ai/</li>
+<li>Dwarkesh × Dylan Patel, "Deep Dive on the 3 Big Bottlenecks to Scaling AI Compute" (2026.03) — https://www.dwarkesh.com/p/dylan-patel</li>
+<li>SemiAnalysis, "MI300X vs H100 vs H200 Benchmark Part 1: Training - CUDA Moat Still Alive" — https://newsletter.semianalysis.com/p/mi300x-vs-h100-vs-h200-benchmark-part-1-training</li>
+<li>SemiAnalysis, "Huawei Ascend Production Ramp: Die Banks, TSMC Continued Production, HBM is The Bottleneck" — https://newsletter.semianalysis.com/p/huawei-ascend-production-ramp</li>
+<li>SemiAnalysis, "AI Datacenter Energy Dilemma - Race for AI Datacenter Space" — https://newsletter.semianalysis.com/p/ai-datacenter-energy-dilemma-race</li>
+<li>SemiAnalysis, "Google TPUv7: The 900lb Gorilla In the Room" — https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the</li>
+<li>Goldman Sachs, "GenAI: Too Much Spend, Too Little Benefit?" (2024.06) — Jim Covello 主笔</li>
+<li>Ed Zitron, "Big Tech Needs $2 Trillion In AI Revenue By 2030" — https://www.wheresyoured.at/big-tech-2tr/</li>
+<li>CSIS / CSET, "Pushing the Limits: Huawei's AI Chip Tests U.S. Export Controls" — https://cset.georgetown.edu/publication/pushing-the-limits-huaweis-ai-chip-tests-u-s-export-controls/</li>
+<li>CRS, "U.S. Export Controls and China: Advanced Semiconductors" (Aug 2025) — https://www.congress.gov/crs-product/R48642</li>
+<li>Stanford FSI, "Taking Stock of the DeepSeek Shock" — https://cyber.fsi.stanford.edu/publication/taking-stock-deepseek-shock</li>
+<li>Lawfare, "What DeepSeek r1 Means—and What It Doesn't" — https://www.lawfaremedia.org/article/what-deepseek-r1-means-and-what-it-doesn-t</li>
+<li>Microsoft Research, "SynthLLM: Breaking the AI 'data wall' with scalable synthetic data" — https://www.microsoft.com/en-us/research/articles/synthllm-breaking-the-ai-data-wall-with-scalable-synthetic-data/</li>
+</ol>
+<h3 id="_25">公司公告 / 一手</h3>
+<ol start="21">
+<li>OpenAI, "Announcing The Stargate Project" (2025.01) — https://openai.com/index/announcing-the-stargate-project/</li>
+<li>OpenAI, "Five new Stargate sites" (2025.09) — https://openai.com/index/five-new-stargate-sites/</li>
+<li>Anthropic-Amazon, "Anthropic and Amazon expand collaboration for up to 5 GW" — https://www.anthropic.com/news/anthropic-amazon-compute</li>
+<li>NVIDIA, "Blackwell Platform Arrives" — https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing</li>
+<li>NVIDIA GTC 2025 keynote transcript (Jensen Huang) — https://blogs.nvidia.com/blog/nvidia-keynote-at-gtc-2025-ai-news-live-updates/</li>
+<li>xAI, Colossus — https://x.ai/colossus</li>
+<li>AMD, MI350 series — https://www.amd.com/en/products/accelerators/instinct/mi350.html</li>
+<li>Google Cloud, "Trillium TPU" — https://cloud.google.com/blog/products/compute/introducing-trillium-6th-gen-tpus</li>
+<li>Microsoft × Constellation, Three Mile Island PPA (2024.09) — datacenter dynamics 报道</li>
+<li>DeepSeek-V3 Technical Report (arXiv 2412.19437) — https://arxiv.org/html/2412.19437v1</li>
+</ol>
+<h3 id="ai">主权 AI</h3>
+<ol start="31">
+<li>G42, "UAE to Deploy 8 Exaflop Supercomputer in India" — https://www.g42.ai/resources/news/uae-deploy-8-exaflop-supercomputer-india-strengthen-local-sovereign-ai-infrastructure</li>
+<li>Middle East Institute, "From Crude to Compute: Building the GCC AI Stack" — https://www.mei.edu/publications/crude-compute-building-gcc-ai-stack</li>
+<li>arXiv 2511.15734, "Sovereign AI: Rethinking Autonomy in the Age of Global Interdependence"</li>
+</ol>
+<h3 id="_26">中国视角</h3>
+<ol start="34">
+<li>晚点 LatePost、财新、远川研究所、硅基立场 — DeepSeek、华为昇腾、HBM 自主化中文一手报道</li>
+<li>IFP, "The H20 Problem: Inference, Supercomputers, and US Export Control Gaps" — https://ifp.org/the-h20-problem/</li>
+</ol>
+<hr />
+<blockquote>
+<p><strong>写作备注</strong>：本章侧重物理底层与产业格局，与 03（模型层）、05（资本与商业模式）、08（中国 vs 美国）有显著 overlap，但视角各异。读者可结合 05 看 capex 经济性 / ROI、08 看中美战略博弈、09 看主权 AI 政策维度。</p>
+</blockquote>
+<nav class="chapter-bottom-nav"><a href="06-personal-workflow.html" class="prev"><span class="nav-arrow">← 上一章 / 06</span><span class="nav-label">个人工作流与认知重塑</span></a><a href="08-safety-alignment-ethics.html" class="next"><span class="nav-arrow">下一章 / 08 →</span><span class="nav-label">安全 对齐 伦理</span></a></nav>
+</main>
+<footer class="site-footer">
+  <p>AI mindset explore · 个人 AI 认知框架 · 持续维护中 · <a href="README.html">回到总览</a></p>
+</footer>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#fbf9f4',
+    primaryTextColor: '#1a1a1a',
+    primaryBorderColor: '#b85042',
+    lineColor: '#8a3a2e',
+    secondaryColor: '#f7f3eb',
+    tertiaryColor: '#fff',
+    fontFamily: 'Noto Sans SC, Inter, sans-serif',
+  },
+});
+</script>
+</body>
+</html>
